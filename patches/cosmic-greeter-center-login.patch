@@ -1,0 +1,24 @@
+diff --git a/src/greeter.rs b/src/greeter.rs
+index 852e219..2d1c00f 100644
+--- a/src/greeter.rs
++++ b/src/greeter.rs
+@@ -985,7 +985,9 @@ impl App {
+         };
+ 
+         let menu = widget::layer_container(
+-            iced::widget::row![left_element, right_element].align_y(Alignment::Start),
++            iced::widget::column![left_element, right_element]
++                .align_x(Alignment::Center)
++                .spacing(8.0),
+         )
+         .layer(cosmic::cosmic_theme::Layer::Background)
+         .padding(16)
+@@ -1003,7 +1005,7 @@ impl App {
+                 appearance
+             },
+         )))
+-        .width(Length::Fixed(MAX_WIDTH));
++        .width(Length::Fixed(420.0));
+         let menu = if let Some(t) = self.common.rectangle_tracker.as_ref() {
+             Element::from(t.container((id, false), menu))
+         } else {
