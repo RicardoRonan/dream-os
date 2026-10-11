@@ -18,6 +18,9 @@ read -r -p "Run user-space phases now? [y/N] " ans
 [[ "$ans" =~ ^[Yy]$ ]] || { echo "Aborted."; exit 0; }
 
 bash "$REPO/install/01-theme.sh"
+bash "$REPO/install/02-identity.sh"
+bash "$REPO/install/03-desktop.sh"
+bash "$REPO/install/04-features.sh"
 
 echo
 echo "Bootstrap complete. Run 'just doctor' to verify."
