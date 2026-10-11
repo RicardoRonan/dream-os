@@ -8,6 +8,9 @@ install:
     bash install/04-features.sh
     bash install/05-crossapp.sh
     bash install/06-hotcorners.sh
+    bash install/07-shortcuts.sh
+    bash install/08-session.sh
+    bash install/09-power-icons.sh
 
 # Apply the Dream OS COSMIC theme (Dark Obsidian + Light Titan)
 theme:
@@ -32,6 +35,18 @@ crossapp:
 # macOS-like hot corners (waycorner)
 corners:
     bash install/06-hotcorners.sh
+
+# Keyboard shortcuts (Super+L lock, window arrangement)
+shortcuts:
+    bash install/07-shortcuts.sh
+
+# Session persistence (restore apps after login)
+session:
+    bash install/08-session.sh
+
+# Clearer power/session icons
+icons:
+    bash install/09-power-icons.sh
 
 # Verify installed tooling and applied theme
 doctor:
