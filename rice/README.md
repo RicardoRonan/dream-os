@@ -33,15 +33,27 @@ Per-distro package sources:
 | Arch | `pacman -S niri` | `dms-shell-niri` | pacman |
 | openSUSE | OBS | DMS OBS repo | zypper |
 
-## Login screen (Dank Greeter)
+## Login screen (Dank Greeter) — read this first
 
-Install `dms-greeter` and switch greetd to it, keeping **COSMIC listed** so you can always get
-back:
+COSMIC's greeter **is** greetd-based: `cosmic-greeter.service` is aliased as
+`display-manager.service`. **Disabling it removes your login screen** and drops you to a TTY.
+
+**Never disable `cosmic-greeter` until the replacement is installed and confirmed working.**
+
+If you lose the login screen, recover from a TTY (Ctrl+Alt+F3):
 
 ```bash
-sudo systemctl disable --now cosmic-greeter
-sudo systemctl enable  --now greetd
+sudo systemctl enable cosmic-greeter
+sudo systemctl start cosmic-greeter
+# if the alias is missing:
+sudo ln -sf /usr/lib/systemd/system/cosmic-greeter.service /etc/systemd/system/display-manager.service
+sudo systemctl daemon-reload
+sudo systemctl start cosmic-greeter
 ```
+
+Once `dms-greeter` is installed **and tested**, switch greetd's config (not by disabling
+cosmic-greeter): set the `[general] service` / `[default_session]` in `/etc/greetd/*.toml` to the
+DMS greeter, and keep the COSMIC session listed.
 
 ## Config locations
 

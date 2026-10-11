@@ -76,11 +76,11 @@ esac
 cat <<'EOF'
 
 Done. Next:
-  1. Install Dank Greeter (greetd) and make it list BOTH sessions
-     (COSMIC + niri), so you can always get back:
-       sudo pacman -S dms-greeter   # or: apt install dms-greeter / dnf install dms-greeter
-       sudo systemctl disable --now cosmic-greeter
-       sudo systemctl enable  --now greetd
-  2. Log out and pick the "niri" session.
-  3. Set your monitors in ~/.config/niri/config.kdl (niri msg outputs).
+  1. Log out and pick the "niri" session at the login screen to try the rice.
+  2. Set your monitors in ~/.config/niri/config.kdl  (list them with: niri msg outputs).
+  3. Dank Greeter (OPTIONAL): install dms-greeter, then point greetd's
+     [general] service in /etc/greetd/*.toml at it.
+     Do NOT disable cosmic-greeter first - that removes your login screen.
+     If you lose the login screen (drop to a TTY), recover with:
+       sudo systemctl enable cosmic-greeter && sudo systemctl start cosmic-greeter
 EOF
