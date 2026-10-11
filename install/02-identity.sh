@@ -82,19 +82,42 @@ else
   echo "Papirus not installed yet. Run: sudo bash install/00-system-apt.sh"
 fi
 
-# ---- terminal/code font (SF Mono if present) -------------------------------
-if fc-list 2>/dev/null | grep -qi 'SF Mono'; then
-  cat > "$TK/monospace_font" <<'EOF'
+# ---- fonts -----------------------------------------------------------------
+# Bundle Inter (SIL OFL) so UI text looks right where SF Pro Text is absent.
+if [ -d "$REPO/assets/fonts" ]; then
+  mkdir -p "$HOME/.local/share/fonts"
+  cp -r "$REPO/assets/fonts/." "$HOME/.local/share/fonts/" 2>/dev/null || true
+  fc-cache -f >/dev/null 2>&1 || true
+fi
+
+# UI font: keep SF Pro Text if present, otherwise Inter.
+UI_FONT="SF Pro Text"
+fc-list 2>/dev/null | grep -qi 'SF Pro Text' || UI_FONT="Inter"
+cat > "$TK/interface_font" <<EOF
 (
-    family: "SF Mono",
+    family: "$UI_FONT",
     weight: Normal,
     stretch: Normal,
     style: Normal,
 )
 EOF
-  echo "Monospace font set to SF Mono."
-else
-  echo "SF Mono not found; see docs/fonts.md (JetBrains Mono NF is the fallback)."
+echo "Interface font: $UI_FONT."
+
+# Monospace: SF Mono if present, else JetBrains Mono NF, else system mono.
+MONO_FONT="monospace"
+if fc-list 2>/dev/null | grep -qi 'SF Mono'; then
+  MONO_FONT="SF Mono"
+elif fc-list 2>/dev/null | grep -qi 'JetBrainsMono Nerd'; then
+  MONO_FONT="JetBrainsMono Nerd Font"
 fi
+cat > "$TK/monospace_font" <<EOF
+(
+    family: "$MONO_FONT",
+    weight: Normal,
+    stretch: Normal,
+    style: Normal,
+)
+EOF
+echo "Monospace font: $MONO_FONT."
 
 echo "Phase 2 done."

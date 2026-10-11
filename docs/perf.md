@@ -24,7 +24,7 @@ overlap). The workspace overview (Super+W) no longer blurs.
 Turn blur off entirely (keeps the dock translucent, just unblurred):
 
 ```bash
-# in theme/dream-os-{dark,light}.ron set:
+# in configs/cosmic/dream-os-{dark,light}.ron set:
 #   is_frosted: false,
 #   frosted_panel: false,
 # then:

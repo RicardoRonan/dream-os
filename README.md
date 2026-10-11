@@ -1,39 +1,57 @@
 # Dream OS
 
-A clean, monochrome COSMIC desktop theme with a single, user-swappable accent.
-Pure grayscale base (true black `#000` / true white `#FFF`), hairline borders,
-and one signal color. Plus a curated set of OS-like features (clipboard history,
-hot corners, spotlight launcher).
+A clean, monochrome COSMIC desktop theme with a single, user-swappable accent —
+plus a **rice flavour** (niri + DankMaterialShell) for those who want to own the shell.
 
-Built for Pop!_OS 24.04 / COSMIC (Wayland). User-space first: nothing touches the
+Pure grayscale base (true black `#000` / true white `#FFF`), hairline borders, one signal
+color, and a curated set of OS-like features. User-space first: nothing touches the
 bootloader, kernel, or drivers.
 
 ## Screenshots
 
 | Obsidian (dark) | Titan (light) |
 |---|---|
-| ![Dark](assets/screenshots/dark.png) | ![Light](assets/screenshots/light.png) |
+| ![Dark](screenshots/dark.png) | ![Light](screenshots/light.png) |
+
+> Gallery screenshots live in `screenshots/`. (dark, light, menu + launcher,
+> overview + app grid, settings + lock.)
+
+## Two flavours
+
+| Flavour | Stack | Runs on |
+|---|---|---|
+| **Theme** (default) | COSMIC desktop (RON theme + configs) | Pop!_OS / any distro with COSMIC |
+| **Rice** (`rice/`) | niri + DankMaterialShell + Matugen | any distro, alongside COSMIC |
+
+See [`rice/README.md`](rice/README.md) for the rice.
 
 ## Theme
 
-- **Obsidian** (dark, `#000000`) and **Titan** (light, `#FFFFFF`), tuned as two
-  independent faces rather than a naive inversion.
+- **Obsidian** (dark, `#000000`) and **Titan** (light, `#FFFFFF`), tuned as two independent
+  faces rather than a naive inversion.
 - Pure neutral grayscale (no color cast); the accent is the only chroma.
-- Accent default **Signal blue `#4C8DFF`**; users change it in
-  Settings -> Desktop -> Appearance (curated palette + custom picker).
-- Accent-colored 2px focus ring; hairlines instead of shadows; Standard density;
-  8-16px corners.
-- Fonts: **SF Pro Text** (UI), **SF Mono** (terminal/code).
+- Accent default **Signal blue `#4C8DFF`**; changed in Settings → Desktop → Appearance
+  (curated palette + custom picker).
+- **Corner radius standardised to 16** across all tiers; Standard density; hairlines
+  instead of shadows; **neutral-grey** active-window ring.
+- Frosted glass limited to the dock (perf-first on integrated GPUs).
+- Fonts: **SF Pro Text** (UI, falls back to bundled **Inter**), **SF Mono** (terminal).
 
 ## What it installs
 
 | Phase | Script | Contents |
 |-------|--------|----------|
-| 00 system | `install/00-system-apt.sh` | Papirus icons + grey folders, Vimix cursors, libinput-gestures, kdeconnect, ydotool (needs sudo) |
-| 01 theme | `install/01-theme.sh` | Obsidian/Titan theme seeds, `.ron` import, density |
-
-More phases (identity, desktop layout, features, cross-app sync) land here as
-they are built.
+| 00 system | `install/00-system-apt.sh` | Papirus icons + grey folders, Vimix cursors, libinput-gestures, kdeconnect, ydotool |
+| 01 theme | `install/01-theme.sh` | Obsidian/Titan seeds + `.ron` import, density |
+| 02 identity | `install/02-identity.sh` | wallpaper, cursors, icons, bundled fonts |
+| 03 desktop | `install/03-desktop.sh` | macOS-like top bar + centered dock |
+| 04 features | `install/04-features.sh` | Logo Menu, applets, gestures, panel |
+| 05 crossapp | `install/05-crossapp.sh` | GTK/Qt font + theme sync |
+| 06 hotcorners | `install/06-hotcorners.sh` | waycorner hot corners |
+| 07 shortcuts | `install/07-shortcuts.sh` | Super+L lock, window arrangement |
+| 08 session | `install/08-session.sh` | restore apps after login |
+| 09 icons | `install/09-power-icons.sh` | DreamOS icon overrides |
+| 10 uninstall | `install/10-uninstall.sh` | remove Dream OS user files |
 
 ## Usage
 
@@ -42,37 +60,45 @@ they are built.
 sudo bash install/00-system-apt.sh
 
 # 2. user-space phases
-bash bootstrap.sh
-# or:
-just install
+just install          # or: bash bootstrap.sh
 
-# just the theme
+# theme only / verify
 just theme
-
-# verify
 just doctor
+
+# rice flavour (niri + DankMaterialShell)
+just rice
 ```
 
 ## Layout
 
 ```
-bootstrap.sh                 entrypoint
-justfile                     install / theme / doctor / system
-install/                     phased installers
-theme/                       Dream OS .ron theme exports (source of truth)
-assets/                      wallpapers, cursors
-scripts/doctor.sh            pass/fail verification
+bootstrap.sh         entrypoint
+justfile             install / theme / rice / uninstall / doctor / system
+install/             phased installers + lib/
+configs/cosmic/      Dream OS .ron theme exports (source of truth)
+assets/              wallpapers, icons, bundled fonts (Inter)
+rice/                niri + DankMaterialShell flavour
+screenshots/         README gallery
+docs/                design, features, fonts, perf, greeter
+patches/             cosmic-greeter center patch (Pop)
+CHANGELOG.md
 ```
 
 ## Notes
 
-- **User-space only.** Backups land beside originals as `<name>.bak.<ts>`, with a
-  full pre-change snapshot in `~/.dotfiles-backup-<ts>/`.
+- **User-space first.** Backups land beside originals as `<name>.bak.<ts>`, with a full
+  pre-change snapshot in `~/.dotfiles-backup-<ts>/`.
 - Everything is idempotent; re-running is safe.
-- Themes are authored by importing `theme/*.ron` via
-  `cosmic-settings appearance import`.
+- Themes are authored by importing `configs/cosmic/*.ron` via `cosmic-settings appearance import`.
+- `just uninstall` removes Dream OS user files (backups kept).
 
-## Rollback
+## Distro support
 
-Restore `~/.config/cosmic/` from the `~/.dotfiles-backup-<ts>/` snapshot, then
-restart the session.
+- **Theme:** requires COSMIC installed. The installer is currently apt/Pop-centric;
+  a distro-agnostic version (apt/dnf/pacman/zypper) is planned.
+- **Rice:** distro-agnostic — see `rice/`.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md).

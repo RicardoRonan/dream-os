@@ -48,6 +48,18 @@ session:
 icons:
     bash install/09-power-icons.sh
 
+# Install the rice flavour (niri + DankMaterialShell, needs sudo for deps)
+rice:
+    bash rice/install-rice.sh
+
+# Only (re)copy the rice configs (user-space)
+rice-configs:
+    bash rice/install-rice.sh configs
+
+# Remove Dream OS files (keeps backups)
+uninstall:
+    bash install/10-uninstall.sh
+
 # Verify installed tooling and applied theme
 doctor:
     bash scripts/doctor.sh

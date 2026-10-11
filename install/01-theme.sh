@@ -74,7 +74,7 @@ EOF
 
   # palette = single source of truth, extracted from the repo .ron export
   lc="$(echo "$mode" | tr '[:upper:]' '[:lower:]')"
-  sed -n '/^    palette: /,/^    )),$/p' "$REPO/theme/dream-os-$lc.ron" \
+  sed -n '/^    palette: /,/^    )),$/p' "$REPO/configs/cosmic/dream-os-$lc.ron" \
     | sed '1s/^    palette: //' \
     | sed '$s/,$//' \
     | sed 's/^    //' > "$dir/palette"
@@ -214,7 +214,7 @@ fi
 # The Settings CLI imports a .ron ThemeBuilder and writes the derived theme.
 if command -v cosmic-settings >/dev/null 2>&1; then
   for lc in dark light; do
-    if cosmic-settings appearance import "$REPO/theme/dream-os-$lc.ron" >/dev/null 2>&1; then
+    if cosmic-settings appearance import "$REPO/configs/cosmic/dream-os-$lc.ron" >/dev/null 2>&1; then
       echo "Imported $lc theme."
     else
       echo "WARN: import of $lc theme failed (apply manually via Settings > Appearance)." >&2
@@ -224,5 +224,5 @@ if command -v cosmic-settings >/dev/null 2>&1; then
   pkill -x cosmic-panel 2>/dev/null || true
   echo "Dream OS theme applied (Dark default). If UI looks stale, restart the session."
 else
-  echo "cosmic-settings not found; seeds written only. Import theme/*.ron manually."
+  echo "cosmic-settings not found; seeds written only. Import configs/cosmic/*.ron manually."
 fi

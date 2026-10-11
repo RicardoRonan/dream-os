@@ -48,14 +48,14 @@ surface steps, not shadows.
 
 ## How it is applied
 
-Authoring happens in `theme/dream-os-{dark,light}.ron` (a COSMIC `ThemeBuilder`).
+Authoring happens in `configs/cosmic/dream-os-{dark,light}.ron` (a COSMIC `ThemeBuilder`).
 COSMIC expands these into the resolved theme and writes it to
 `~/.config/cosmic/com.system76.CosmicTheme.{Dark,Light}/v2/` using hex color
 strings. The apply step is:
 
 ```bash
-cosmic-settings appearance import theme/dream-os-dark.ron
-cosmic-settings appearance import theme/dream-os-light.ron
+cosmic-settings appearance import configs/cosmic/dream-os-dark.ron
+cosmic-settings appearance import configs/cosmic/dream-os-light.ron
 ```
 
 Colors are derived by COSMIC from a few seeds via OKLCH (hover, pressed,
