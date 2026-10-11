@@ -206,7 +206,7 @@ EOF
 TK="$CFG/com.system76.CosmicTk/v1"
 if [ -d "$TK" ]; then
   [ -f "$TK/interface_density" ] && echo "Standard" > "$TK/interface_density"
-  [ -f "$TK/header_size" ]       && echo "Standard" > "$TK/header_size"
+  [ -f "$TK/header_size" ]       && echo "Spacious" > "$TK/header_size"
   echo "Density set to Standard."
 fi
 
