@@ -8,6 +8,12 @@ hot corners, spotlight launcher).
 Built for Pop!_OS 24.04 / COSMIC (Wayland). User-space first: nothing touches the
 bootloader, kernel, or drivers.
 
+## Screenshots
+
+| Obsidian (dark) | Titan (light) |
+|---|---|
+| ![Dark](assets/screenshots/dark.png) | ![Light](assets/screenshots/light.png) |
+
 ## Theme
 
 - **Obsidian** (dark, `#000000`) and **Titan** (light, `#FFFFFF`), tuned as two
