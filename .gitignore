@@ -1,0 +1,10 @@
+# build state
+.build-ts
+
+# backups
+*.bak.*
+*.bak
+
+# editor / OS cruft
+.DS_Store
+*.swp
