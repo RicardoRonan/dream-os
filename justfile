@@ -6,6 +6,7 @@ install:
     bash install/02-identity.sh
     bash install/03-desktop.sh
     bash install/04-features.sh
+    bash install/05-crossapp.sh
 
 # Apply the Dream OS COSMIC theme (Dark Obsidian + Light Titan)
 theme:
@@ -22,6 +23,10 @@ desktop:
 # Applets, gestures, features
 features:
     bash install/04-features.sh
+
+# GTK/Qt/font sync for third-party apps
+crossapp:
+    bash install/05-crossapp.sh
 
 # Verify installed tooling and applied theme
 doctor:
