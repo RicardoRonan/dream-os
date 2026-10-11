@@ -19,7 +19,11 @@ mkdir -p "$PANEL" "$DOCK"
 # ---- top bar (menu bar) ----------------------------------------------------
 printf 'Top\n' > "$PANEL/anchor"
 printf 'XS\n'  > "$PANEL/size"
-printf 'Some([])\n' > "$PANEL/plugins_center"
+cat > "$PANEL/plugins_center" <<'EOF'
+Some([
+    "com.system76.CosmicAppletTime",
+])
+EOF
 cat > "$PANEL/plugins_wings" <<'EOF'
 Some((
     [
@@ -42,7 +46,15 @@ EOF
 
 # ---- dock (macOS-like) -----------------------------------------------------
 printf 'Bottom\n' > "$DOCK/anchor"
-printf 'Never\n'  > "$DOCK/autohide"
+printf 'OnOverlap\n' > "$DOCK/autohide"
+cat > "$DOCK/autohide_behavior" <<'EOF'
+(
+    wait_time: 350,
+    transition_time: 250,
+    handle_size: 2,
+    unhide_delay: 80,
+)
+EOF
 printf '0.5\n'    > "$DOCK/opacity"
 printf '16\n'     > "$DOCK/border_radius"
 printf 'false\n'  > "$DOCK/expand_to_edges"

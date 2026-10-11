@@ -49,3 +49,19 @@ Or via Settings -> Desktop -> Appearance -> Frosted glass (uncheck all).
 - **Animations:** COSMIC 1.10 has no user-facing "reduced motion" switch yet.
 - **Hot corners / gestures** (`waycorner`, `libinput-gestures`) are lightweight;
   disable them only if you don't use them.
+
+## Animations
+
+COSMIC 1.10 exposes **no user-facing animation settings** — animations are the
+compositor's job and land in a later Epoch (2/3 upstream). The only tunable
+transition is the dock/panel hide-show animation:
+
+`~/.config/cosmic/com.system76.CosmicPanel.Dock/v1/autohide_behavior`
+- `transition_time` (ms) — slide duration
+- `wait_time` (ms) — delay before hiding
+- `unhide_delay` (ms) — delay before showing
+
+Dream OS sets a smooth `transition_time: 250`. The real lever for "smooth" is
+frame rate: keeping blur minimal (above) is what prevents stutter. Broader
+animations (workspace switching, window open/close, panel appearance) require a
+newer COSMIC release.
