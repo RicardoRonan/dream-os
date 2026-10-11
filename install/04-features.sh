@@ -38,6 +38,8 @@ Some((
         "io.github.cosmic_utils.cosmic-ext-applet-clipboard-manager",
     ],
     [
+        "com.system76.CosmicAppletNetwork",
+        "com.system76.CosmicAppletBluetooth",
         "com.system76.CosmicAppletStatusArea",
         "com.system76.CosmicAppletBattery",
         "com.system76.CosmicAppletNotifications",
