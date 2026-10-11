@@ -10,6 +10,7 @@ PANEL="$CFG/cosmic/com.system76.CosmicPanel.Panel/v1"
 
 # ---- utility applets (flatpak, cosmic remote) ------------------------------
 APPLETS=(
+  dev.cappsy.CosmicExtAppletLogoMenu
   com.github.codevardhan.caffeine-applet
   io.github.cosmic_utils.sysinfo-applet
   dev.DBrox.CosmicPrivacyIndicator
@@ -32,14 +33,11 @@ if [ -f "$PANEL/plugins_wings" ]; then
   cat > "$PANEL/plugins_wings" <<'EOF'
 Some((
     [
+        "dev.cappsy.CosmicExtAppletLogoMenu",
         "com.system76.CosmicPanelWorkspacesButton",
-        "com.system76.CosmicPanelAppButton",
         "io.github.cosmic_utils.cosmic-ext-applet-clipboard-manager",
     ],
     [
-        "com.github.codevardhan.caffeine-applet",
-        "dev.DBrox.CosmicPrivacyIndicator",
-        "io.github.cosmic_utils.sysinfo-applet",
         "com.system76.CosmicAppletStatusArea",
         "com.system76.CosmicAppletAudio",
         "com.system76.CosmicAppletBluetooth",
@@ -47,11 +45,10 @@ Some((
         "com.system76.CosmicAppletBattery",
         "com.system76.CosmicAppletNotifications",
         "com.system76.CosmicAppletPower",
-        "com.system76.CosmicAppletTime",
     ],
 ))
 EOF
-  echo "Panel applets updated (caffeine, privacy, sysinfo)."
+  echo "Panel decluttered: Logo Menu added; utility applets folded out of the bar."
 fi
 
 # ---- 3-finger gestures (4-finger is native in COSMIC) ----------------------

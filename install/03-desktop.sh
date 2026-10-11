@@ -43,7 +43,7 @@ EOF
 # ---- dock (macOS-like) -----------------------------------------------------
 printf 'Bottom\n' > "$DOCK/anchor"
 printf 'Never\n'  > "$DOCK/autohide"
-printf '0.72\n'   > "$DOCK/opacity"
+printf '0.5\n'    > "$DOCK/opacity"
 printf '160\n'    > "$DOCK/border_radius"
 printf 'false\n'  > "$DOCK/expand_to_edges"
 printf 'M\n'      > "$DOCK/size"
