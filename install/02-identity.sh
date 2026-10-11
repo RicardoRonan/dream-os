@@ -67,8 +67,14 @@ echo "Cursor set to $CURSOR_NAME (log out/in to apply to all apps)."
 
 # ---- icons (Papirus) -------------------------------------------------------
 if [ -d /usr/share/icons/Papirus ]; then
-  papirus-folders -C grey --theme Papirus-Dark  >/dev/null 2>&1 || true
-  papirus-folders -C grey --theme Papirus-Light >/dev/null 2>&1 || true
+  # Recoloring system-wide icons needs root; do it if writable/privileged, else advise.
+  if [ "$(id -u)" -eq 0 ] || [ -w /usr/share/icons/Papirus-Dark ]; then
+    papirus-folders -C grey --theme Papirus-Dark  >/dev/null 2>&1 || true
+    papirus-folders -C grey --theme Papirus-Light >/dev/null 2>&1 || true
+  else
+    echo "NOTE: run once with sudo to set grey folders:"
+    echo "  sudo papirus-folders -C grey --theme Papirus-Dark && sudo papirus-folders -C grey --theme Papirus-Light"
+  fi
   printf '"Papirus-Dark"\n' > "$TK/icon_theme"
   gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark' 2>/dev/null || true
   echo "Icons set to Papirus-Dark (grey folders)."

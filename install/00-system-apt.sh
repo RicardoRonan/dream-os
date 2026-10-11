@@ -50,5 +50,12 @@ if command -v libinput-gestures-setup >/dev/null 2>&1; then
   libinput-gestures-setup autostart start >/dev/null 2>&1 || true
 fi
 
+# Papirus needs root to recolor folders system-wide.
+if command -v papirus-folders >/dev/null 2>&1; then
+  papirus-folders -C grey --theme Papirus-Dark  >/dev/null 2>&1 || true
+  papirus-folders -C grey --theme Papirus-Light >/dev/null 2>&1 || true
+  echo "Papirus folders set to grey."
+fi
+
 echo "System packages done."
 echo "Note: SF Mono is Apple-licensed and must be installed manually (see docs/fonts.md)."
