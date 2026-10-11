@@ -47,6 +47,21 @@ EOF
   echo "Panel decluttered: Logo Menu added; utility applets folded out of the bar."
 fi
 
+# ---- Logo Menu: hamburger "menu button" icon -------------------------------
+# The applet is sandboxed, so the SVG must live somewhere it can read (its config dir).
+LM="$CFG/cosmic/dev.cappsy.CosmicExtAppletLogoMenu"
+if flatpak info --user dev.cappsy.CosmicExtAppletLogoMenu >/dev/null 2>&1; then
+  mkdir -p "$LM/v1"
+  cp "$REPO/assets/icons/DreamOS/scalable/actions/dream-os-menu-symbolic.svg" \
+     "$LM/dream-os-menu-symbolic.svg"
+  printf '"Cosmic (Symbolic)"\n' > "$LM/v1/logo"
+  echo "true" > "$LM/v1/custom_logo_active"
+  printf '"%s"\n' "$LM/dream-os-menu-symbolic.svg" > "$LM/v1/custom_logo_path"
+  # kill stale applet instances so the new logo loads on panel restart
+  for _p in $(pgrep -f cosmic-ext-applet-logomenu); do kill "$_p" 2>/dev/null || true; done
+  echo "Logo Menu set to a hamburger menu-button icon."
+fi
+
 # ---- 3-finger gestures (4-finger is native in COSMIC) ----------------------
 mkdir -p "$CFG"
 cat > "$CFG/libinput-gestures.conf" <<'EOF'
