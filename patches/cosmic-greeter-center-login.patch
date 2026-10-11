@@ -22,3 +22,27 @@ index 852e219..2d1c00f 100644
          let menu = if let Some(t) = self.common.rectangle_tracker.as_ref() {
              Element::from(t.container((id, false), menu))
          } else {
+diff --git a/src/locker.rs b/src/locker.rs
+index ce1b3d1..a573aaf 100644
+--- a/src/locker.rs
++++ b/src/locker.rs
+@@ -622,7 +622,9 @@ impl App {
+                 .width(Length::Fill)
+         };
+         let menu = widget::layer_container(
+-            iced::widget::row![left_element, right_element].align_y(Alignment::Start),
++            iced::widget::column![left_element, right_element]
++                .align_x(Alignment::Center)
++                .spacing(8.0),
+         )
+         .layer(cosmic::cosmic_theme::Layer::Background)
+         .padding(16)
+@@ -637,7 +639,7 @@ impl App {
+                 appearance
+             },
+         )))
+-        .width(Length::Fill)
++        .width(Length::Fixed(420.0))
+         .height(Length::Shrink);
+         let menu = if let Some(t) = self.common.rectangle_tracker.as_ref() {
+             Element::from(t.container((surface_id, false), menu))
