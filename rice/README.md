@@ -55,6 +55,18 @@ Config locations (sources under `rice/`):
 | `Super+Shift+L` | lock (swaylock) |
 | `Super+Shift+E` | exit Sway |
 
+### Hybrid-GPU note (Intel + NVIDIA)
+
+Sway/wlroots can pick the NVIDIA card and abort with **"unsupported GPU"**. The installer writes a
+`sway.desktop` session that forces the Intel card:
+
+```
+Exec=env WLR_DRM_DEVICES=/dev/dri/card0 WLR_NO_HARDWARE_CURSORS=1 sway
+```
+
+It also **masks the `waybar` user service** (`systemctl --user mask waybar.service`), which would
+otherwise draw a **second bar over COSMIC**. (Sway starts waybar itself via `exec waybar`.)
+
 ## Dream OS identity
 
 - **Palette:** pure grayscale + Signal blue `#4C8DFF` (see `rice/waybar/style.css`).

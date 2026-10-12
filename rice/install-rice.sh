@@ -55,6 +55,20 @@ install_sway() {
   backup_and_copy "$RICE/waybar" "$CFG/waybar"
   backup_and_copy "$RICE/mako"  "$CFG/mako"
   backup_and_copy "$RICE/wofi"  "$CFG/wofi"
+
+  # Hybrid-GPU laptops: force the Intel card so wlroots doesn't pick NVIDIA.
+  mkdir -p "$HOME/.local/share/wayland-sessions"
+  cat > "$HOME/.local/share/wayland-sessions/sway.desktop" <<'EOF'
+[Desktop Entry]
+Name=Sway
+Comment=Dream OS rice (forces the Intel GPU via WLR_DRM_DEVICES)
+Exec=env WLR_DRM_DEVICES=/dev/dri/card0 WLR_NO_HARDWARE_CURSORS=1 sway
+Type=Application
+EOF
+
+  # Stop the waybar user-service from drawing a second bar over COSMIC.
+  systemctl --user mask waybar.service 2>/dev/null || true
+
   say "Sway + Waybar configured (session appears at login)."
 }
 
