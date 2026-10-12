@@ -60,6 +60,10 @@ rice-configs:
 uninstall:
     bash install/10-uninstall.sh
 
+# Restore the login screen if the machine boots to a TTY (needs sudo)
+fix-login:
+    sudo bash scripts/restore-login-screen.sh
+
 # Verify installed tooling and applied theme
 doctor:
     bash scripts/doctor.sh

@@ -64,12 +64,24 @@ enable_shell() {
   fi
 }
 
+preflight_login_screen() {
+  # The rice never touches the login screen. If it's already broken, stop and fix it first.
+  local link=/etc/systemd/system/display-manager.service
+  if [ ! -e "$link" ] && [ ! -L "$link" ]; then
+    warn "display-manager.service is missing - the login screen would not start at boot."
+    warn "Restore it FIRST:  sudo bash \"$REPO/scripts/restore-login-screen.sh\""
+    warn "Aborting so we don't make things worse."
+    exit 1
+  fi
+  say "Login screen OK ($(readlink -f "$link")) - the rice does NOT touch it."
+}
+
 pm="$(detect_pm)"
 say "Detected package manager: $pm"
 
 case "${1:-all}" in
   configs) copy_configs ;;
-  all)     install_deps "$pm"; copy_configs; enable_shell ;;
+  all)     preflight_login_screen; install_deps "$pm"; copy_configs; enable_shell ;;
   *) echo "usage: $0 [all|configs]"; exit 1 ;;
 esac
 

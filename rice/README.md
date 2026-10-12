@@ -4,6 +4,14 @@ A second flavour of Dream OS: a **rice** (you own the shell) built on **niri** (
 tiling compositor) + **DankMaterialShell (DMS)** + **Matugen** for global app theming.
 It runs **alongside COSMIC** — pick the session at login.
 
+## Safety (read first)
+
+- **The rice never touches your login screen.** COSMIC's greeter is aliased as
+  `display-manager.service`; removing that aliases drops you to a bare TTY.
+- `install-rice.sh` **refuses to run** if the login screen is already broken.
+- If you ever boot to a TTY, repair it with:
+  `sudo bash scripts/restore-login-screen.sh` (or `just fix-login`).
+
 ## Why this stack
 
 - **niri** — smooth scrolling tiling, per-monitor dynamic workspaces, written in Rust.
