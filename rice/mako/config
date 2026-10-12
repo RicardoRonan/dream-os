@@ -1,0 +1,14 @@
+# Dream OS rice — mako (notifications)
+
+font=JetBrainsMono Nerd Font 10
+background-color=#0d0d0d
+text-color=#f2f2f2
+border-color=#262626
+border-size=2
+border-radius=16
+padding=12
+margin=8
+width=360
+height=120
+default-timeout=5000
+group-by=app-name

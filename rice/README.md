@@ -1,29 +1,22 @@
 # Dream OS Rice
 
-A second flavour of Dream OS: a **rice** (you own the shell) built on **niri** (scrolling
-tiling compositor) + **DankMaterialShell (DMS)** + **Matugen** for global app theming.
-It runs **alongside COSMIC** — pick the session at login.
+A second flavour of Dream OS: a **rice** (you own the shell) that runs **alongside COSMIC** —
+pick the session at login.
+
+Two stacks are provided, chosen automatically by your distro:
+
+| Distro | Stack | Because |
+|---|---|---|
+| Debian / Ubuntu / **Pop!_OS** / openSUSE | **Sway + Waybar** | packaged in apt/zypper |
+| Fedora / Arch | **niri + DankMaterialShell (+ Matugen)** | packaged in COPR / [extra] |
 
 ## Safety (read first)
 
 - **The rice never touches your login screen.** COSMIC's greeter is aliased as
-  `display-manager.service`; removing that aliases drops you to a bare TTY.
+  `display-manager.service`; removing that drops you to a bare TTY.
 - `install-rice.sh` **refuses to run** if the login screen is already broken.
-- If you ever boot to a TTY, repair it with:
+- If you ever boot to a TTY:
   `sudo bash scripts/restore-login-screen.sh` (or `just fix-login`).
-
-## Why this stack
-
-- **niri** — smooth scrolling tiling, per-monitor dynamic workspaces, written in Rust.
-- **DankMaterialShell** — complete shell: bar, launcher, control center, notifications, lock,
-  OSD, CLI/IPC, plugins. Quickshell-based, works on niri/Hyprland/Sway/etc.
-- **Matugen** — themes GTK, Qt, Firefox, terminal to one palette, so the whole desktop matches.
-- **Dank Greeter** — greetd login screen that lists both COSMIC and niri.
-
-### Why not Noctalia v5 here
-
-Noctalia v5 is not packaged for Pop!_OS 24.04 (noble) and needs `sdbus-c++ >= 2.x` (noble has
-1.4.0). It stays the target for Arch/Fedora/openSUSE/Ubuntu 26.04 installs.
 
 ## Install
 
@@ -32,66 +25,48 @@ bash rice/install-rice.sh          # deps (sudo) + configs (user-space)
 bash rice/install-rice.sh configs  # only re-copy configs
 ```
 
-Per-distro package sources:
+Then log out and pick the **Sway** (or **niri**) session at the login screen.
 
-| Distro | niri | DMS | Matugen |
-|---|---|---|---|
-| Debian/Ubuntu | `ppa:avengemedia/danklinux` | `ppa:avengemedia/dms` | apt |
-| Fedora | `dnf copr avengemedia/dms` → `niri` | `dms` | dnf |
-| Arch | `pacman -S niri` | `dms-shell-niri` | pacman |
-| openSUSE | OBS | DMS OBS repo | zypper |
+## Sway + Waybar (this machine)
 
-## Login screen (Dank Greeter) — read this first
+Packages: `sway swaybg swayidle swaylock waybar wofi mako-notifier grim slurp wl-clipboard
+cliphist mate-polkit kitty brightnessctl pavucontrol blueman network-manager-gnome`.
 
-COSMIC's greeter **is** greetd-based: `cosmic-greeter.service` is aliased as
-`display-manager.service`. **Disabling it removes your login screen** and drops you to a TTY.
+Config locations (sources under `rice/`):
 
-**Never disable `cosmic-greeter` until the replacement is installed and confirmed working.**
+- Sway: `~/.config/sway/config` ← `rice/sway/config`
+- Waybar: `~/.config/waybar/{config.jsonc,style.css}` ← `rice/waybar/`
+- mako: `~/.config/mako/config` ← `rice/mako/config`
+- wofi: `~/.config/wofi/style.css` ← `rice/wofi/style.css`
 
-If you lose the login screen, recover from a TTY (Ctrl+Alt+F3):
-
-```bash
-sudo systemctl enable cosmic-greeter
-sudo systemctl start cosmic-greeter
-# if the alias is missing:
-sudo ln -sf /usr/lib/systemd/system/cosmic-greeter.service /etc/systemd/system/display-manager.service
-sudo systemctl daemon-reload
-sudo systemctl start cosmic-greeter
-```
-
-Once `dms-greeter` is installed **and tested**, switch greetd's config (not by disabling
-cosmic-greeter): set the `[general] service` / `[default_session]` in `/etc/greetd/*.toml` to the
-DMS greeter, and keep the COSMIC session listed.
-
-## Config locations
-
-- niri: `~/.config/niri/config.kdl` (source: `rice/niri/config.kdl`)
-- DMS: `~/.config/DankMaterialShell` (edit via the shell UI)
-- Matugen templates: `~/.config/matugen` (DMS manages)
-
-## Dream OS identity
-
-- Palette: set DMS to the Dream OS scheme (pure grayscale + Signal-blue `#4C8DFF`).
-- Wallpaper: `assets/wallpapers/dream-os-dark.svg` / `-light.svg`.
-- Terminal: Ghostty, themed to match.
-
-## Caveats
-
-- **niri has no window blur** (DMS gives shell blur only). Window blur needs Hyprland/Umbriel.
-- niri/DMS packages on some distros are community-maintained — keep **COSMIC as the fallback
-  session** so a bad update can't lock you out.
-- DMS + plugins add resource use; lighter than Caelestia/end-4.
-
-## Keybinds (default)
+### Keybinds (Sway)
 
 | Key | Action |
 |---|---|
-| `Super+Enter` | terminal (ghostty) |
-| `Super+D` | launcher |
+| `Super+Enter` | kitty |
+| `Super+D` | wofi launcher |
 | `Super+Q` | close window |
-| `Super+H/J/K/L` | focus column / window |
-| `Super+Shift+H/J/K/L` | move column / window |
-| `Super+1…9` | workspace |
-| `Super+Shift+1…9` | move to workspace |
-| `Super+O` | overview |
-| `Super+Shift+E` | quit niri |
+| `Super+arrows` / `H J K L` | focus |
+| `Super+Shift+…` | move window |
+| `Super+1…9` | workspace · `Super+Shift+1…9` move to workspace |
+| `Super+F` | fullscreen · `Super+Shift+Space` float |
+| `Super+V` | clipboard history (cliphist + wofi) |
+| `Print` | region screenshot to clipboard |
+| `Super+Shift+L` | lock (swaylock) |
+| `Super+Shift+E` | exit Sway |
+
+## Dream OS identity
+
+- **Palette:** pure grayscale + Signal blue `#4C8DFF` (see `rice/waybar/style.css`).
+- **Wallpaper:** `~/.local/share/backgrounds/dream-os/dream-os-dark.svg` (via swaybg).
+- **Fonts:** JetBrainsMono Nerd Font for the bar; SF Pro Text / Inter for apps.
+
+## niri + DMS (Fedora / Arch)
+
+Config in `rice/niri/config.kdl` → `~/.config/niri/config.kdl`. DMS settings live in the shell UI.
+
+## Caveats
+
+- Sway is a tiling WM (not a full shell) — Waybar is CSS-themed to Dream OS.
+- niri has **no window blur**; DMS gives shell blur only.
+- Keep **COSMIC as the fallback session** so a bad update can't lock you out.

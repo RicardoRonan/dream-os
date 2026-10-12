@@ -1,0 +1,55 @@
+// Dream OS rice — Waybar config
+{
+  "layer": "top",
+  "position": "top",
+  "height": 34,
+  "spacing": 4,
+  "margin-top": 0,
+  "margin-left": 0,
+  "margin-right": 0,
+
+  "modules-left":   ["sway/workspaces"],
+  "modules-center": ["clock"],
+  "modules-right":  ["pulseaudio", "network", "bluetooth", "battery", "tray"],
+
+  "sway/workspaces": {
+    "format": "{icon}",
+    "format-icons": ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+  },
+
+  "clock": {
+    "format": "{:%a %d %b  %H:%M:%S}",
+    "tooltip-format": "<tt>{calendar}</tt>"
+  },
+
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "",
+    "format-icons": ["", "", ""],
+    "on-click": "pavucontrol"
+  },
+
+  "network": {
+    "format-wifi": "  {essid}",
+    "format-ethernet": "  {ifname}",
+    "format-disconnected": "  offline",
+    "on-click": "nm-connection-editor"
+  },
+
+  "bluetooth": {
+    "format": "  {status}",
+    "format-disabled": "  off",
+    "on-click": "blueman-manager"
+  },
+
+  "battery": {
+    "format": "{icon} {capacity}%",
+    "format-icons": ["", "", "", "", ""],
+    "states": { "warning": 30, "critical": 15 }
+  },
+
+  "tray": {
+    "icon-size": 16,
+    "spacing": 8
+  }
+}
