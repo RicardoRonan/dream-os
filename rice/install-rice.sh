@@ -75,6 +75,21 @@ EOF
   # Stop the waybar user-service from drawing a second bar over COSMIC.
   systemctl --user mask waybar.service 2>/dev/null || true
 
+  # blueman-applet / nm-applet autostart in *every* session (incl. COSMIC), where
+  # COSMIC already ships its own applets -> duplicated tray icons. Disable the
+  # XDG autostart here; the Sway config execs them itself.
+  mkdir -p "$HOME/.config/autostart"
+  for a in blueman nm-applet; do
+    if [ -e "/etc/xdg/autostart/$a.desktop" ]; then
+      cat > "$HOME/.config/autostart/$a.desktop" <<EOF
+[Desktop Entry]
+Type=Application
+Name=$a (disabled by Dream OS rice)
+Hidden=true
+EOF
+    fi
+  done
+
   say "Sway + Waybar configured (session appears at login)."
 }
 

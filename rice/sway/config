@@ -13,6 +13,8 @@ exec swaybg -i $wp -m fill
 exec waybar
 exec mako
 exec /usr/libexec/polkit-mate-authentication-agent-1
+exec blueman-applet
+exec nm-applet
 exec wl-paste --watch cliphist store
 
 ### Appearance (Dream OS)

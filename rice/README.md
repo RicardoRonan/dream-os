@@ -91,6 +91,13 @@ Exec=env WLR_DRM_DEVICES=/dev/dri/card0 WLR_NO_HARDWARE_CURSORS=1 sway --unsuppo
 It also **masks the `waybar` user service** (`systemctl --user mask waybar.service`), which would
 otherwise draw a **second bar over COSMIC**. (Sway starts waybar itself via `exec waybar`.)
 
+### No duplicate tray icons
+
+`blueman-applet` and `nm-applet` (pulled in with the Sway stack) autostart in **every** session —
+including COSMIC, which already has its own bluetooth/network applets — so their tray icons
+duplicate. The installer **disables their XDG autostart** and starts them from the Sway config
+instead.
+
 ## Dream OS identity
 
 - **Palette:** pure grayscale + Signal blue `#4C8DFF` (see `rice/waybar/style.css`).
