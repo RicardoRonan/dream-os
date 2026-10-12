@@ -56,20 +56,21 @@ install_sway() {
   backup_and_copy "$RICE/mako"  "$CFG/mako"
   backup_and_copy "$RICE/wofi"  "$CFG/wofi"
 
-  # Hybrid Intel+NVIDIA: force the Intel card AND pass --unsupported-gpu, or
-  # sway aborts with "Proprietary Nvidia drivers are NOT supported".
-  mkdir -p "$HOME/.local/share/wayland-sessions"
-  for name in sway dream-os-sway; do
-    label="Sway"; [ "$name" = dream-os-sway ] && label="Sway (Dream OS)"
-    cat > "$HOME/.local/share/wayland-sessions/$name.desktop" <<EOF
+  # Hybrid Intel+NVIDIA: force Intel AND pass --unsupported-gpu, or sway aborts
+  # with "Proprietary Nvidia drivers are NOT supported".
+  # cosmic-greeter runs as its own user and only reads /usr/share/wayland-sessions,
+  # so a ~/.local session file is ignored - write the system one (sudo).
+  sudo tee /usr/share/wayland-sessions/dream-os-sway.desktop >/dev/null <<'EOF'
 [Desktop Entry]
-Name=$label
+Name=Sway (Dream OS)
 Comment=Dream OS rice (Intel GPU + --unsupported-gpu for hybrid NVIDIA)
 Exec=env WLR_DRM_DEVICES=/dev/dri/card0 WLR_NO_HARDWARE_CURSORS=1 sway --unsupported-gpu
 Type=Application
 DesktopNames=sway
 EOF
-  done
+  # Also make the stock "Sway" entry work.
+  sudo sed -i 's|^Exec=sway$|Exec=env WLR_DRM_DEVICES=/dev/dri/card0 WLR_NO_HARDWARE_CURSORS=1 sway --unsupported-gpu|' \
+    /usr/share/wayland-sessions/sway.desktop 2>/dev/null || true
 
   # Stop the waybar user-service from drawing a second bar over COSMIC.
   systemctl --user mask waybar.service 2>/dev/null || true

@@ -58,12 +58,18 @@ Config locations (sources under `rice/`):
 ### Hybrid-GPU note (Intel + NVIDIA)
 
 On a hybrid laptop sway aborts with **"Proprietary Nvidia drivers are NOT supported ... launch with
-`--unsupported-gpu`"**. The installer writes session files that force the Intel card **and** pass
-that flag:
+`--unsupported-gpu`"**. The installer writes a system session file that forces the Intel card
+**and** passes that flag:
 
 ```
 Exec=env WLR_DRM_DEVICES=/dev/dri/card0 WLR_NO_HARDWARE_CURSORS=1 sway --unsupported-gpu
 ```
+
+**Important:** `cosmic-greeter` runs as its **own user** (`cosmic-greeter`, home
+`/var/lib/cosmic-greeter`) and only reads `/usr/share/wayland-sessions` — a session file in *your*
+`~/.local/share/wayland-sessions` is **ignored**. That's why the installer writes
+`/usr/share/wayland-sessions/dream-os-sway.desktop` (with `sudo`) and patches the stock
+`sway.desktop` too.
 
 It also **masks the `waybar` user service** (`systemctl --user mask waybar.service`), which would
 otherwise draw a **second bar over COSMIC**. (Sway starts waybar itself via `exec waybar`.)
