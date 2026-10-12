@@ -57,11 +57,12 @@ Config locations (sources under `rice/`):
 
 ### Hybrid-GPU note (Intel + NVIDIA)
 
-Sway/wlroots can pick the NVIDIA card and abort with **"unsupported GPU"**. The installer writes a
-`sway.desktop` session that forces the Intel card:
+On a hybrid laptop sway aborts with **"Proprietary Nvidia drivers are NOT supported ... launch with
+`--unsupported-gpu`"**. The installer writes session files that force the Intel card **and** pass
+that flag:
 
 ```
-Exec=env WLR_DRM_DEVICES=/dev/dri/card0 WLR_NO_HARDWARE_CURSORS=1 sway
+Exec=env WLR_DRM_DEVICES=/dev/dri/card0 WLR_NO_HARDWARE_CURSORS=1 sway --unsupported-gpu
 ```
 
 It also **masks the `waybar` user service** (`systemctl --user mask waybar.service`), which would
