@@ -56,6 +56,10 @@ rice:
 rice-configs:
     bash rice/install-rice.sh configs
 
+# Dev mode: run the rice nested in a window (no logout, no GPU issues)
+rice-dev:
+    bash rice/dev.sh
+
 # Remove Dream OS files (keeps backups)
 uninstall:
     bash install/10-uninstall.sh

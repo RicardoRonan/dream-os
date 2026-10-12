@@ -12,7 +12,7 @@ set $wp ~/.local/share/backgrounds/dream-os/dream-os-dark.svg
 exec swaybg -i $wp -m fill
 exec waybar
 exec mako
-exec /usr/libexec/mate-polkit/polkit-mate-authentication-agent-1
+exec /usr/libexec/polkit-mate-authentication-agent-1
 exec wl-paste --watch cliphist store
 
 ### Appearance (Dream OS)

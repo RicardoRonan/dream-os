@@ -27,6 +27,23 @@ bash rice/install-rice.sh configs  # only re-copy configs
 
 Then log out and pick the **Sway** (or **niri**) session at the login screen.
 
+## Dev mode (iterate without logging out) ★
+
+Tune the look & feel **without touching your real session** — Sway runs **nested in a window** on
+your current desktop, so there's no DRM/login and none of the hybrid-NVIDIA trouble:
+
+```bash
+bash rice/dev.sh        # or: just rice-dev
+```
+
+It symlinks `~/.config/{sway,waybar,mako,wofi}` to the repo, so edits in `rice/` are live:
+
+- **Reload Sway:** `$mod+Shift+C`
+- **Reload the bar:** `pkill -SIGUSR2 waybar`
+- Close the preview window to exit (your COSMIC session is untouched).
+
+A polkit "authentication agent already exists" message in this mode is expected and harmless.
+
 ## Sway + Waybar (this machine)
 
 Packages: `sway swaybg swayidle swaylock waybar wofi mako-notifier grim slurp wl-clipboard
