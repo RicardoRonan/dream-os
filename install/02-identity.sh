@@ -75,9 +75,9 @@ if [ -d /usr/share/icons/Papirus ]; then
     echo "NOTE: run once with sudo to set grey folders:"
     echo "  sudo papirus-folders -C grey --theme Papirus-Dark && sudo papirus-folders -C grey --theme Papirus-Light"
   fi
-  printf '"Papirus-Dark"\n' > "$TK/icon_theme"
-  gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark' 2>/dev/null || true
-  echo "Icons set to Papirus-Dark (grey folders)."
+  printf '"DreamOS"\n' > "$TK/icon_theme"
+  gsettings set org.gnome.desktop.interface icon-theme 'DreamOS' 2>/dev/null || true
+  echo "Icons set to DreamOS (Papirus + grey folders)."
 else
   echo "Papirus not installed yet. Run: sudo bash install/00-system-apt.sh"
 fi

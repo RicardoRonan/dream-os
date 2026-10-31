@@ -8,8 +8,11 @@ set -euo pipefail
 gtk_ini() {
   local dir="$1"
   mkdir -p "$dir"
-  local icon="Adwaita"
-  [ -d /usr/share/icons/Papirus ] && icon="Papirus-Dark"
+  local icon="DreamOS"
+  if [ ! -d "$HOME/.local/share/icons/DreamOS" ]; then
+    icon="Adwaita"
+    [ -d /usr/share/icons/Papirus ] && icon="Papirus-Dark"
+  fi
   cat > "$dir/settings.ini" <<EOF
 [Settings]
 gtk-font-name=SF Pro Text 11
@@ -26,8 +29,8 @@ gtk_ini "$HOME/.config/gtk-4.0"
 gsettings set org.gnome.desktop.interface font-name 'SF Pro Text 11' 2>/dev/null || true
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' 2>/dev/null || true
 gsettings set org.gnome.desktop.interface cursor-theme 'Vimix-cursors' 2>/dev/null || true
-if [ -d /usr/share/icons/Papirus ]; then
-  gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark' 2>/dev/null || true
+if [ -d "$HOME/.local/share/icons/DreamOS" ]; then
+  gsettings set org.gnome.desktop.interface icon-theme 'DreamOS' 2>/dev/null || true
 fi
 
 # ---- Qt platform theme -----------------------------------------------------

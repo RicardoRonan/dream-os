@@ -35,18 +35,19 @@ Some((
     [
         "dev.cappsy.CosmicExtAppletLogoMenu",
         "com.system76.CosmicPanelWorkspacesButton",
-        "io.github.cosmic_utils.cosmic-ext-applet-clipboard-manager",
+        "io.github.cosmic_utils.weather-applet",
     ],
     [
-        "com.system76.CosmicAppletNetwork",
-        "com.system76.CosmicAppletBluetooth",
         "com.system76.CosmicAppletStatusArea",
         "com.system76.CosmicAppletBattery",
+        "com.system76.CosmicAppletAudio",
+        "com.system76.CosmicAppletNetwork",
+        "com.system76.CosmicAppletBluetooth",
         "com.system76.CosmicAppletNotifications",
     ],
 ))
 EOF
-  echo "Panel decluttered: Logo Menu added; utility applets folded out of the bar."
+  echo "Panel: Logo Menu + weather; Notifications pinned top-right."
 fi
 
 # ---- Logo Menu: hamburger "menu button" icon -------------------------------
