@@ -16,8 +16,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `screenshots/` gallery directory.
 
 ### Changed
-- Dock: 4 px corner radius, 4 px bottom margin, 8 px reveal handle and no unhide
+- Standardised on **16 px corners everywhere**: dock, COSMIC applets, rice
+  (waybar modules, wofi, mako) and GTK 3/4 windows, popovers and cards. The top
+  bar and rice bar stay flush at 0; tiled and maximized windows stay square.
+- Dock: 16 px corner radius, 4 px bottom margin, 8 px reveal handle and no unhide
   delay, so it appears on first touch and is easier to reach on stacked displays.
+- Added `scripts/gtk-radius.sh` plus a systemd user path unit that re-applies the
+  GTK radius block after COSMIC regenerates `gtk.css`.
 - Documented the upstream multi-monitor dock reveal limitation
   (`pop-os/cosmic-panel#656`) in `docs/perf.md`.
 

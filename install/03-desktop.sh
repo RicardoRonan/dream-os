@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Dream OS - Phase 3: macOS-like layout.
 # Top bar as a menu bar (left: app/workspaces/clipboard, right: status + clock).
-# Bottom dock: always-visible, centered, translucent, rounded.
+# Bottom dock: auto-hiding, centered, translucent, 16px rounded.
 # User-space only. Idempotent.
 set -euo pipefail
 
@@ -56,7 +56,7 @@ cat > "$DOCK/autohide_behavior" <<'EOF'
 )
 EOF
 printf '0.5\n'    > "$DOCK/opacity"
-printf '4\n'      > "$DOCK/border_radius"
+printf '16\n'     > "$DOCK/border_radius"
 printf 'false\n'  > "$DOCK/expand_to_edges"
 printf 'M\n'      > "$DOCK/size"
 printf '4\n'      > "$DOCK/margin"

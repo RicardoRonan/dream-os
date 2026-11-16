@@ -32,6 +32,10 @@ features:
 crossapp:
     bash install/05-crossapp.sh
 
+# Re-apply the 16px GTK corner radii after a theme change
+gtk-radius:
+    bash scripts/gtk-radius.sh apply
+
 # macOS-like hot corners (waycorner)
 corners:
     bash install/06-hotcorners.sh

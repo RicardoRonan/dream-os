@@ -41,7 +41,7 @@ window#waybar {
   color: #9e9e9e;
   padding: 0 8px;
   margin: 0 2px;
-  border-radius: 12px;
+  border-radius: 16px;
 }
 #workspaces button.visible { color: #f2f2f2; }
 #workspaces button.focused {
@@ -67,7 +67,7 @@ window#waybar {
 tooltip {
   background: #0d0d0d;
   color: #f2f2f2;
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 8px;
 }
 tooltip label { color: #f2f2f2; }

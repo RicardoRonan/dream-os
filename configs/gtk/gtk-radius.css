@@ -1,0 +1,63 @@
+/* Dream OS: 16px corners for GTK 3 and GTK 4 apps.
+   Loaded after COSMIC's generated gtk.css, which only defines colours.
+   Tiled, maximized and fullscreen windows stay square. */
+
+/* --- GTK 3 window frame --- */
+decoration {
+  border-radius: 16px 16px 0 0;
+}
+.background .titlebar,
+.background .titlebar:backdrop {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+.background.tiled .titlebar,
+.background.tiled-top .titlebar,
+.background.tiled-left .titlebar,
+.background.tiled-right .titlebar,
+.background.tiled-bottom .titlebar,
+.background.maximized .titlebar,
+.background.fullscreen .titlebar {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* --- GTK 4 window frame --- */
+window.csd {
+  border-radius: 16px;
+}
+window.csd.tiled,
+window.csd.tiled-top,
+window.csd.tiled-left,
+window.csd.tiled-right,
+window.csd.tiled-bottom,
+window.csd.maximized,
+window.csd.fullscreen {
+  border-radius: 0;
+}
+
+/* --- popovers and menus --- */
+popover.background,
+popover > contents,
+popover.menu > contents {
+  border-radius: 16px;
+}
+
+/* --- cards and boxed lists --- */
+.card,
+button.card,
+menubutton.card > button,
+list.boxed-list,
+list.content {
+  border-radius: 16px;
+}
+list.boxed-list > row:first-child,
+list.content > row:first-child {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+list.boxed-list > row:last-child,
+list.content > row:last-child {
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}

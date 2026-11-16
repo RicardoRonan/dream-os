@@ -4,6 +4,8 @@
 # and confirms toolkit settings. User-space only. Idempotent.
 set -euo pipefail
 
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
 # ---- GTK font + cursor + theme --------------------------------------------
 gtk_ini() {
   local dir="$1"
@@ -24,6 +26,12 @@ EOF
 }
 gtk_ini "$HOME/.config/gtk-3.0"
 gtk_ini "$HOME/.config/gtk-4.0"
+
+# ---- GTK corner radii (16px token) ----------------------------------------
+# COSMIC owns gtk.css (colours only) and rewrites it on theme changes, so the
+# radius block is appended and kept in place by a systemd user path unit.
+bash "$ROOT/scripts/gtk-radius.sh" apply --quiet
+bash "$ROOT/scripts/gtk-radius.sh" install-watch --quiet
 
 # ---- gsettings (GTK apps) --------------------------------------------------
 gsettings set org.gnome.desktop.interface font-name 'SF Pro Text 11' 2>/dev/null || true

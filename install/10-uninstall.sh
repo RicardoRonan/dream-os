@@ -3,9 +3,15 @@
 # System packages (Papirus, niri, DMS, ...) are NOT removed - do that with your package manager.
 set -uo pipefail
 
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
 say() { printf '%s\n' "$*"; }
 
 rm -rfv "$HOME/.config/dream-os" 2>/dev/null || true
+if [ -f "$ROOT/scripts/gtk-radius.sh" ]; then
+  bash "$ROOT/scripts/gtk-radius.sh" remove 2>/dev/null || true
+fi
+rm -rfv "$HOME/.local/share/dream-os" 2>/dev/null || true
 rm -fv "$HOME/.local/bin/session-save.sh" "$HOME/.local/bin/session-restore.sh" 2>/dev/null || true
 rm -fv "$HOME/.local/bin/waycorner" 2>/dev/null || true
 rm -rfv "$HOME/.config/waycorner" 2>/dev/null || true
