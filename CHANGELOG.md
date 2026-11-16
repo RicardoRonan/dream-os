@@ -26,6 +26,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documented the upstream multi-monitor dock reveal limitation
   (`pop-os/cosmic-panel#656`) in `docs/perf.md`.
 
+### Fixed
+- Notifications applet missing from the top panel: the rice's packaged
+  `mako.service` is enabled for every graphical session and held
+  `org.freedesktop.Notifications`, so `cosmic-notifications` could not start and
+  the panel never received the applet fd. The installer and the rice now mask
+  `mako.service` (Sway starts mako itself) and restart the daemon.
+
 ## [0.1.0] - 2026-10-12
 
 ### Added

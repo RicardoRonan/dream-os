@@ -65,6 +65,21 @@ if flatpak info --user dev.cappsy.CosmicExtAppletLogoMenu >/dev/null 2>&1; then
   echo "Logo Menu set to a hamburger menu-button icon."
 fi
 
+# ---- notifications daemon ownership ---------------------------------------
+# mako (installed with the rice) is enabled as a user service and claims
+# org.freedesktop.Notifications in every graphical session. On COSMIC that
+# blocks cosmic-notifications, so the panel never gets the applet fd and the
+# bell is missing. The Sway rice starts mako from its own config, so masking
+# the user unit is safe.
+if command -v systemctl >/dev/null 2>&1 && systemctl --user show-environment >/dev/null 2>&1; then
+  if systemctl --user cat mako.service >/dev/null 2>&1; then
+    systemctl --user mask --now mako.service >/dev/null 2>&1 \
+      && echo "Notifications: masked mako.service (COSMIC owns org.freedesktop.Notifications)."
+    # restart the daemon so it can bind the name now that mako is gone
+    pkill -x cosmic-notifications 2>/dev/null || true
+  fi
+fi
+
 # ---- 3-finger gestures (4-finger is native in COSMIC) ----------------------
 mkdir -p "$CFG"
 cat > "$CFG/libinput-gestures.conf" <<'EOF'

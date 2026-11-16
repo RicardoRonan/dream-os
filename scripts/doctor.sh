@@ -39,6 +39,10 @@ check "libinput-gestures"   "command -v libinput-gestures"
 check "kdeconnect"          "command -v kdeconnect-cli"
 check "ydotool"             "command -v ydotool"
 
+echo "-- notifications --"
+check "cosmic-notifications owns Notifications" "busctl --user status org.freedesktop.Notifications 2>/dev/null | grep -q cosmic-notifications"
+check "no mako conflict"    "! systemctl --user is-active mako.service 2>/dev/null"
+
 echo
 echo "$pass passed, $fail missing"
 [ "$fail" -eq 0 ]

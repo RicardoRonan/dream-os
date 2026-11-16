@@ -72,8 +72,13 @@ EOF
   sudo sed -i 's|^Exec=sway$|Exec=env WLR_DRM_DEVICES=/dev/dri/card0 WLR_NO_HARDWARE_CURSORS=1 sway --unsupported-gpu|' \
     /usr/share/wayland-sessions/sway.desktop 2>/dev/null || true
 
-  # Stop the waybar user-service from drawing a second bar over COSMIC.
-  systemctl --user mask waybar.service 2>/dev/null || true
+  # Stop the packaged user services from starting over COSMIC: waybar would
+  # draw a second bar, and mako would steal org.freedesktop.Notifications from
+  # cosmic-notifications (the panel bell then never appears). Sway starts both
+  # from its own config.
+  for unit in waybar.service mako.service; do
+    systemctl --user mask --now "$unit" 2>/dev/null || true
+  done
 
   # blueman-applet / nm-applet autostart in *every* session (incl. COSMIC), where
   # COSMIC already ships its own applets -> duplicated tray icons. Disable the
