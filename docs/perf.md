@@ -60,8 +60,17 @@ transition is the dock/panel hide-show animation:
 - `transition_time` (ms) — slide duration
 - `wait_time` (ms) — delay before hiding
 - `unhide_delay` (ms) — delay before showing
+- `handle_size` (px) — height of the hidden strip that catches the pointer
 
-Dream OS sets a smooth `transition_time: 250`. The real lever for "smooth" is
-frame rate: keeping blur minimal (above) is what prevents stutter. Broader
-animations (workspace switching, window open/close, panel appearance) require a
-newer COSMIC release.
+Dream OS uses `transition_time: 200`, `unhide_delay: 0` and `handle_size: 8`, so
+the dock reveals on first touch. It also sets `margin: 4` (and `anchor_gap: true`):
+the hidden strip sits at the very bottom edge instead of 12 px above it.
+
+### Dock reveal on multiple displays
+
+COSMIC 1.10/1.11 can fail to reveal an auto-hidden dock on a display that is
+stacked vertically, because the bottom-edge hover area is hit-tested against the
+wrong output. Upstream: `pop-os/cosmic-panel#656`. A small `margin`, a larger
+`handle_size` and `unhide_delay: 0` make the strip much easier to hit, but the
+root cause is in cosmic-comp. Moving the affected output a few pixels vertically
+in Display settings is the upstream workaround.

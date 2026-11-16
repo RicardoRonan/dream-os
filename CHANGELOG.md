@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bundled fallback font (Inter) under `assets/fonts/`, installed to `~/.local/share/fonts`.
 - `screenshots/` gallery directory.
 
+### Changed
+- Dock: 4 px corner radius, 4 px bottom margin, 8 px reveal handle and no unhide
+  delay, so it appears on first touch and is easier to reach on stacked displays.
+- Documented the upstream multi-monitor dock reveal limitation
+  (`pop-os/cosmic-panel#656`) in `docs/perf.md`.
+
 ## [0.1.0] - 2026-10-12
 
 ### Added

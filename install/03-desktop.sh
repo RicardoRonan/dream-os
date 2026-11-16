@@ -50,16 +50,16 @@ printf 'OnOverlap\n' > "$DOCK/autohide"
 cat > "$DOCK/autohide_behavior" <<'EOF'
 (
     wait_time: 350,
-    transition_time: 250,
-    handle_size: 2,
-    unhide_delay: 80,
+    transition_time: 200,
+    handle_size: 8,
+    unhide_delay: 0,
 )
 EOF
 printf '0.5\n'    > "$DOCK/opacity"
-printf '16\n'     > "$DOCK/border_radius"
+printf '4\n'      > "$DOCK/border_radius"
 printf 'false\n'  > "$DOCK/expand_to_edges"
 printf 'M\n'      > "$DOCK/size"
-printf '12\n'     > "$DOCK/margin"
+printf '4\n'      > "$DOCK/margin"
 printf 'true\n'   > "$DOCK/exclusive_zone"
 printf 'None\n'   > "$DOCK/plugins_wings"
 cat > "$DOCK/plugins_center" <<'EOF'
