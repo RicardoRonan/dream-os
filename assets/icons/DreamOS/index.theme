@@ -1,10 +1,17 @@
 [Icon Theme]
 Name=DreamOS
-Comment=Dream OS icon overrides (clearer session/power/window icons) over Papirus
+Comment=Dream OS overrides (session, window and app icons) over Papirus
 Inherits=Papirus-Dark,Cosmic,Papirus,breeze-dark,hicolor
-Directories=scalable/actions
+Directories=scalable/actions,scalable/apps
 
 [scalable/actions]
 Size=24
 Type=Scalable
 Context=Actions
+
+[scalable/apps]
+Size=128
+MinSize=16
+MaxSize=512
+Type=Scalable
+Context=Applications

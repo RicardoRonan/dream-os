@@ -77,9 +77,37 @@ if [ -d /usr/share/icons/Papirus ]; then
   fi
   printf '"DreamOS"\n' > "$TK/icon_theme"
   gsettings set org.gnome.desktop.interface icon-theme 'DreamOS' 2>/dev/null || true
+  # Install the override theme here so the setting never points at a missing
+  # theme on a fresh install (09-power-icons re-copies it later).
+  if [ -d "$REPO/assets/icons/DreamOS" ]; then
+    mkdir -p "$HOME/.local/share/icons/DreamOS"
+    cp -a "$REPO/assets/icons/DreamOS/." "$HOME/.local/share/icons/DreamOS/"
+    gtk-update-icon-cache -f -t "$HOME/.local/share/icons/DreamOS" >/dev/null 2>&1 || true
+  fi
   echo "Icons set to DreamOS (Papirus + grey folders)."
 else
   echo "Papirus not installed yet. Run: sudo bash install/00-system-apt.sh"
+fi
+
+# Third-party installers sometimes drop a two-directory hicolor index in
+# ~/.local/share/icons/hicolor. It shadows the system index and hides most
+# fallback icons, so restore the full one and keep the custom 1024 app size.
+HICOLOR="$HOME/.local/share/icons/hicolor"
+SYS_HICOLOR="/usr/share/icons/hicolor/index.theme"
+if [ -f "$HICOLOR/index.theme" ] && ! grep -q '^\[scalable/apps\]' "$HICOLOR/index.theme"; then
+  cp -a "$HICOLOR/index.theme" "$HICOLOR/index.theme.bak.$(date +%Y%m%d-%H%M%S)"
+  cp "$SYS_HICOLOR" "$HICOLOR/index.theme"
+  if [ -d "$HICOLOR/1024x1024/apps" ] && ! grep -q '^\[1024x1024/apps\]' "$HICOLOR/index.theme"; then
+    cat >> "$HICOLOR/index.theme" <<'EOF'
+
+[1024x1024/apps]
+Size=1024
+Context=Applications
+Type=Fixed
+EOF
+  fi
+  gtk-update-icon-cache -f -t "$HICOLOR" >/dev/null 2>&1 || true
+  echo "Repaired truncated hicolor icon index."
 fi
 
 # ---- fonts -----------------------------------------------------------------

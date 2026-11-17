@@ -27,6 +27,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`pop-os/cosmic-panel#656`) in `docs/perf.md`.
 
 ### Fixed
+- Icons: GTK apps read the `Cosmic` theme while COSMIC read `DreamOS`, and a
+  two-directory `hicolor` index in `~/.local/share/icons` hid fallback icons
+  such as MDViewer. `02-identity.sh` now installs the override theme, restores
+  the full hicolor index, and syncs the GTK portal. Thunar also gets a real
+  Thunar icon instead of Papirus's generic `system-file-manager` mapping.
 - Notifications applet missing from the top panel: the rice's packaged
   `mako.service` is enabled for every graphical session and held
   `org.freedesktop.Notifications`, so `cosmic-notifications` could not start and
