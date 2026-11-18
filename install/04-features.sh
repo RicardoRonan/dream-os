@@ -11,6 +11,7 @@ PANEL="$CFG/cosmic/com.system76.CosmicPanel.Panel/v1"
 # ---- utility applets (flatpak, cosmic remote) ------------------------------
 APPLETS=(
   dev.cappsy.CosmicExtAppletLogoMenu
+  io.github.marcelogomes90.cosmic-ext-applet-status-hub
   com.github.codevardhan.caffeine-applet
   io.github.cosmic_utils.sysinfo-applet
   dev.DBrox.CosmicPrivacyIndicator
@@ -31,7 +32,7 @@ fi
 # Wing order and clock position live in scripts/appearance.sh so 03 and 04
 # cannot drift apart.
 bash "$REPO/scripts/appearance.sh" panel
-echo "Panel: Logo Menu + weather left; status cluster and clock right."
+echo "Panel: Logo Menu + weather left; Status Hub + clock right."
 
 # ---- Logo Menu: hamburger "menu button" icon -------------------------------
 # The applet is sandboxed, so the SVG must live somewhere it can read (its config dir).

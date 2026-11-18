@@ -27,6 +27,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Bluetooth SBC-XQ**: `scripts/bt-sbc-xq.sh` installs a user service that
   selects `a2dp-sink-sbc_xq` on any BlueZ card that offers it, at login and on
   reconnect. Standard SBC remains available for manual selection.
+- **Status Hub tray**: the panel uses
+  `io.github.marcelogomes90.cosmic-ext-applet-status-hub` on both displays
+  instead of the stock status area, clearing duplicate grey placeholder icons
+  left by the COSMIC 1.11 tray bug. Falls back to the stock applet when Status
+  Hub is not installed.
 
 ### Changed
 - Replaced "16 px everywhere" with a concentric radius scale: 6 px small

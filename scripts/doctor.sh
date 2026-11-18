@@ -46,6 +46,8 @@ check "dock overlays windows" "grep -qx false '$CFG/com.system76.CosmicPanel.Doc
 check "floating windows clipped" "grep -q 'clip_floating_windows: true' '$CFG/com.system76.CosmicComp/v1/appearance_settings'"
 check "panel full width / flush" "grep -qx true '$CFG/com.system76.CosmicPanel.Panel/v1/expand_to_edges' && grep -qx 0 '$CFG/com.system76.CosmicPanel.Panel/v1/margin'"
 check "clock on the right" "grep -q CosmicAppletTime '$CFG/com.system76.CosmicPanel.Panel/v1/plugins_wings' && ! grep -q CosmicAppletTime '$CFG/com.system76.CosmicPanel.Panel/v1/plugins_center'"
+check "tray uses Status Hub" "grep -q cosmic-ext-applet-status-hub '$CFG/com.system76.CosmicPanel.Panel/v1/plugins_wings'"
+check "Status Hub installed" "test -f $HOME/.local/share/flatpak/exports/share/applications/io.github.marcelogomes90.cosmic-ext-applet-status-hub.desktop -o -f /var/lib/flatpak/exports/share/applications/io.github.marcelogomes90.cosmic-ext-applet-status-hub.desktop"
 check "radius scale 6/8/12/16" "grep -q 'radius_xs: (6.0' '$CFG/com.system76.CosmicTheme.Dark/v2/corner_radii' && grep -q 'radius_m: (12.0' '$CFG/com.system76.CosmicTheme.Dark/v2/corner_radii'"
 check "GTK radius block" "grep -q 'dream-os-radius' $HOME/.config/gtk-4.0/gtk.css"
 check "radius timer" "systemctl --user is-enabled dream-os-gtk-radius.timer"

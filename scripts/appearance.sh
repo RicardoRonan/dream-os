@@ -189,7 +189,13 @@ EOF
 }
 
 panel_wings() {
-  cat <<'EOF'
+  local status="com.system76.CosmicAppletStatusArea"
+  local hub="io.github.marcelogomes90.cosmic-ext-applet-status-hub"
+  if [ -f "$HOME/.local/share/flatpak/exports/share/applications/$hub.desktop" ] \
+     || [ -f "/var/lib/flatpak/exports/share/applications/$hub.desktop" ]; then
+    status="$hub"
+  fi
+  cat <<EOF
 Some((
     [
         "dev.cappsy.CosmicExtAppletLogoMenu",
@@ -197,7 +203,7 @@ Some((
         "io.github.cosmic_utils.weather-applet",
     ],
     [
-        "com.system76.CosmicAppletStatusArea",
+        "$status",
         "com.system76.CosmicAppletBattery",
         "com.system76.CosmicAppletNetwork",
         "com.system76.CosmicAppletBluetooth",

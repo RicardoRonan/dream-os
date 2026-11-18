@@ -87,6 +87,19 @@ systemctl --user disable --now dream-os-bt-sbc-xq.service
 SBC-XQ uses more bandwidth than standard SBC. If a device crackles or drops out
 on a weak link, switch that device back to SBC in Settings, or stop the service.
 
+## Status tray (Status Hub)
+
+The panel uses **Status Hub** instead of the stock status area. It collects app
+tray icons behind one button on every display, which avoids the COSMIC 1.11 bug
+that leaves duplicate grey gear placeholders when tray clients reconnect.
+
+- Installed by `install/04-features.sh` from the COSMIC flatpak remote.
+- `scripts/appearance.sh` uses it for both monitors when the flatpak export
+  exists, and falls back to `com.system76.CosmicAppletStatusArea` otherwise.
+- To use the stock tray again, replace the applet in
+  Settings -> Desktop -> Panel -> Applets, or remove the Status Hub flatpak and
+  run `just macos`.
+
 ## Hot corners (macOS-like)
 
 `install/06-hotcorners.sh` installs waycorner with top-left overview,
@@ -112,13 +125,14 @@ Installed from the COSMIC flatpak remote by `install/04-features.sh`:
 
 | Applet | App ID |
 |--------|--------|
+| Status Hub | `io.github.marcelogomes90.cosmic-ext-applet-status-hub` |
 | Caffeine | `com.github.codevardhan.caffeine-applet` |
 | System Monitor | `io.github.cosmic_utils.sysinfo-applet` |
 | Privacy Indicator | `dev.DBrox.CosmicPrivacyIndicator` |
 | Pomodoro | `com.github.bgub.CosmicExtAppletPomodoro` |
 
-Caffeine, privacy, and sysinfo are placed in the menu bar; add/remove any in
-Settings -> Desktop -> Panel -> Applets.
+Status Hub is the default tray on both displays. Add Caffeine, privacy, sysinfo
+or Pomodoro in Settings -> Desktop -> Panel -> Applets when you want them.
 
 ## Night light + auto light/dark
 
