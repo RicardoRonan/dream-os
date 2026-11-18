@@ -215,7 +215,7 @@ EOF
   printf '%s\n' "$DOCK_RADIUS" > "$DOCK/border_radius"
   printf '0.0\n' > "$DOCK/border_width"
   printf 'false\n' > "$DOCK/expand_to_edges"
-  printf 'true\n' > "$DOCK/exclusive_zone"
+  printf 'false\n' > "$DOCK/exclusive_zone"
   printf 'false\n' > "$DOCK/keep_style_on_maximize"
   printf 'OnDemand\n' > "$DOCK/keyboard_interactivity"
   printf 'Top\n' > "$DOCK/layer"

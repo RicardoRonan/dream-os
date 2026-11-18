@@ -39,6 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`pop-os/cosmic-panel#656`) in `docs/perf.md`.
 
 ### Fixed
+- Maximized windows stopped short of the bottom edge because the hidden dock
+  still reserved its height (`exclusive_zone=true`). The dock now overlays
+  windows (`exclusive_zone=false`); only the top bar reserves space.
 - Dock stayed visible when no window overlapped it and could cover window tabs.
   Dock autohide is now `Always`, so it hides when the pointer leaves and only
   the 8px reveal handle remains.
