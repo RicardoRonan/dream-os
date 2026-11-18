@@ -74,10 +74,11 @@ just rice
 ## macOS profile
 
 The macOS-structure profile is optional and reversible. It installs WhiteSur
-icons and cursors, then applies one set of geometry, type and toolkit values:
+icons (keeping the Vimix cursor), then applies one set of geometry, type and
+toolkit values:
 
 ```bash
-just macos          # install WhiteSur if needed + apply the profile
+just macos          # install WhiteSur icons if needed + apply the profile
 just appearance     # show the live values
 just macos-revert   # restore the last live backup
 ```

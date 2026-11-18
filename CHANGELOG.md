@@ -12,8 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   geometry, type, icon and cursor values to COSMIC, CosmicTk, the panel, the
   dock, GTK 3/4, Flatpak and gsettings. Apply with `just macos`, revert with
   `just macos-revert`.
-- WhiteSur icon and cursor themes via `scripts/install-whitesur.sh`, with
+- WhiteSur icon theme via `scripts/install-whitesur.sh`, with
   `configs/icons/cosmic-app-map.tsv` mapping COSMIC app IDs to squircle icons.
+  The cursor stays Vimix.
 - **Rice flavour** scaffold (`rice/`) — niri + DankMaterialShell (+ Matugen), running
   alongside COSMIC with Dank Greeter. See `rice/`.
 - Distro-detection library for the installer (`install/lib/distro.sh`) covering
@@ -35,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `scripts/gtk-radius.sh` now installs a two-minute systemd timer instead of a
   path unit. The path unit watched the files its own service writes and could
   hit systemd's start limit.
+- Cursor: kept **Vimix-cursors** instead of switching to WhiteSur. The macOS
+  profile uses WhiteSur for icons only; `just macos` passes `--icons-only`.
 - Documented the upstream multi-monitor dock reveal limitation
   (`pop-os/cosmic-panel#656`) in `docs/perf.md`.
 

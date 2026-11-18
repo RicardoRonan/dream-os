@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
-# Dream OS - install the WhiteSur icon and cursor themes (user-space).
+# Dream OS - install the WhiteSur icon theme (cursors optional).
 # WhiteSur is GPL-3.0 and is fetched from upstream rather than vendored.
 # Idempotent: existing themes are left alone unless --force is passed.
+# Use --icons-only to keep the user's current cursor theme.
 set -euo pipefail
 
 FORCE=0
-[ "${1:-}" = "--force" ] && FORCE=1
+ICONS_ONLY=0
+for arg in "$@"; do
+  case "$arg" in
+    --force) FORCE=1 ;;
+    --icons-only) ICONS_ONLY=1 ;;
+    *) echo "usage: $0 [--force] [--icons-only]" >&2; exit 2 ;;
+  esac
+done
 DEST="$HOME/.local/share/icons"
 TMP="${TMPDIR:-/tmp/opencode}/dream-os-whitesur"
 
@@ -13,6 +21,7 @@ need_icons() {
   [ "$FORCE" = 1 ] || [ ! -d "$DEST/WhiteSur-grey-dark" ]
 }
 need_cursors() {
+  [ "$ICONS_ONLY" = 0 ] || return 1
   [ "$FORCE" = 1 ] || [ ! -d "$DEST/WhiteSur-cursors" ]
 }
 
@@ -32,7 +41,9 @@ else
   echo "install-whitesur: icons already installed"
 fi
 
-if need_cursors; then
+if [ "$ICONS_ONLY" = 1 ]; then
+  echo "install-whitesur: icons only, keeping the user cursor"
+elif need_cursors; then
   rm -rf "$TMP/WhiteSur-cursors"
   echo "install-whitesur: cloning cursor theme"
   git clone --depth=1 https://github.com/vinceliuice/WhiteSur-cursors.git \

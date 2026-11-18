@@ -32,9 +32,9 @@ features:
 crossapp:
     bash install/05-crossapp.sh
 
-# Apply the macOS-structure appearance profile (downloads WhiteSur if needed)
+# Apply the macOS-structure appearance profile (WhiteSur icons, keep cursor)
 macos:
-    bash scripts/install-whitesur.sh
+    bash scripts/install-whitesur.sh --icons-only
     bash scripts/appearance.sh apply
 
 # Revert the live appearance to the last backup

@@ -80,7 +80,7 @@ GTK 3/4, Flatpak and gsettings:
 - Icons: DreamOS overrides inherit `WhiteSur-grey-dark`, then Papirus and
   hicolor. COSMIC app IDs are mapped to WhiteSur squircles in
   `configs/icons/cosmic-app-map.tsv`.
-- Cursor: `WhiteSur-cursors` at 24px.
+- Cursor: `Vimix-cursors` at 24px, kept from the base theme.
 - Fonts: SF Pro Text 10.5 (about 14px), JetBrainsMono Nerd Font 10.5.
 - Header bars: `Compact` density; interface density stays `Standard`.
 - Floating windows are clipped to the 12px theme radius, so app-drawn
