@@ -32,6 +32,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   instead of the stock status area, clearing duplicate grey placeholder icons
   left by the COSMIC 1.11 tray bug. Falls back to the stock applet when Status
   Hub is not installed.
+- **Invisible dock handle (optional)**: `patches/cosmic-panel-invisible-handle.patch`
+  and `scripts/panel-handle.sh` build a local cosmic-panel that keeps the
+  auto-hide strip transparent. `just panel-handle` installs it and raises the
+  hover target to 16px; `just panel-handle-off` restores the stock panel and the
+  8px visible handle. The strip still blocks pointer input over its height.
 
 ### Changed
 - Replaced "16 px everywhere" with a concentric radius scale: 6 px small

@@ -61,6 +61,14 @@ mouse:
 bt-xq:
     bash scripts/bt-sbc-xq.sh install
 
+# Build a local cosmic-panel that hides the auto-hide handle until hover
+panel-handle:
+    bash scripts/panel-handle.sh install
+
+# Restore the stock cosmic-panel and the visible 8px handle
+panel-handle-off:
+    bash scripts/panel-handle.sh remove
+
 # Keyboard shortcuts (Super+Space launcher, lock, window arrangement)
 shortcuts:
     bash install/07-shortcuts.sh

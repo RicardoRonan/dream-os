@@ -74,9 +74,10 @@ GTK 3/4, Flatpak and gsettings:
 
 - Top bar: full width, flush, XS, opaque, clock at the far right.
 - Dock: 48px icons (size L), 24px radius, 0.5 opacity, 8px spacing, 8px padding,
-  auto-hide always, 4px margin and the 8px reveal handle. It does not reserve
-  space, so maximized windows fill the screen behind it. The top bar still
-  reserves its 32px menu bar.
+  auto-hide always, 4px margin and an 8px reveal handle. With the optional
+  patched panel the handle is 16px and stays invisible until hover. It does not
+  reserve space, so maximized windows fill the screen behind it. The top bar
+  still reserves its 32px menu bar.
 - Icons: DreamOS overrides inherit `WhiteSur-grey-dark`, then Papirus and
   hicolor. COSMIC app IDs are mapped to WhiteSur squircles in
   `configs/icons/cosmic-app-map.tsv`.

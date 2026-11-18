@@ -16,6 +16,7 @@ rm -fv "$HOME/.local/bin/session-save.sh" "$HOME/.local/bin/session-restore.sh" 
 rm -fv "$HOME/.local/bin/waycorner" 2>/dev/null || true
 rm -fv "$HOME/.local/bin/dream-os-mouse-buttons" 2>/dev/null || true
 rm -fv "$HOME/.local/bin/dream-os-bt-sbc-xq" 2>/dev/null || true
+rm -fv "$HOME/.local/bin/cosmic-panel" 2>/dev/null || true
 rm -rfv "$HOME/.config/waycorner" 2>/dev/null || true
 rm -rfv "$HOME/.local/share/icons/DreamOS" 2>/dev/null || true
 rm -fv "$HOME/.config/environment.d/dream-os.conf" 2>/dev/null || true

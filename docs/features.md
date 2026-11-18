@@ -100,6 +100,36 @@ that leaves duplicate grey gear placeholders when tray clients reconnect.
   Settings -> Desktop -> Panel -> Applets, or remove the Status Hub flatpak and
   run `just macos`.
 
+## Invisible dock handle (optional patch)
+
+COSMIC exposes `handle_size` pixels of an auto-hidden dock. Those pixels are
+both the hover target and the visible strip, so a larger target paints a taller
+tab over the window below it.
+
+`patches/cosmic-panel-invisible-handle.patch` changes the panel to keep the
+hidden strip transparent while leaving its input region intact. Build and
+install a local binary:
+
+```bash
+just panel-handle
+```
+
+This sets the dock handle to 16px, builds `cosmic-panel` from the pinned COSMIC
+1.11.0 commit into `~/.local/bin`, and restarts the panel. `appearance.sh`
+detects the local binary and uses 16px automatically.
+
+Remove it with:
+
+```bash
+just panel-handle-off
+```
+
+`~/.local/bin` must come before `/usr/bin` in the session `PATH`, which is the
+COSMIC default. The patch is pinned to cosmic-panel `160a951`; rerun
+`just panel-handle` after a cosmic-panel update. The invisible strip still
+receives pointer input, so the bottom 16px of a window cannot be clicked
+through. The upstream reveal bug (`cosmic-panel#656`) is separate.
+
 ## Hot corners (macOS-like)
 
 `install/06-hotcorners.sh` installs waycorner with top-left overview,

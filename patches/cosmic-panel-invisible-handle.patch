@@ -1,0 +1,28 @@
+diff --git a/cosmic-panel-bin/src/space/panel_space.rs b/cosmic-panel-bin/src/space/panel_space.rs
+index 38a5bd5..4094210 100644
+--- a/cosmic-panel-bin/src/space/panel_space.rs
++++ b/cosmic-panel-bin/src/space/panel_space.rs
+@@ -717,6 +717,14 @@ impl PanelSpace {
+     }
+ 
+     pub fn bg_color(&self) -> [f32; 4] {
++        // Keep the auto-hide handle invisible. The exposed strip still receives
++        // pointer input, but it does not paint the panel background over the
++        // window behind it.
++        if matches!(self.visibility, Visibility::Hidden) {
++            let mut color = self.colors.bg_color(self.config.opacity, self.maximized);
++            color[3] = 0.0;
++            return color;
++        }
+         if let Some(animatable_state) = self.animate_state.as_ref() {
+             animatable_state.cur.bg_color
+         } else {
+@@ -2178,7 +2186,7 @@ impl PanelSpace {
+         rect: smithay::utils::Rectangle<i32, Logical>,
+         mut corners: [u32; 4],
+     ) {
+-        if self.colors.panel_blur(self.config.opacity) {
++        if self.colors.panel_blur(self.bg_color()[3]) {
+             if let Some(corner_radius_wlr) = self.corner_radius_wlr.as_ref() {
+                 let max_radius = self.max_corner_radius().min(
+                     rect.size.h.min(rect.size.w).min(self.actual_size.w).min(self.actual_size.h)
