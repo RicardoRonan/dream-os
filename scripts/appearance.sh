@@ -40,8 +40,8 @@ DOCK_RADIUS=24
 DOCK_OPACITY="0.5"
 DOCK_MARGIN=4
 DOCK_PADDING=8
-# Larger than the stock 8px strip: easier to hit on stacked displays.
-DOCK_HANDLE=16
+# Exposed strip doubles as the hover target; keep it small to avoid a visible tab.
+DOCK_HANDLE=8
 DOCK_SPACING=8
 
 say() { printf '%s\n' "$*"; }

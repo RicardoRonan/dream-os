@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   The top bar and tiled/maximized windows stay square.
 - Panel: full width and flush, XS height, opaque, clock at the far right.
 - Dock: 48 px icons (size L), 24 px radius, 0.5 opacity, 8 px padding and
-  spacing. The 4 px margin and 16 px reveal handle are kept for stacked displays.
+  spacing. The 4 px margin and 8 px reveal handle are kept for stacked displays.
 - Header bars: `Compact`; interface density stays `Standard`. Monospace is now
   JetBrainsMono Nerd Font or SF Mono, not Ubuntu Mono.
 - Enabled `apply_theme_global` so COSMIC colours, fonts and icons reach GTK,
@@ -70,7 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   windows (`exclusive_zone=false`); only the top bar reserves space.
 - Dock stayed visible when no window overlapped it and could cover window tabs.
   Dock autohide is now `Always`, so it hides when the pointer leaves and only
-  the 16px reveal handle remains.
+  the 8px reveal handle remains.
 - Icons: GTK apps read the `Cosmic` theme while COSMIC read `DreamOS`, and a
   two-directory `hicolor` index in `~/.local/share/icons` hid fallback icons
   such as MDViewer. `02-identity.sh` now installs the override theme, restores
