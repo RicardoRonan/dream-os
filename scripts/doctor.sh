@@ -40,6 +40,7 @@ check "theme applied globally" "grep -q true '$CFG/com.system76.CosmicTk/v1/appl
 check "WhiteSur icons" "test -d $HOME/.local/share/icons/WhiteSur-grey-dark"
 check "WhiteSur cursor" "test -d $HOME/.local/share/icons/WhiteSur-cursors"
 check "dock L / 24px" "grep -qx L '$CFG/com.system76.CosmicPanel.Dock/v1/size' && grep -qx 24 '$CFG/com.system76.CosmicPanel.Dock/v1/border_radius'"
+check "dock always hides" "grep -qx Always '$CFG/com.system76.CosmicPanel.Dock/v1/autohide'"
 check "panel full width / flush" "grep -qx true '$CFG/com.system76.CosmicPanel.Panel/v1/expand_to_edges' && grep -qx 0 '$CFG/com.system76.CosmicPanel.Panel/v1/margin'"
 check "clock on the right" "grep -q CosmicAppletTime '$CFG/com.system76.CosmicPanel.Panel/v1/plugins_wings' && ! grep -q CosmicAppletTime '$CFG/com.system76.CosmicPanel.Panel/v1/plugins_center'"
 check "radius scale 6/8/12/16" "grep -q 'radius_xs: (6.0' '$CFG/com.system76.CosmicTheme.Dark/v2/corner_radii' && grep -q 'radius_m: (12.0' '$CFG/com.system76.CosmicTheme.Dark/v2/corner_radii'"

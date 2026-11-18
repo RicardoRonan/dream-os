@@ -39,6 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`pop-os/cosmic-panel#656`) in `docs/perf.md`.
 
 ### Fixed
+- Dock stayed visible when no window overlapped it and could cover window tabs.
+  Dock autohide is now `Always`, so it hides when the pointer leaves and only
+  the 8px reveal handle remains.
 - Icons: GTK apps read the `Cosmic` theme while COSMIC read `DreamOS`, and a
   two-directory `hicolor` index in `~/.local/share/icons` hid fallback icons
   such as MDViewer. `02-identity.sh` now installs the override theme, restores

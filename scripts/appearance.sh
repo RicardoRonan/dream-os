@@ -202,7 +202,7 @@ EOF
 
   printf 'Bottom\n' > "$DOCK/anchor"
   printf 'true\n' > "$DOCK/anchor_gap"
-  printf 'OnOverlap\n' > "$DOCK/autohide"
+  printf 'Always\n' > "$DOCK/autohide"
   cat > "$DOCK/autohide_behavior" <<'EOF'
 (
     wait_time: 350,
@@ -350,7 +350,7 @@ doctor() {
   say "CosmicTk: header=$(cat "$TK/header_size" 2>/dev/null) density=$(cat "$TK/interface_density" 2>/dev/null) icons=$(cat "$TK/icon_theme" 2>/dev/null) global=$(cat "$TK/apply_theme_global" 2>/dev/null)"
   say "gsettings: font=$(gsettings get org.gnome.desktop.interface font-name 2>/dev/null) mono=$(gsettings get org.gnome.desktop.interface monospace-font-name 2>/dev/null) icons=$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null) cursor=$(gsettings get org.gnome.desktop.interface cursor-theme 2>/dev/null) size=$(gsettings get org.gnome.desktop.interface cursor-size 2>/dev/null)"
   say "panel: size=$(cat "$PANEL/size") margin=$(cat "$PANEL/margin") expand=$(cat "$PANEL/expand_to_edges") opacity=$(cat "$PANEL/opacity") clock_right=$(grep -c CosmicAppletTime "$PANEL/plugins_wings" 2>/dev/null || true)"
-  say "dock: size=$(cat "$DOCK/size") radius=$(cat "$DOCK/border_radius") opacity=$(cat "$DOCK/opacity") spacing=$(cat "$DOCK/spacing") padding=$(cat "$DOCK/padding")"
+  say "dock: size=$(cat "$DOCK/size") radius=$(cat "$DOCK/border_radius") opacity=$(cat "$DOCK/opacity") spacing=$(cat "$DOCK/spacing") padding=$(cat "$DOCK/padding") autohide=$(cat "$DOCK/autohide")"
   say "icons: WhiteSur=$(test -d "$HOME/.local/share/icons/WhiteSur-grey-dark" && echo yes || echo no) mapped=$(find "$HOME/.local/share/icons/DreamOS/scalable/apps" -type l 2>/dev/null | wc -l)"
   say "gtk-radius marker: $(grep -c 'dream-os-radius' "$HOME/.config/gtk-4.0/gtk.css" 2>/dev/null || true)"
 }
