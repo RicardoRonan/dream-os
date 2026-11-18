@@ -66,6 +66,27 @@ file managers) navigate. Apps that do not use those shortcuts ignore them.
 If your mouse reports a different name, set `DREAM_OS_MOUSE_NAME` in the unit's
 `Environment=` line, or edit the default in `scripts/mouse-buttons.py`.
 
+## Bluetooth SBC-XQ
+
+`scripts/bt-sbc-xq.sh` installs `dream-os-bt-sbc-xq.service`. It watches BlueZ
+cards and switches the active profile to `a2dp-sink-sbc_xq` when the card
+offers it. It runs at login and again when a device reconnects.
+
+```bash
+systemctl --user status dream-os-bt-sbc-xq
+journalctl --user -u dream-os-bt-sbc-xq -f
+```
+
+Manual profile changes are left alone until the device reconnects. To stop the
+preference:
+
+```bash
+systemctl --user disable --now dream-os-bt-sbc-xq.service
+```
+
+SBC-XQ uses more bandwidth than standard SBC. If a device crackles or drops out
+on a weak link, switch that device back to SBC in Settings, or stop the service.
+
 ## Hot corners (macOS-like)
 
 `install/06-hotcorners.sh` installs waycorner with top-left overview,

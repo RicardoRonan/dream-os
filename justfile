@@ -57,6 +57,10 @@ corners:
 mouse:
     bash scripts/mouse-buttons.sh
 
+# Prefer SBC-XQ on Bluetooth devices that offer the profile
+bt-xq:
+    bash scripts/bt-sbc-xq.sh install
+
 # Keyboard shortcuts (Super+Space launcher, lock, window arrangement)
 shortcuts:
     bash install/07-shortcuts.sh

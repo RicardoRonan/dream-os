@@ -14,6 +14,8 @@ fi
 rm -rfv "$HOME/.local/share/dream-os" 2>/dev/null || true
 rm -fv "$HOME/.local/bin/session-save.sh" "$HOME/.local/bin/session-restore.sh" 2>/dev/null || true
 rm -fv "$HOME/.local/bin/waycorner" 2>/dev/null || true
+rm -fv "$HOME/.local/bin/dream-os-mouse-buttons" 2>/dev/null || true
+rm -fv "$HOME/.local/bin/dream-os-bt-sbc-xq" 2>/dev/null || true
 rm -rfv "$HOME/.config/waycorner" 2>/dev/null || true
 rm -rfv "$HOME/.local/share/icons/DreamOS" 2>/dev/null || true
 rm -fv "$HOME/.config/environment.d/dream-os.conf" 2>/dev/null || true
@@ -26,11 +28,15 @@ rm -fv "$HOME/.config/systemd/user/dream-os-gtk-radius.service" \
        "$HOME/.config/systemd/user/dream-os-gtk-radius.path" 2>/dev/null || true
 rm -fv "$HOME/.config/systemd/user/dream-os-appearance.service" \
        "$HOME/.config/systemd/user/dream-os-appearance.timer" 2>/dev/null || true
+rm -fv "$HOME/.config/systemd/user/dream-os-mouse-buttons.service" \
+       "$HOME/.config/systemd/user/dream-os-bt-sbc-xq.service" 2>/dev/null || true
 
 if command -v systemctl >/dev/null 2>&1; then
   systemctl --user disable --now dream-os-session-save.timer 2>/dev/null || true
   systemctl --user disable --now dream-os-gtk-radius.timer 2>/dev/null || true
   systemctl --user disable --now dream-os-appearance.timer 2>/dev/null || true
+  systemctl --user disable --now dream-os-mouse-buttons.service 2>/dev/null || true
+  systemctl --user disable --now dream-os-bt-sbc-xq.service 2>/dev/null || true
   systemctl --user daemon-reload 2>/dev/null || true
 fi
 

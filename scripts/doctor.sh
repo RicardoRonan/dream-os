@@ -50,6 +50,7 @@ check "radius scale 6/8/12/16" "grep -q 'radius_xs: (6.0' '$CFG/com.system76.Cos
 check "GTK radius block" "grep -q 'dream-os-radius' $HOME/.config/gtk-4.0/gtk.css"
 check "radius timer" "systemctl --user is-enabled dream-os-gtk-radius.timer"
 check "appearance sync timer" "systemctl --user is-enabled dream-os-appearance.timer"
+check "SBC-XQ service" "systemctl --user is-enabled dream-os-bt-sbc-xq.service"
 
 echo "-- features --"
 check "clipboard (cliphist)" "command -v cliphist"

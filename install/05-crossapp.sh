@@ -13,6 +13,7 @@ bash "$ROOT/scripts/appearance.sh" tk
 bash "$ROOT/scripts/appearance.sh" gtk
 bash "$ROOT/scripts/gtk-radius.sh" install-watch --quiet
 bash "$ROOT/scripts/appearance.sh" install-sync
+bash "$ROOT/scripts/bt-sbc-xq.sh" install
 
 # ---- Qt platform theme -----------------------------------------------------
 envf="$HOME/.config/environment.d/dream-os.conf"

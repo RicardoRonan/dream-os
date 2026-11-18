@@ -24,6 +24,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Mouse back/forward buttons**: `scripts/mouse-buttons.sh` installs a user
   service that maps `BTN_SIDE`/`BTN_BACK` to Alt+Left and
   `BTN_EXTRA`/`BTN_FORWARD` to Alt+Right. Needs the `input` group.
+- **Bluetooth SBC-XQ**: `scripts/bt-sbc-xq.sh` installs a user service that
+  selects `a2dp-sink-sbc_xq` on any BlueZ card that offers it, at login and on
+  reconnect. Standard SBC remains available for manual selection.
 
 ### Changed
 - Replaced "16 px everywhere" with a concentric radius scale: 6 px small
