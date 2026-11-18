@@ -39,6 +39,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`pop-os/cosmic-panel#656`) in `docs/perf.md`.
 
 ### Fixed
+- Applications icon showed a gear because the COSMIC App Library was mapped
+  to WhiteSur's `applications-system` gear. Removed that mapping and added
+  stale-link cleanup, so the App Library uses its stock grid icon and Settings
+  keeps the gear.
 - Floating window borders had square or mismatched corners on Firefox and
   OpenCode because the compositor did not clip floating windows. Set
   `clip_floating_windows=true` so the window and its own border are clipped to

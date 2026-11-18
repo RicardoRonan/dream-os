@@ -26,6 +26,20 @@ find_icon() {
 mkdir -p "$DEST"
 [ -f "$MAP" ] || { echo "icon-map: missing $MAP" >&2; exit 1; }
 
+# Drop managed links whose mapping was removed from the map. This keeps the
+# Applications icon from staying on an old gear mapping.
+if [ -d "$DEST" ]; then
+  for link in "$DEST"/*.svg; do
+    [ -e "$link" ] || continue
+    [ -L "$link" ] || continue
+    name="$(basename "$link" .svg)"
+    if ! awk -F'\t' -v n="$name" '$1 == n { found = 1 } END { exit !found }' "$MAP"; then
+      rm -f "$link"
+      echo "icon-map: removed stale $name"
+    fi
+  done
+fi
+
 while IFS=$'\t' read -r app target; do
   case "$app" in ''|\#*) continue ;; esac
   src="$(find_icon "$target" || true)"
