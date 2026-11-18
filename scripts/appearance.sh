@@ -40,6 +40,8 @@ DOCK_RADIUS=24
 DOCK_OPACITY="0.5"
 DOCK_MARGIN=4
 DOCK_PADDING=8
+# Larger than the stock 8px strip: easier to hit on stacked displays.
+DOCK_HANDLE=16
 DOCK_SPACING=8
 
 say() { printf '%s\n' "$*"; }
@@ -254,11 +256,11 @@ EOF
   printf 'Bottom\n' > "$DOCK/anchor"
   printf 'true\n' > "$DOCK/anchor_gap"
   printf 'Always\n' > "$DOCK/autohide"
-  cat > "$DOCK/autohide_behavior" <<'EOF'
+  cat > "$DOCK/autohide_behavior" <<EOF
 (
     wait_time: 350,
     transition_time: 200,
-    handle_size: 8,
+    handle_size: $DOCK_HANDLE,
     unhide_delay: 0,
 )
 EOF

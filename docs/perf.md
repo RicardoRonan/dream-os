@@ -70,7 +70,7 @@ transition is the dock/panel hide-show animation:
 - `unhide_delay` (ms) — delay before showing
 - `handle_size` (px) — height of the hidden strip that catches the pointer
 
-Dream OS uses `transition_time: 200`, `unhide_delay: 0` and `handle_size: 8`, so
+Dream OS uses `transition_time: 200`, `unhide_delay: 0` and `handle_size: 16`, so
 the dock reveals on first touch. It also sets `margin: 4` (and `anchor_gap: true`):
 the hidden strip sits at the very bottom edge instead of 12 px above it.
 
