@@ -39,6 +39,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`pop-os/cosmic-panel#656`) in `docs/perf.md`.
 
 ### Fixed
+- Floating window borders had square or mismatched corners on Firefox and
+  OpenCode because the compositor did not clip floating windows. Set
+  `clip_floating_windows=true` so the window and its own border are clipped to
+  the 12px theme radius. Tiled windows stay square.
 - Maximized windows stopped short of the bottom edge because the hidden dock
   still reserved its height (`exclusive_zone=true`). The dock now overlays
   windows (`exclusive_zone=false`); only the top bar reserves space.

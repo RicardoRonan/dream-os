@@ -83,6 +83,9 @@ GTK 3/4, Flatpak and gsettings:
 - Cursor: `WhiteSur-cursors` at 24px.
 - Fonts: SF Pro Text 10.5 (about 14px), JetBrainsMono Nerd Font 10.5.
 - Header bars: `Compact` density; interface density stays `Standard`.
+- Floating windows are clipped to the 12px theme radius, so app-drawn
+  borders (Firefox, OpenCode, Electron) follow the same corners. Tiled
+  windows stay square.
 
 Apply with `just macos`; revert the live settings with `just macos-revert`.
 The full profile is optional. The base theme still works without it.

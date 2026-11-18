@@ -12,6 +12,7 @@ CFG="$HOME/.config/cosmic"
 TK="$CFG/com.system76.CosmicTk/v1"
 PANEL="$CFG/com.system76.CosmicPanel.Panel/v1"
 DOCK="$CFG/com.system76.CosmicPanel.Dock/v1"
+COMP="$CFG/com.system76.CosmicComp/v1"
 BACKUP_ROOT="$HOME/.config/dream-os/backups"
 
 # ---- tokens ---------------------------------------------------------------
@@ -59,6 +60,7 @@ backup() {
   [ -e "$HOME/.config/environment.d/dream-os.conf" ] && cp -a "$HOME/.config/environment.d/dream-os.conf" "$dir/environment.d.conf"
   cp -a "$CFG/com.system76.CosmicTheme.Dark/v2/corner_radii" "$dir/corner-radii-dark" 2>/dev/null || true
   cp -a "$CFG/com.system76.CosmicTheme.Light/v2/corner_radii" "$dir/corner-radii-light" 2>/dev/null || true
+  [ -e "$COMP/appearance_settings" ] && cp -a "$COMP/appearance_settings" "$dir/appearance_settings"
   for k in font-name monospace-font-name icon-theme cursor-theme cursor-size gtk-theme color-scheme; do
     gsettings get "org.gnome.desktop.interface" "$k" > "$dir/gsettings-$k.txt" 2>/dev/null || true
   done
@@ -240,6 +242,17 @@ EOF
   printf '%s\n' "$DOCK_SPACING" > "$DOCK/spacing"
 }
 
+apply_comp() {
+  mkdir -p "$COMP"
+  cat > "$COMP/appearance_settings" <<'EOF'
+(
+    clip_floating_windows: true,
+    clip_tiled_windows: true,
+    shadow_tiled_windows: false,
+)
+EOF
+}
+
 apply_gtk() {
   local icon="$ICON_THEME" cursor="$CURSOR_THEME" gtk_theme="adw-gtk3-dark"
   if [ ! -d "$HOME/.local/share/icons/$icon" ]; then
@@ -335,6 +348,7 @@ apply_all() {
   apply_theme_fonts
   apply_tk
   apply_panel
+  apply_comp
   apply_gtk
   apply_icons
   apply_cursor
@@ -351,6 +365,7 @@ doctor() {
   say "gsettings: font=$(gsettings get org.gnome.desktop.interface font-name 2>/dev/null) mono=$(gsettings get org.gnome.desktop.interface monospace-font-name 2>/dev/null) icons=$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null) cursor=$(gsettings get org.gnome.desktop.interface cursor-theme 2>/dev/null) size=$(gsettings get org.gnome.desktop.interface cursor-size 2>/dev/null)"
   say "panel: size=$(cat "$PANEL/size") margin=$(cat "$PANEL/margin") expand=$(cat "$PANEL/expand_to_edges") opacity=$(cat "$PANEL/opacity") clock_right=$(grep -c CosmicAppletTime "$PANEL/plugins_wings" 2>/dev/null || true)"
   say "dock: size=$(cat "$DOCK/size") radius=$(cat "$DOCK/border_radius") opacity=$(cat "$DOCK/opacity") spacing=$(cat "$DOCK/spacing") padding=$(cat "$DOCK/padding") autohide=$(cat "$DOCK/autohide")"
+  say "comp: $(grep -o 'clip_floating_windows: [a-z]*' "$COMP/appearance_settings" 2>/dev/null)"
   say "icons: WhiteSur=$(test -d "$HOME/.local/share/icons/WhiteSur-grey-dark" && echo yes || echo no) mapped=$(find "$HOME/.local/share/icons/DreamOS/scalable/apps" -type l 2>/dev/null | wc -l)"
   say "gtk-radius marker: $(grep -c 'dream-os-radius' "$HOME/.config/gtk-4.0/gtk.css" 2>/dev/null || true)"
 }
@@ -383,6 +398,7 @@ revert() {
   done
   [ -e "$dir/corner-radii-dark" ] && cp -a "$dir/corner-radii-dark" "$CFG/com.system76.CosmicTheme.Dark/v2/corner_radii"
   [ -e "$dir/corner-radii-light" ] && cp -a "$dir/corner-radii-light" "$CFG/com.system76.CosmicTheme.Light/v2/corner_radii"
+  [ -e "$dir/appearance_settings" ] && cp -a "$dir/appearance_settings" "$COMP/appearance_settings"
   for k in font-name monospace-font-name icon-theme cursor-theme cursor-size gtk-theme color-scheme; do
     [ -e "$dir/gsettings-$k.txt" ] || continue
     val="$(cat "$dir/gsettings-$k.txt")"
@@ -426,6 +442,7 @@ EOF
 case "${1:-apply}" in
   apply) apply_all ;;
   panel) apply_panel ;;
+  comp) apply_comp ;;
   gtk) apply_gtk ;;
   tk) apply_theme_fonts; apply_tk ;;
   icons) apply_icons ;;

@@ -17,6 +17,7 @@ done
 mkdir -p "$PANEL" "$DOCK"
 
 bash "$REPO/scripts/appearance.sh" panel
+bash "$REPO/scripts/appearance.sh" comp
 
 pkill -x cosmic-panel 2>/dev/null || true
 echo "Panel + dock set to the macOS-profile layout."
