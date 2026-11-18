@@ -40,10 +40,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Replaced "16 px everywhere" with a concentric radius scale: 6 px small
-  controls, 8 px inputs, 12 px windows and cards, 16 px large sheets, 24 px dock.
+  controls, 8 px inputs, 12 px windows, cards and dock, 16 px large sheets.
   The top bar and tiled/maximized windows stay square.
 - Panel: full width and flush, XS height, opaque, clock at the far right.
-- Dock: 48 px icons (size L), 24 px radius, 0.5 opacity, 8 px padding and
+- Dock: 48 px icons (size L), 12 px radius (matches window corners), 0.5 opacity, 8 px padding and
   spacing. The 4 px margin and 8 px reveal handle are kept for stacked displays.
 - Header bars: `Compact`; interface density stays `Standard`. Monospace is now
   JetBrainsMono Nerd Font or SF Mono, not Ubuntu Mono.

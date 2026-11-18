@@ -42,7 +42,7 @@ surface steps, not shadows.
 | Token | Value |
 |-------|-------|
 | corner radii | 6px xs / 8px s / 12px m / 16px l; 0 for flush edges; 160px pills |
-| dock | 24px |
+| dock | 12px (matches window corners) |
 | spacing | Standard density (`space_m` = 24) |
 | active window hint | grey, 1px |
 | tiled gaps | (0, 8) |
@@ -53,9 +53,8 @@ The radius scale is concentric, not one value everywhere:
 
 - `6px` for checkboxes, icon buttons and tags.
 - `8px` for inputs, menu items and small cards.
-- `12px` for windows, popovers, dialogs and cards.
+- `12px` for windows, popovers, dialogs, cards and the floating dock.
 - `16px` for large sheets.
-- `24px` for the floating dock.
 - `0` for the full-width top bar and for tiled, maximized and fullscreen windows.
 - `160px` (`radius_xl`) for pill controls.
 
@@ -73,7 +72,7 @@ profile. It writes the same tokens to COSMIC, CosmicTk, the panel, the dock,
 GTK 3/4, Flatpak and gsettings:
 
 - Top bar: full width, flush, XS, opaque, clock at the far right.
-- Dock: 48px icons (size L), 24px radius, 0.5 opacity, 8px spacing, 8px padding,
+- Dock: 48px icons (size L), 12px radius, 0.5 opacity, 8px spacing, 8px padding,
   auto-hide always, 4px margin and an 8px reveal handle. With the optional
   patched panel the handle is 16px and stays invisible until hover. It does not
   reserve space, so maximized windows fill the screen behind it. The top bar

@@ -40,7 +40,7 @@ check "theme applied globally" "grep -q true '$CFG/com.system76.CosmicTk/v1/appl
 check "WhiteSur icons" "test -d $HOME/.local/share/icons/WhiteSur-grey-dark"
 check "App Library uses stock grid" "test ! -L $HOME/.local/share/icons/DreamOS/scalable/apps/com.system76.CosmicAppLibrary.svg"
 check "Vimix cursor"      "test -d $HOME/.local/share/icons/Vimix-cursors"
-check "dock L / 24px" "grep -qx L '$CFG/com.system76.CosmicPanel.Dock/v1/size' && grep -qx 24 '$CFG/com.system76.CosmicPanel.Dock/v1/border_radius'"
+check "dock L / 12px" "grep -qx L '$CFG/com.system76.CosmicPanel.Dock/v1/size' && grep -qx 12 '$CFG/com.system76.CosmicPanel.Dock/v1/border_radius'"
 check "dock always hides" "grep -qx Always '$CFG/com.system76.CosmicPanel.Dock/v1/autohide'"
 check "dock reveal handle" "if test -x $HOME/.local/bin/cosmic-panel; then grep -q 'handle_size: 16' '$CFG/com.system76.CosmicPanel.Dock/v1/autohide_behavior'; else grep -q 'handle_size: 8' '$CFG/com.system76.CosmicPanel.Dock/v1/autohide_behavior'; fi"
 check "dock overlays windows" "grep -qx false '$CFG/com.system76.CosmicPanel.Dock/v1/exclusive_zone'"

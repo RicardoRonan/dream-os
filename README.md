@@ -32,7 +32,7 @@ See [`rice/README.md`](rice/README.md) for the rice.
 - Pure neutral grayscale (no color cast); the accent is the only chroma.
 - Accent default **Signal blue `#4C8DFF`**; changed in Settings → Desktop → Appearance
   (curated palette + custom picker).
-- **Concentric radius scale** 6 / 8 / 12 / 16 px, 24 px dock; Standard density;
+- **Concentric radius scale** 6 / 8 / 12 / 16 px, 12 px dock; Standard density;
   hairlines instead of shadows; **neutral-grey** active-window ring.
 - Frosted glass limited to the dock (perf-first on integrated GPUs).
 - Fonts: **SF Pro Text** (UI, falls back to bundled **Inter**), **JetBrains Mono
