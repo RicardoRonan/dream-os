@@ -28,9 +28,21 @@ adds 3-finger up/down -> workspace overview via `libinput-gestures`
 libinput-gestures-setup restart
 ```
 
+`libinput-gestures` needs read access to `/dev/input`. Add yourself to the
+`input` group once, then log out and back in:
+
+```bash
+sudo usermod -aG input "$USER"
+```
+
+Without that, the autostart unit fails with `Permission denied` and the
+three-finger gestures do nothing. `install/04-features.sh` now prints this
+instead of claiming the service started.
+
 ## Hot corners (macOS-like)
 
-COSMIC has no native hot corners. Options:
+`install/06-hotcorners.sh` installs waycorner with top-left overview,
+bottom-right launcher and bottom-left lock. Other options:
 
 - **cosmic-hotcorners** (native libcosmic daemon) -
   <https://github.com/boloto1979/cosmic-hotcorners>. Build with a Rust toolchain:

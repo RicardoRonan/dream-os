@@ -73,8 +73,13 @@ gesture swipe down 3 cosmic-workspaces
 EOF
 if command -v libinput-gestures-setup >/dev/null 2>&1; then
   libinput-gestures-setup autostart start >/dev/null 2>&1 || true
-  libinput-gestures-setup restart >/dev/null 2>&1 || true
-  echo "libinput-gestures configured and (re)started."
+  if id -nG "$USER" | grep -qw input; then
+    libinput-gestures-setup restart >/dev/null 2>&1 || true
+    echo "libinput-gestures configured and (re)started."
+  else
+    echo "3-finger gestures need input group access:"
+    echo "  sudo usermod -aG input $USER   # then log out and back in"
+  fi
 else
   echo "libinput-gestures not installed yet (sudo bash install/00-system-apt.sh)."
 fi
