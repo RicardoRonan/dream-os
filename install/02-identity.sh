@@ -82,6 +82,9 @@ if [ -d /usr/share/icons/Papirus ]; then
   if [ -d "$REPO/assets/icons/DreamOS" ]; then
     mkdir -p "$HOME/.local/share/icons/DreamOS"
     cp -a "$REPO/assets/icons/DreamOS/." "$HOME/.local/share/icons/DreamOS/"
+    if [ -d "$HOME/.local/share/icons/WhiteSur-grey-dark" ]; then
+      bash "$REPO/scripts/icon-map.sh" >/dev/null 2>&1 || true
+    fi
     gtk-update-icon-cache -f -t "$HOME/.local/share/icons/DreamOS" >/dev/null 2>&1 || true
   fi
   echo "Icons set to DreamOS (Papirus + grey folders)."

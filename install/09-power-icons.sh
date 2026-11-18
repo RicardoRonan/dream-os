@@ -9,6 +9,9 @@ DEST="$HOME/.local/share/icons/DreamOS"
 rm -rf "$DEST"
 mkdir -p "$DEST"
 cp -a "$REPO/assets/icons/DreamOS/." "$DEST/"
+if [ -d "$HOME/.local/share/icons/WhiteSur-grey-dark" ]; then
+  bash "$REPO/scripts/icon-map.sh" >/dev/null 2>&1 || true
+fi
 gtk-update-icon-cache -f -t "$DEST" >/dev/null 2>&1 || true
 
 TK="$HOME/.config/cosmic/com.system76.CosmicTk/v1"
@@ -17,4 +20,5 @@ printf '"DreamOS"\n' > "$TK/icon_theme"
 gsettings set org.gnome.desktop.interface icon-theme 'DreamOS' 2>/dev/null || true
 
 pkill -x cosmic-panel 2>/dev/null || true
-echo "Icon theme set to DreamOS (Papirus + clearer lock/log-out/suspend/reboot/shutdown)."
+pkill -f '^cosmic-app-library$' 2>/dev/null || true
+echo "Icon theme set to DreamOS (WhiteSur + Papirus + clearer lock/log-out/suspend/reboot/shutdown)."

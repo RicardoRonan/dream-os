@@ -15,6 +15,7 @@ recomputed per frame.
 | `frosted_windows` | off | windows are opaque |
 | Panel opacity | 1.0 | top bar is opaque (no blur needed) |
 | Dock opacity | 0.5 | translucent; shows the wallpaper through it |
+| Dock size | L (48px icons) | macOS-like; larger icons, same blur area |
 
 So blur is limited to the dock, and only while it is visible (it auto-hides on
 overlap). The workspace overview (Super+W) no longer blurs.
@@ -34,6 +35,13 @@ cd ~/Projects/dream-os && just theme
 Or via Settings -> Desktop -> Appearance -> Frosted glass (uncheck all).
 
 ## Other notes
+
+- **macOS profile blur:** the top panel stays opaque; only the dock is frosted.
+  Increasing the dock to size L changes icon geometry, not the blur area. If the
+  dock stutters on the iGPU, set `frosted_panel: false` and raise dock opacity
+  to 0.85 as the performance fallback.
+- **GTK radius timer:** `dream-os-gtk-radius.timer` runs every two minutes and
+  exits immediately when the marked radius block is already present.
 
 - **Applets are per-output.** With two monitors, each panel applet runs once per
   monitor (status area, clock, battery, etc.). That is normal, not a leak.

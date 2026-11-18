@@ -6,40 +6,12 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-# ---- GTK font + cursor + theme --------------------------------------------
-gtk_ini() {
-  local dir="$1"
-  mkdir -p "$dir"
-  local icon="DreamOS"
-  if [ ! -d "$HOME/.local/share/icons/DreamOS" ]; then
-    icon="Adwaita"
-    [ -d /usr/share/icons/Papirus ] && icon="Papirus-Dark"
-  fi
-  cat > "$dir/settings.ini" <<EOF
-[Settings]
-gtk-font-name=SF Pro Text 11
-gtk-cursor-theme-name=Vimix-cursors
-gtk-icon-theme-name=$icon
-gtk-theme-name=Adwaita
-gtk-application-prefer-dark-theme=1
-EOF
-}
-gtk_ini "$HOME/.config/gtk-3.0"
-gtk_ini "$HOME/.config/gtk-4.0"
-
-# ---- GTK corner radii (16px token) ----------------------------------------
-# COSMIC owns gtk.css (colours only) and rewrites it on theme changes, so the
-# radius block is appended and kept in place by a systemd user path unit.
-bash "$ROOT/scripts/gtk-radius.sh" apply --quiet
+# ---- GTK / font / cursor / icon sync (single source of truth) --------------
+# appearance.sh owns the values; this phase only applies them to GTK/Qt and
+# installs the timer that keeps the radius block after COSMIC rewrites gtk.css.
+bash "$ROOT/scripts/appearance.sh" tk
+bash "$ROOT/scripts/appearance.sh" gtk
 bash "$ROOT/scripts/gtk-radius.sh" install-watch --quiet
-
-# ---- gsettings (GTK apps) --------------------------------------------------
-gsettings set org.gnome.desktop.interface font-name 'SF Pro Text 11' 2>/dev/null || true
-gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' 2>/dev/null || true
-gsettings set org.gnome.desktop.interface cursor-theme 'Vimix-cursors' 2>/dev/null || true
-if [ -d "$HOME/.local/share/icons/DreamOS" ]; then
-  gsettings set org.gnome.desktop.interface icon-theme 'DreamOS' 2>/dev/null || true
-fi
 
 # ---- Qt platform theme -----------------------------------------------------
 envf="$HOME/.config/environment.d/dream-os.conf"

@@ -33,9 +33,9 @@ for pair in "Dark:$DARK" "Light:$LIGHT"; do
   write "$dir" corner_radii <<'EOF'
 (
     radius_0: (0.0, 0.0, 0.0, 0.0),
-    radius_xs: (16.0, 16.0, 16.0, 16.0),
-    radius_s: (16.0, 16.0, 16.0, 16.0),
-    radius_m: (16.0, 16.0, 16.0, 16.0),
+    radius_xs: (6.0, 6.0, 6.0, 6.0),
+    radius_s: (8.0, 8.0, 8.0, 8.0),
+    radius_m: (12.0, 12.0, 12.0, 12.0),
     radius_l: (16.0, 16.0, 16.0, 16.0),
     radius_xl: (160.0, 160.0, 160.0, 160.0),
 )
@@ -58,7 +58,7 @@ EOF
 (0, 8)
 EOF
   write "$dir" is_frosted <<'EOF'
-false
+true
 EOF
   # pure grayscale: no neutral tint
   write "$dir" neutral_tint <<'EOF'
@@ -69,7 +69,7 @@ EOF
 None
 EOF
   write "$dir" active_hint <<'EOF'
-2
+1
 EOF
 
   # palette = single source of truth, extracted from the repo .ron export
@@ -206,8 +206,8 @@ EOF
 TK="$CFG/com.system76.CosmicTk/v1"
 if [ -d "$TK" ]; then
   [ -f "$TK/interface_density" ] && echo "Standard" > "$TK/interface_density"
-  [ -f "$TK/header_size" ]       && echo "Spacious" > "$TK/header_size"
-  echo "Density set to Standard."
+  [ -f "$TK/header_size" ]       && echo "Compact" > "$TK/header_size"
+  echo "Density set to Standard, headers Compact."
 fi
 
 # ---- apply (materialise the resolved v2 theme) -----------------------------

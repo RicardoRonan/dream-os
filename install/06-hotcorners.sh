@@ -14,7 +14,11 @@ if [ ! -x "$BIN" ]; then
 fi
 
 mkdir -p "$HOME/.config/waycorner"
-cat > "$HOME/.config/waycorner/config.toml" <<'EOF'
+LOCK_CMD='["loginctl", "lock-session"]'
+if [ -x "$HOME/.local/bin/lock" ]; then
+  LOCK_CMD="[\"$HOME/.local/bin/lock\"]"
+fi
+cat > "$HOME/.config/waycorner/config.toml" <<EOF
 # Dream OS hot corners (macOS-like). Preview: waycorner --config ~/.config/waycorner/config.toml --preview
 
 [workspaces]
@@ -29,6 +33,13 @@ enter_command = ["cosmic-launcher"]
 locations = ["bottom_right"]
 size = 10
 timeout_ms = 250
+color = "#FF4C8DFF"
+
+[lock]
+enter_command = $LOCK_CMD
+locations = ["bottom_left"]
+size = 10
+timeout_ms = 400
 color = "#FF4C8DFF"
 EOF
 

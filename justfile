@@ -32,7 +32,20 @@ features:
 crossapp:
     bash install/05-crossapp.sh
 
-# Re-apply the 16px GTK corner radii after a theme change
+# Apply the macOS-structure appearance profile (downloads WhiteSur if needed)
+macos:
+    bash scripts/install-whitesur.sh
+    bash scripts/appearance.sh apply
+
+# Revert the live appearance to the last backup
+macos-revert:
+    bash scripts/appearance.sh revert
+
+# Show the live appearance values
+appearance:
+    bash scripts/appearance.sh doctor
+
+# Re-apply the theme GTK corner radii after a theme change
 gtk-radius:
     bash scripts/gtk-radius.sh apply
 
@@ -40,7 +53,7 @@ gtk-radius:
 corners:
     bash install/06-hotcorners.sh
 
-# Keyboard shortcuts (Super+L lock, window arrangement)
+# Keyboard shortcuts (Super+Space launcher, lock, window arrangement)
 shortcuts:
     bash install/07-shortcuts.sh
 

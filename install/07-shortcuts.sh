@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Dream OS - keyboard shortcuts. Adds Super+L lock and a full window-management set.
+# Dream OS - keyboard shortcuts. macOS aliases plus COSMIC tiling.
 # User-space only. Backs up the previous custom bindings.
 set -euo pipefail
 
@@ -12,8 +12,9 @@ cat > "$DIR/custom" <<EOF
     // Session / system
     (modifiers: [Super, Alt], key: "Escape"): Terminate,
     (modifiers: [Super, Shift], key: "Escape"): System(LogOut),
-    (modifiers: [Super], key: "Escape"): System(LockScreen),
-    (modifiers: [Super], key: "l", description: Some("Lock Screen")): System(LockScreen),
+    (modifiers: [Super], key: "Escape", description: Some("Lock Screen (swaylock-fprintd)")): Spawn("$HOME/.local/bin/lock"),
+    (modifiers: [Super], key: "l", description: Some("Lock Screen (swaylock-fprintd)")): Spawn("$HOME/.local/bin/lock"),
+    (modifiers: [Super, Ctrl], key: "q", description: Some("Lock Screen (swaylock-fprintd)")): Spawn("$HOME/.local/bin/lock"),
     (modifiers: [Super], key: "q"): Close,
     (modifiers: [Alt], key: "F4"): Close,
 
@@ -65,6 +66,7 @@ cat > "$DIR/custom" <<EOF
     // Windows / overview / apps
     (modifiers: [Super], key: "a"): System(AppLibrary),
     (modifiers: [Super], key: "w"): System(WorkspaceOverview),
+    (modifiers: [Ctrl], key: "Up"): System(WorkspaceOverview),
     (modifiers: [Super], key: "slash"): System(Launcher),
     (modifiers: [Super]): System(Launcher),
     (modifiers: [Alt], key: "Tab"): System(WindowSwitcher),
@@ -74,13 +76,16 @@ cat > "$DIR/custom" <<EOF
     (modifiers: [Super], key: "b"): System(WebBrowser),
     (modifiers: [Super], key: "f"): System(HomeFolder),
     (modifiers: [Super], key: "t"): System(Terminal),
-    (modifiers: [Super], key: "space"): System(InputSourceSwitch),
+    (modifiers: [Super], key: "space"): System(Launcher),
+    (modifiers: [Ctrl], key: "space"): System(InputSourceSwitch),
 
     // Dream OS
     (modifiers: [Super], key: "v", description: Some("Clipboard History")): Spawn("$HOME/.local/bin/clip-pick"),
+    (modifiers: [Alt], key: "space", description: Some("Hex dictation (toggle)")): Spawn("$HOME/.local/bin/hex-dictation-toggle"),
 
     // Media / hardware keys
     (modifiers: [], key: "Print"): System(Screenshot),
+    (modifiers: [Super, Shift], key: "s", description: Some("Screenshot")): System(Screenshot),
     (modifiers: [], key: "XF86AudioRaiseVolume"): System(VolumeRaise),
     (modifiers: [], key: "XF86AudioLowerVolume"): System(VolumeLower),
     (modifiers: [], key: "XF86AudioMute"): System(Mute),
@@ -93,4 +98,4 @@ cat > "$DIR/custom" <<EOF
     (modifiers: [], key: "XF86PowerOff"): System(PowerOff),
 }
 EOF
-echo "Shortcuts written (Super+L = lock; window arrangement enabled)."
+echo "Shortcuts written: Super+Space launcher, Ctrl+Space input source, Ctrl+Up overview, Super+Shift+S screenshot."

@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **macOS-structure profile**: `scripts/appearance.sh` applies one set of
+  geometry, type, icon and cursor values to COSMIC, CosmicTk, the panel, the
+  dock, GTK 3/4, Flatpak and gsettings. Apply with `just macos`, revert with
+  `just macos-revert`.
+- WhiteSur icon and cursor themes via `scripts/install-whitesur.sh`, with
+  `configs/icons/cosmic-app-map.tsv` mapping COSMIC app IDs to squircle icons.
 - **Rice flavour** scaffold (`rice/`) — niri + DankMaterialShell (+ Matugen), running
   alongside COSMIC with Dank Greeter. See `rice/`.
 - Distro-detection library for the installer (`install/lib/distro.sh`) covering
@@ -16,13 +22,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `screenshots/` gallery directory.
 
 ### Changed
-- Standardised on **16 px corners everywhere**: dock, COSMIC applets, rice
-  (waybar modules, wofi, mako) and GTK 3/4 windows, popovers and cards. The top
-  bar and rice bar stay flush at 0; tiled and maximized windows stay square.
-- Dock: 16 px corner radius, 4 px bottom margin, 8 px reveal handle and no unhide
-  delay, so it appears on first touch and is easier to reach on stacked displays.
-- Added `scripts/gtk-radius.sh` plus a systemd user path unit that re-applies the
-  GTK radius block after COSMIC regenerates `gtk.css`.
+- Replaced "16 px everywhere" with a concentric radius scale: 6 px small
+  controls, 8 px inputs, 12 px windows and cards, 16 px large sheets, 24 px dock.
+  The top bar and tiled/maximized windows stay square.
+- Panel: full width and flush, XS height, opaque, clock at the far right.
+- Dock: 48 px icons (size L), 24 px radius, 0.5 opacity, 8 px padding and
+  spacing. The 4 px margin and 8 px reveal handle are kept for stacked displays.
+- Header bars: `Compact`; interface density stays `Standard`. Monospace is now
+  JetBrainsMono Nerd Font or SF Mono, not Ubuntu Mono.
+- Enabled `apply_theme_global` so COSMIC colours, fonts and icons reach GTK,
+  Qt, VS Code and Flatpak.
+- `scripts/gtk-radius.sh` now installs a two-minute systemd timer instead of a
+  path unit. The path unit watched the files its own service writes and could
+  hit systemd's start limit.
 - Documented the upstream multi-monitor dock reveal limitation
   (`pop-os/cosmic-panel#656`) in `docs/perf.md`.
 
@@ -30,8 +42,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Icons: GTK apps read the `Cosmic` theme while COSMIC read `DreamOS`, and a
   two-directory `hicolor` index in `~/.local/share/icons` hid fallback icons
   such as MDViewer. `02-identity.sh` now installs the override theme, restores
-  the full hicolor index, and syncs the GTK portal. Thunar also gets a real
-  Thunar icon instead of Papirus's generic `system-file-manager` mapping.
+  the full hicolor index, and syncs the GTK portal. Thunar and the COSMIC app
+  IDs are mapped to WhiteSur squircle icons.
+- Theme font and icon fields in `CosmicTheme.{Dark,Light}/v2/` were still
+  Open Sans, Noto Sans Mono and `Cosmic`, which overwrote gsettings whenever
+  `apply_theme_global` ran. `appearance.sh` now writes the same SF Pro Text,
+  JetBrainsMono and DreamOS values into the resolved theme.
 - Notifications applet missing from the top panel: the rice's packaged
   `mako.service` is enabled for every graphical session and held
   `org.freedesktop.Notifications`, so `cosmic-notifications` could not start and

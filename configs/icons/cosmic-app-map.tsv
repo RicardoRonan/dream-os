@@ -1,0 +1,17 @@
+# App icon IDs mapped onto WhiteSur squircle icons.
+# Format: <desktop icon name><TAB><WhiteSur icon name>
+com.system76.CosmicFiles	system-file-manager
+com.system76.CosmicEdit	accessories-text-editor
+com.system76.CosmicStore	system-software-update
+com.system76.CosmicSettings	preferences-system
+com.system76.CosmicPlayer	applications-multimedia
+com.system76.CosmicAppLibrary	applications-system
+com.system76.CosmicViewer	applications-graphics
+com.system76.CosmicScreenshot	screenshot-app-symbolic
+com.system76.CosmicMonitor	utilities-system-monitor-symbolic
+com.system76.CosmicLauncher	system-search
+com.system76.CosmicWorkspaces	preferences-desktop-workspaces
+com.system76.Popsicle	media-flash
+com.system76.CosmicInitialSetup	preferences-system
+org.xfce.thunar	org.xfce.filemanager
+discover-overlay	applications-internet

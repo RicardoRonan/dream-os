@@ -3,7 +3,7 @@
 window {
   margin: 0px;
   border: 2px solid #262626;
-  border-radius: 16px;
+  border-radius: 12px;
   background-color: #0d0d0d;
   font-family: "JetBrainsMono Nerd Font", "Inter", sans-serif;
   font-size: 13px;
@@ -13,7 +13,7 @@ window {
   margin: 8px;
   padding: 8px 12px;
   border: none;
-  border-radius: 16px;
+  border-radius: 8px;
   color: #f2f2f2;
   background-color: #171717;
 }
@@ -25,6 +25,6 @@ window {
 #scroll { margin: 0px; }
 #text { margin: 2px 8px; color: #f2f2f2; }
 
-#entry { padding: 6px 8px; border-radius: 16px; }
+#entry { padding: 6px 8px; border-radius: 8px; }
 #entry:selected { background-color: #4c8dff; }
 #entry:selected #text { color: #000000; font-weight: 600; }

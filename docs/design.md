@@ -41,27 +41,49 @@ surface steps, not shadows.
 
 | Token | Value |
 |-------|-------|
-| corner radii | 16px everywhere; 0 for flush edges; 160px for pills |
+| corner radii | 6px xs / 8px s / 12px m / 16px l; 0 for flush edges; 160px pills |
+| dock | 24px |
 | spacing | Standard density (`space_m` = 24) |
-| focus ring | accent, 2px |
+| active window hint | grey, 1px |
 | tiled gaps | (0, 8) |
 
 ### Radius
 
-`16px` is the only corner token for anything that reads as a rounded surface:
-COSMIC windows and applets, the dock, the rice (waybar modules, wofi, mako) and
-GTK 3/4 windows, popovers and cards. Two values are intentional outliers:
+The radius scale is concentric, not one value everywhere:
 
-- `0` for the top bar and the rice bar, which sit flush against the screen edge.
+- `6px` for checkboxes, icon buttons and tags.
+- `8px` for inputs, menu items and small cards.
+- `12px` for windows, popovers, dialogs and cards.
+- `16px` for large sheets.
+- `24px` for the floating dock.
+- `0` for the full-width top bar and for tiled, maximized and fullscreen windows.
 - `160px` (`radius_xl`) for pill controls.
-
-Tiled, maximized and fullscreen windows are always square, in COSMIC and in GTK.
 
 GTK apps do not read the COSMIC theme, so `configs/gtk/gtk-radius.css` is appended
 to `~/.config/gtk-{3,4}.0/gtk.css` by `scripts/gtk-radius.sh`. COSMIC rewrites
-those files whenever the theme or accent changes, so the script also installs a
-systemd user path unit that re-applies the block. Re-run it by hand with
-`just gtk-radius`.
+those files whenever the theme or accent changes, so a systemd user timer
+re-applies the block every two minutes. Re-run it by hand with `just gtk-radius`.
+A path unit was tried first, but it watched the same files the service writes
+and could hit systemd's start limit.
+
+### macOS profile
+
+`scripts/appearance.sh` is the single source of truth for the macOS-structure
+profile. It writes the same tokens to COSMIC, CosmicTk, the panel, the dock,
+GTK 3/4, Flatpak and gsettings:
+
+- Top bar: full width, flush, XS, opaque, clock at the far right.
+- Dock: 48px icons (size L), 24px radius, 0.5 opacity, 8px spacing, 8px padding,
+  auto-hide on overlap, 4px margin and the 8px reveal handle.
+- Icons: DreamOS overrides inherit `WhiteSur-grey-dark`, then Papirus and
+  hicolor. COSMIC app IDs are mapped to WhiteSur squircles in
+  `configs/icons/cosmic-app-map.tsv`.
+- Cursor: `WhiteSur-cursors` at 24px.
+- Fonts: SF Pro Text 10.5 (about 14px), JetBrainsMono Nerd Font 10.5.
+- Header bars: `Compact` density; interface density stays `Standard`.
+
+Apply with `just macos`; revert the live settings with `just macos-revert`.
+The full profile is optional. The base theme still works without it.
 
 ## How it is applied
 

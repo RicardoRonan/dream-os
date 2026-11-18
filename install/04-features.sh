@@ -27,28 +27,11 @@ if command -v flatpak >/dev/null 2>&1; then
   done
 fi
 
-# ---- panel placement (small toggles in the menu bar) -----------------------
-if [ -f "$PANEL/plugins_wings" ]; then
-  cp -a "$PANEL" "$PANEL.bak.$(date +%Y%m%d-%H%M%S)"
-  cat > "$PANEL/plugins_wings" <<'EOF'
-Some((
-    [
-        "dev.cappsy.CosmicExtAppletLogoMenu",
-        "com.system76.CosmicPanelWorkspacesButton",
-        "io.github.cosmic_utils.weather-applet",
-    ],
-    [
-        "com.system76.CosmicAppletStatusArea",
-        "com.system76.CosmicAppletBattery",
-        "com.system76.CosmicAppletAudio",
-        "com.system76.CosmicAppletNetwork",
-        "com.system76.CosmicAppletBluetooth",
-        "com.system76.CosmicAppletNotifications",
-    ],
-))
-EOF
-  echo "Panel: Logo Menu + weather; Notifications pinned top-right."
-fi
+# ---- panel placement (single source of truth) ------------------------------
+# Wing order and clock position live in scripts/appearance.sh so 03 and 04
+# cannot drift apart.
+bash "$REPO/scripts/appearance.sh" panel
+echo "Panel: Logo Menu + weather left; status cluster and clock right."
 
 # ---- Logo Menu: hamburger "menu button" icon -------------------------------
 # The applet is sandboxed, so the SVG must live somewhere it can read (its config dir).

@@ -3,8 +3,8 @@
 #
 # COSMIC rewrites ~/.config/gtk-{3,4}.0/gtk.css whenever the theme or accent
 # changes, and those files only contain colours. This script appends a marked
-# override block and can install a systemd user path unit that re-applies it
-# after a rewrite. User-space only. Idempotent.
+# override block and can install a systemd user timer that re-applies it after
+# a rewrite. User-space only. Idempotent.
 #
 # Usage:
 #   scripts/gtk-radius.sh apply          # append/update the block
@@ -78,30 +78,34 @@ install_watch() {
 
   cat > "$UNIT_DIR/dream-os-gtk-radius.service" <<'EOF'
 [Unit]
-Description=Dream OS - restore 16px GTK corner radii
+Description=Dream OS - restore GTK corner radii
 
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/env bash %h/.local/share/dream-os/gtk-radius.sh apply --quiet
 EOF
 
-  cat > "$UNIT_DIR/dream-os-gtk-radius.path" <<'EOF'
+  # A timer, not a path unit. The path unit watched the same files the service
+  # writes, which could hit systemd's start limit and leave the block missing.
+  cat > "$UNIT_DIR/dream-os-gtk-radius.timer" <<'EOF'
 [Unit]
-Description=Dream OS - watch COSMIC's generated GTK stylesheets
+Description=Dream OS - periodically restore GTK corner radii
 
-[Path]
-PathChanged=%h/.config/gtk-3.0/gtk.css
-PathChanged=%h/.config/gtk-4.0/gtk.css
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=2min
 Unit=dream-os-gtk-radius.service
 
 [Install]
-WantedBy=default.target
+WantedBy=timers.target
 EOF
 
   if command -v systemctl >/dev/null 2>&1 && systemctl --user show-environment >/dev/null 2>&1; then
     systemctl --user daemon-reload
-    systemctl --user enable --now dream-os-gtk-radius.path
-    say "gtk-radius: watch enabled (dream-os-gtk-radius.path)"
+    systemctl --user disable --now dream-os-gtk-radius.path 2>/dev/null || true
+    rm -f "$UNIT_DIR/dream-os-gtk-radius.path"
+    systemctl --user enable --now dream-os-gtk-radius.timer
+    say "gtk-radius: timer enabled (dream-os-gtk-radius.timer)"
   else
     say "gtk-radius: no user systemd session; run 'scripts/gtk-radius.sh apply' after theme changes"
   fi
@@ -118,9 +122,10 @@ remove_all() {
   done
   if command -v systemctl >/dev/null 2>&1 && systemctl --user show-environment >/dev/null 2>&1; then
     systemctl --user disable --now dream-os-gtk-radius.path 2>/dev/null || true
+    systemctl --user disable --now dream-os-gtk-radius.timer 2>/dev/null || true
     systemctl --user daemon-reload
   fi
-  rm -f "$UNIT_DIR/dream-os-gtk-radius.path" "$UNIT_DIR/dream-os-gtk-radius.service"
+  rm -f "$UNIT_DIR/dream-os-gtk-radius.path" "$UNIT_DIR/dream-os-gtk-radius.timer" "$UNIT_DIR/dream-os-gtk-radius.service"
   rm -f "$STATE_DIR/gtk-radius.sh" "$STATE_DIR/gtk-radius.css"
   rmdir "$STATE_DIR" 2>/dev/null || true
   say "gtk-radius: watch removed"
