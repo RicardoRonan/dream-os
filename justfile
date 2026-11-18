@@ -53,6 +53,10 @@ gtk-radius:
 corners:
     bash install/06-hotcorners.sh
 
+# Map mouse back/forward buttons (needs the input group)
+mouse:
+    bash scripts/mouse-buttons.sh
+
 # Keyboard shortcuts (Super+Space launcher, lock, window arrangement)
 shortcuts:
     bash install/07-shortcuts.sh

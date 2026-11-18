@@ -86,6 +86,8 @@ GTK 3/4, Flatpak and gsettings:
 - Floating windows are clipped to the 12px theme radius, so app-drawn
   borders (Firefox, OpenCode, Electron) follow the same corners. Tiled
   windows stay square.
+- A two-minute user timer resyncs the theme font/icon fields after COSMIC
+  regenerates the resolved theme on login or accent changes.
 
 Apply with `just macos`; revert the live settings with `just macos-revert`.
 The full profile is optional. The base theme still works without it.

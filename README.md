@@ -46,7 +46,7 @@ See [`rice/README.md`](rice/README.md) for the rice.
 | 01 theme | `install/01-theme.sh` | Obsidian/Titan seeds + `.ron` import, density |
 | 02 identity | `install/02-identity.sh` | wallpaper, cursors, icons, bundled fonts |
 | 03 desktop | `install/03-desktop.sh` | full-width top bar, clock right, 48px dock |
-| 04 features | `install/04-features.sh` | Logo Menu, applets, gestures, panel |
+| 04 features | `install/04-features.sh` | Logo Menu, applets, gestures, mouse buttons, panel |
 | 05 crossapp | `install/05-crossapp.sh` | GTK/Qt font + theme sync |
 | 06 hotcorners | `install/06-hotcorners.sh` | waycorner hot corners |
 | 07 shortcuts | `install/07-shortcuts.sh` | launcher, lock, window arrangement, screenshots |

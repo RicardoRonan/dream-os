@@ -7,13 +7,16 @@
 #   scripts/appearance.sh revert
 set -euo pipefail
 
-REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SELF="$(readlink -f "${BASH_SOURCE[0]}")"
+REPO="$(cd "$(dirname "$SELF")/.." && pwd)"
 CFG="$HOME/.config/cosmic"
 TK="$CFG/com.system76.CosmicTk/v1"
 PANEL="$CFG/com.system76.CosmicPanel.Panel/v1"
 DOCK="$CFG/com.system76.CosmicPanel.Dock/v1"
 COMP="$CFG/com.system76.CosmicComp/v1"
 BACKUP_ROOT="$HOME/.config/dream-os/backups"
+UNIT_DIR="$HOME/.config/systemd/user"
+STATE_DIR="$HOME/.local/share/dream-os"
 
 # ---- tokens ---------------------------------------------------------------
 UI_FONT="SF Pro Text"
@@ -119,6 +122,46 @@ EOF
 EOF
     printf '"%s"\n' "$ICON_THEME" > "$dir/icon_theme"
   done
+}
+
+sync() {
+  local mode v2 drift=0 tk_drift=0
+  for mode in Dark Light; do
+    v2="$CFG/com.system76.CosmicTheme.$mode/v2"
+    grep -q "family: \"$UI_FONT\"" "$v2/font" 2>/dev/null || drift=1
+    grep -q "family: \"$MONO_FONT\"" "$v2/mono_font" 2>/dev/null || drift=1
+    [ "$(cat "$v2/icon_theme" 2>/dev/null)" = "\"$ICON_THEME\"" ] || drift=1
+  done
+  if [ "$drift" = 1 ]; then
+    apply_theme_fonts
+    say "sync: restored theme font/icon fields"
+  fi
+
+  grep -q "family: \"$UI_FONT\"" "$TK/interface_font" 2>/dev/null || tk_drift=1
+  grep -q "family: \"$MONO_FONT\"" "$TK/monospace_font" 2>/dev/null || tk_drift=1
+  [ "$(cat "$TK/icon_theme" 2>/dev/null)" = "\"$ICON_THEME\"" ] || tk_drift=1
+  [ "$(cat "$TK/header_size" 2>/dev/null)" = "$HEADER_SIZE" ] || tk_drift=1
+  [ "$(cat "$TK/apply_theme_global" 2>/dev/null)" = "true" ] || tk_drift=1
+  if [ "$tk_drift" = 1 ]; then
+    apply_tk
+    say "sync: restored CosmicTk values"
+  fi
+
+  [ "$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null | tr -d "'")" = "$ICON_THEME" ] || \
+    gsettings set org.gnome.desktop.interface icon-theme "$ICON_THEME" 2>/dev/null || true
+  [ "$(gsettings get org.gnome.desktop.interface font-name 2>/dev/null | tr -d "'")" = "$UI_FONT $UI_SIZE" ] || \
+    gsettings set org.gnome.desktop.interface font-name "$UI_FONT $UI_SIZE" 2>/dev/null || true
+  [ "$(gsettings get org.gnome.desktop.interface monospace-font-name 2>/dev/null | tr -d "'")" = "$MONO_FONT $MONO_SIZE" ] || \
+    gsettings set org.gnome.desktop.interface monospace-font-name "$MONO_FONT $MONO_SIZE" 2>/dev/null || true
+
+  # A theme export can rewrite gtk.css after the sync; re-apply the radius block.
+  if [ "$drift" = 1 ] || [ "$tk_drift" = 1 ]; then
+    local radius_script="$STATE_DIR/gtk-radius.sh"
+    if [ -x "$radius_script" ]; then
+      sleep 1
+      bash "$radius_script" apply --quiet
+    fi
+  fi
 }
 
 apply_tk() {
@@ -342,6 +385,51 @@ restart_panel() {
   fi
 }
 
+install_sync() {
+  mkdir -p "$UNIT_DIR" "$STATE_DIR"
+  cp -f "$SELF" "$STATE_DIR/appearance.sh"
+  chmod +x "$STATE_DIR/appearance.sh"
+
+  cat > "$UNIT_DIR/dream-os-appearance.service" <<'EOF'
+[Unit]
+Description=Dream OS - keep theme fonts and icons in sync
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/env bash %h/.local/share/dream-os/appearance.sh sync
+EOF
+
+  cat > "$UNIT_DIR/dream-os-appearance.timer" <<'EOF'
+[Unit]
+Description=Dream OS - periodically resync theme fonts and icons
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=2min
+Unit=dream-os-appearance.service
+
+[Install]
+WantedBy=timers.target
+EOF
+
+  if command -v systemctl >/dev/null 2>&1 && systemctl --user show-environment >/dev/null 2>&1; then
+    systemctl --user daemon-reload
+    systemctl --user enable --now dream-os-appearance.timer
+    say "appearance: sync timer enabled (dream-os-appearance.timer)"
+  else
+    say "appearance: no user systemd session; run 'scripts/appearance.sh sync' after theme changes"
+  fi
+}
+
+remove_sync() {
+  if command -v systemctl >/dev/null 2>&1 && systemctl --user show-environment >/dev/null 2>&1; then
+    systemctl --user disable --now dream-os-appearance.timer 2>/dev/null || true
+    systemctl --user daemon-reload
+  fi
+  rm -f "$UNIT_DIR/dream-os-appearance.timer" "$UNIT_DIR/dream-os-appearance.service"
+  say "appearance: sync timer removed"
+}
+
 apply_all() {
   backup
   theme_radii
@@ -441,6 +529,9 @@ EOF
 
 case "${1:-apply}" in
   apply) apply_all ;;
+  sync) sync ;;
+  install-sync) sync; install_sync ;;
+  remove-sync) remove_sync ;;
   panel) apply_panel ;;
   comp) apply_comp ;;
   gtk) apply_gtk ;;

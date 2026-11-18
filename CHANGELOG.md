@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   apt, dnf, pacman and zypper.
 - Bundled fallback font (Inter) under `assets/fonts/`, installed to `~/.local/share/fonts`.
 - `screenshots/` gallery directory.
+- **Mouse back/forward buttons**: `scripts/mouse-buttons.sh` installs a user
+  service that maps `BTN_SIDE`/`BTN_BACK` to Alt+Left and
+  `BTN_EXTRA`/`BTN_FORWARD` to Alt+Right. Needs the `input` group.
 
 ### Changed
 - Replaced "16 px everywhere" with a concentric radius scale: 6 px small
@@ -42,6 +45,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`pop-os/cosmic-panel#656`) in `docs/perf.md`.
 
 ### Fixed
+- COSMIC regenerated the resolved theme on login and reset its font/icon
+  fields to Open Sans and `Cosmic`, which also reset gsettings. Added a
+  two-minute `dream-os-appearance.timer` that restores the SF Pro Text,
+  JetBrainsMono and DreamOS values only when they drift.
 - Applications icon showed a gear because the COSMIC App Library was mapped
   to WhiteSur's `applications-system` gear. Removed that mapping and added
   stale-link cleanup, so the App Library uses its stock grid icon and Settings

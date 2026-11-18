@@ -24,10 +24,13 @@ rm -fv "$HOME/.config/systemd/user/dream-os-session-save.service" \
 rm -fv "$HOME/.config/systemd/user/dream-os-gtk-radius.service" \
        "$HOME/.config/systemd/user/dream-os-gtk-radius.timer" \
        "$HOME/.config/systemd/user/dream-os-gtk-radius.path" 2>/dev/null || true
+rm -fv "$HOME/.config/systemd/user/dream-os-appearance.service" \
+       "$HOME/.config/systemd/user/dream-os-appearance.timer" 2>/dev/null || true
 
 if command -v systemctl >/dev/null 2>&1; then
   systemctl --user disable --now dream-os-session-save.timer 2>/dev/null || true
   systemctl --user disable --now dream-os-gtk-radius.timer 2>/dev/null || true
+  systemctl --user disable --now dream-os-appearance.timer 2>/dev/null || true
   systemctl --user daemon-reload 2>/dev/null || true
 fi
 

@@ -12,6 +12,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 bash "$ROOT/scripts/appearance.sh" tk
 bash "$ROOT/scripts/appearance.sh" gtk
 bash "$ROOT/scripts/gtk-radius.sh" install-watch --quiet
+bash "$ROOT/scripts/appearance.sh" install-sync
 
 # ---- Qt platform theme -----------------------------------------------------
 envf="$HOME/.config/environment.d/dream-os.conf"

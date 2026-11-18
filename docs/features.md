@@ -39,6 +39,33 @@ Without that, the autostart unit fails with `Permission denied` and the
 three-finger gestures do nothing. `install/04-features.sh` now prints this
 instead of claiming the service started.
 
+## Mouse back/forward buttons
+
+`scripts/mouse-buttons.sh` installs `dream-os-mouse-buttons.service`. It reads
+the Lenovo Gaming Mouse evdev device and maps:
+
+- `BTN_SIDE` / `BTN_BACK` -> `Alt+Left` (back)
+- `BTN_EXTRA` / `BTN_FORWARD` -> `Alt+Right` (forward)
+
+Reading `/dev/input` needs the `input` group, the same requirement as the
+three-finger gestures:
+
+```bash
+sudo usermod -aG input "$USER"
+```
+
+Log out and back in. The service starts automatically. Check it with:
+
+```bash
+journalctl --user -u dream-os-mouse-buttons -f
+```
+
+The mapping happens before the app sees the input, so every app receives the
+same chords. Apps that use Alt+Left/Right (Firefox, Thunar, most browsers and
+file managers) navigate. Apps that do not use those shortcuts ignore them.
+If your mouse reports a different name, set `DREAM_OS_MOUSE_NAME` in the unit's
+`Environment=` line, or edit the default in `scripts/mouse-buttons.py`.
+
 ## Hot corners (macOS-like)
 
 `install/06-hotcorners.sh` installs waycorner with top-left overview,

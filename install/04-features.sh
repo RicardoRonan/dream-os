@@ -84,5 +84,9 @@ else
   echo "libinput-gestures not installed yet (sudo bash install/00-system-apt.sh)."
 fi
 
+# ---- mouse back/forward buttons --------------------------------------------
+# User service maps BTN_SIDE/BTN_EXTRA to Alt+Left/Alt+Right. Needs input group.
+bash "$REPO/scripts/mouse-buttons.sh" || true
+
 pkill -x cosmic-panel 2>/dev/null || true
 echo "Phase 4 done. Hot corners: see docs/features.md (needs a Rust build)."
