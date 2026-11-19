@@ -263,9 +263,9 @@
     frosted: Low,
     frosted_panel: true,
     frosted_applets: false,
-    frosted_windows: false,
+    frosted_windows: true,
     frosted_system_interface: false,
-    frosted_maximized_apps: false,
+    frosted_maximized_apps: true,
     active_hint: 1,
     window_hint: Some((
         red: 0.61960787,

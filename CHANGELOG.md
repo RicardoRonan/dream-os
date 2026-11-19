@@ -39,6 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   8px visible handle. The strip still blocks pointer input over its height.
 
 ### Changed
+- Frosted glass now covers floating and maximized COSMIC windows
+  (`frosted_windows` and `frosted_maximized_apps`), not just the dock. GTK and
+  Electron apps may stay opaque because they draw their own window background.
 - Replaced "16 px everywhere" with a concentric radius scale: 6 px small
   controls, 8 px inputs, 12 px windows, cards and dock, 16 px large sheets.
   The top bar and tiled/maximized windows stay square.

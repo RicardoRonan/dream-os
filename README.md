@@ -34,7 +34,8 @@ See [`rice/README.md`](rice/README.md) for the rice.
   (curated palette + custom picker).
 - **Concentric radius scale** 6 / 8 / 12 / 16 px, 12 px dock; Standard density;
   hairlines instead of shadows; **neutral-grey** active-window ring.
-- Frosted glass limited to the dock (perf-first on integrated GPUs).
+- Frosted glass on the dock, floating windows and maximized COSMIC apps (Low
+  strength); system UI and applet popups stay unblurred.
 - Fonts: **SF Pro Text** (UI, falls back to bundled **Inter**), **JetBrains Mono
   Nerd Font** or **SF Mono** (terminal).
 

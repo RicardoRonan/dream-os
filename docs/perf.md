@@ -12,34 +12,42 @@ recomputed per frame.
 | `frosted_panel` | on | the dock/panel glass (visible only when the dock shows) |
 | `frosted_system_interface` | **off** | the workspace overview / launcher blur the whole desktop each frame — the main lag source |
 | `frosted_applets` | **off** | popups don't need blur |
-| `frosted_windows` | off | windows are opaque |
+| `frosted_windows` | on | floating COSMIC windows use the same glass |
+| `frosted_maximized_apps` | on | maximized COSMIC windows stay translucent |
 | Panel opacity | 1.0 | top bar is opaque (no blur needed) |
 | Dock opacity | 0.5 | translucent; shows the wallpaper through it |
 | Dock size | L (48px icons) | macOS-like; larger icons, same blur area |
 
-So blur is limited to the dock, and only while it is visible (it auto-hides on
-overlap). The workspace overview (Super+W) no longer blurs.
+Blur therefore covers the dock, floating windows and maximized COSMIC windows.
+The top bar stays opaque and the workspace overview (Super+W) does not blur.
+GTK, Electron and XWayland apps decide their own window background, so many of
+them stay opaque even when the theme enables frosted windows.
 
 ## If it still stutters
 
-Turn blur off entirely (keeps the dock translucent, just unblurred):
+Turn blur off entirely (keeps translucent surfaces, just unblurred):
 
 ```bash
 # in configs/cosmic/dream-os-{dark,light}.ron set:
 #   is_frosted: false,
 #   frosted_panel: false,
+#   frosted_windows: false,
+#   frosted_maximized_apps: false,
 # then:
 cd ~/Projects/dream-os && just theme
 ```
 
-Or via Settings -> Desktop -> Appearance -> Frosted glass (uncheck all).
+Or via Settings -> Desktop -> Appearance -> Frosted glass (uncheck all). The
+maximized-apps toggle is not exposed in COSMIC 1.11 Settings; edit the theme
+file or the Builder config for that one.
 
 ## Other notes
 
-- **macOS profile blur:** the top panel stays opaque; only the dock is frosted.
-  Increasing the dock to size L changes icon geometry, not the blur area. If the
-  dock stutters on the iGPU, set `frosted_panel: false` and raise dock opacity
-  to 0.85 as the performance fallback.
+- **macOS profile blur:** the top panel stays opaque. The dock and COSMIC
+  windows are frosted. Increasing the dock to size L changes icon geometry, not
+  the blur area. If large windows stutter, set `frosted_windows: false` and
+  `frosted_maximized_apps: false` first; if the dock itself stutters, set
+  `frosted_panel: false` and raise dock opacity to 0.85.
 - **GTK radius timer:** `dream-os-gtk-radius.timer` runs every two minutes and
   exits immediately when the marked radius block is already present.
 

@@ -1,5 +1,5 @@
 diff --git a/cosmic-panel-bin/src/space/panel_space.rs b/cosmic-panel-bin/src/space/panel_space.rs
-index 38a5bd5..4094210 100644
+index 38a5bd5..bd24067 100644
 --- a/cosmic-panel-bin/src/space/panel_space.rs
 +++ b/cosmic-panel-bin/src/space/panel_space.rs
 @@ -717,6 +717,14 @@ impl PanelSpace {
@@ -9,7 +9,7 @@ index 38a5bd5..4094210 100644
 +        // Keep the auto-hide handle invisible. The exposed strip still receives
 +        // pointer input, but it does not paint the panel background over the
 +        // window behind it.
-+        if matches!(self.visibility, Visibility::Hidden) {
++        if self.config.autohide_enabled() && matches!(self.visibility, Visibility::Hidden) {
 +            let mut color = self.colors.bg_color(self.config.opacity, self.maximized);
 +            color[3] = 0.0;
 +            return color;
