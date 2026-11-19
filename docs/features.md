@@ -66,6 +66,18 @@ file managers) navigate. Apps that do not use those shortcuts ignore them.
 If your mouse reports a different name, set `DREAM_OS_MOUSE_NAME` in the unit's
 `Environment=` line, or edit the default in `scripts/mouse-buttons.py`.
 
+## Cursor consistency
+
+`scripts/cursor-sync.sh` exposes `Vimix-cursors` under `~/.icons` because
+Xcursor, XWayland and Qt do not search `~/.local/share/icons`. It also fills the
+drag and resize cursor names that Vimix omits (`dnd-link`, `ew-resize`,
+`ns-resize`, and the diagonal aliases) with the matching Vimix artwork.
+
+The session exports `XCURSOR_THEME`, `XCURSOR_SIZE=24` and `XCURSOR_PATH`, and
+Flatpak receives the same values plus a read-only `~/.icons`. Restart an
+already-open app, or log out and in, to replace a cursor it loaded before the
+fix.
+
 ## Bluetooth SBC-XQ
 
 `scripts/bt-sbc-xq.sh` installs `dream-os-bt-sbc-xq.service`. It watches BlueZ

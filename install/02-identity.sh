@@ -49,14 +49,17 @@ if ! find_cursor >/dev/null; then
 fi
 CURSOR_NAME="Vimix-cursors"
 if d="$(find_cursor)"; then CURSOR_NAME="$(basename "$d")"; fi
+bash "$REPO/scripts/cursor-sync.sh" "$CURSOR_NAME" || true
 
 # environment for Wayland clients (applies on next login)
 mkdir -p "$CFG/environment.d"
 cat > "$CFG/environment.d/dream-os.conf" <<EOF
 XCURSOR_THEME=$CURSOR_NAME
 XCURSOR_SIZE=24
+XCURSOR_PATH=$HOME/.icons:$HOME/.local/share/icons:/usr/share/icons:/usr/share/pixmaps
 EOF
 gsettings set org.gnome.desktop.interface cursor-theme "$CURSOR_NAME" 2>/dev/null || true
+gsettings set org.gnome.desktop.interface cursor-size 24 2>/dev/null || true
 # Xcursor fallback for Qt/legacy
 mkdir -p "$HOME/.icons/default"
 cat > "$HOME/.icons/default/index.theme" <<EOF

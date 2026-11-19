@@ -61,6 +61,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`pop-os/cosmic-panel#656`) in `docs/perf.md`.
 
 ### Fixed
+- Cursor consistency: expose `Vimix-cursors` under `~/.icons` for Xcursor,
+  XWayland and Qt, fill the missing drag and resize cursor names, export
+  `XCURSOR_PATH`, and pass the same theme and size to Flatpak. Existing apps
+  need a restart or relogin to drop a previously loaded cursor.
 - COSMIC regenerated the resolved theme on login and reset its font/icon
   fields to Open Sans and `Cosmic`, which also reset gsettings. Added a
   two-minute `dream-os-appearance.timer` that restores the SF Pro Text,

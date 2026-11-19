@@ -11,6 +11,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # installs the timer that keeps the radius block after COSMIC rewrites gtk.css.
 bash "$ROOT/scripts/appearance.sh" tk
 bash "$ROOT/scripts/appearance.sh" gtk
+bash "$ROOT/scripts/appearance.sh" cursor
 bash "$ROOT/scripts/gtk-radius.sh" install-watch --quiet
 bash "$ROOT/scripts/appearance.sh" install-sync
 bash "$ROOT/scripts/bt-sbc-xq.sh" install

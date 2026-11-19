@@ -374,6 +374,7 @@ apply_cursor() {
       cursor="Adwaita"
     fi
   fi
+  bash "$REPO/scripts/cursor-sync.sh" "$cursor" || true
   mkdir -p "$HOME/.icons/default" "$HOME/.config/environment.d"
   cat > "$HOME/.icons/default/index.theme" <<EOF
 [Icon Theme]
@@ -383,7 +384,16 @@ EOF
 QT_QPA_PLATFORMTHEME=qt5ct
 XCURSOR_THEME=$cursor
 XCURSOR_SIZE=$CURSOR_SIZE
+XCURSOR_PATH=$HOME/.icons:$HOME/.local/share/icons:/usr/share/icons:/usr/share/pixmaps
 EOF
+  gsettings set org.gnome.desktop.interface cursor-theme "$cursor" 2>/dev/null || true
+  gsettings set org.gnome.desktop.interface cursor-size "$CURSOR_SIZE" 2>/dev/null || true
+  if command -v flatpak >/dev/null 2>&1; then
+    flatpak override --user --filesystem="$HOME/.icons:ro" \
+      --env=XCURSOR_THEME="$cursor" \
+      --env=XCURSOR_SIZE="$CURSOR_SIZE" \
+      --env=XCURSOR_PATH="$HOME/.icons:$HOME/.local/share/icons:/usr/share/icons:/usr/share/pixmaps" >/dev/null 2>&1 || true
+  fi
 }
 
 restart_panel() {
