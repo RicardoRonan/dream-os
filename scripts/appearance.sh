@@ -235,7 +235,7 @@ apply_panel() {
 )
 EOF
   printf 'ThemeDefault\n' > "$PANEL/background"
-  printf '0\n' > "$PANEL/border_radius"
+  printf 'Some(0)\n' > "$PANEL/border_radius_override"
   printf '0.0\n' > "$PANEL/border_width"
   printf 'true\n' > "$PANEL/expand_to_edges"
   printf 'true\n' > "$PANEL/exclusive_zone"
@@ -246,7 +246,7 @@ EOF
   printf '"Panel"\n' > "$PANEL/name"
   printf '%s\n' "$PANEL_OPACITY" > "$PANEL/opacity"
   printf 'All\n' > "$PANEL/output"
-  printf '0\n' > "$PANEL/padding"
+  printf 'Some(0)\n' > "$PANEL/padding_override"
   printf '0.5\n' > "$PANEL/padding_overlap"
   printf 'Some(500)\n' > "$PANEL/autohover_delay_ms"
   printf 'None\n' > "$PANEL/plugins_center"
@@ -256,6 +256,7 @@ EOF
   printf 'None\n' > "$PANEL/size_wings"
   printf '4\n' > "$PANEL/spacing"
 
+  rm -f "$PANEL/border_radius" "$PANEL/padding" "$DOCK/border_radius" "$DOCK/padding"
   printf 'Bottom\n' > "$DOCK/anchor"
   printf 'true\n' > "$DOCK/anchor_gap"
   printf 'Always\n' > "$DOCK/autohide"
@@ -268,7 +269,7 @@ EOF
 )
 EOF
   printf 'ThemeDefault\n' > "$DOCK/background"
-  printf '%s\n' "$DOCK_RADIUS" > "$DOCK/border_radius"
+  printf 'Some(%s)\n' "$DOCK_RADIUS" > "$DOCK/border_radius_override"
   printf '0.0\n' > "$DOCK/border_width"
   printf 'false\n' > "$DOCK/expand_to_edges"
   printf 'false\n' > "$DOCK/exclusive_zone"
@@ -279,7 +280,7 @@ EOF
   printf '"Dock"\n' > "$DOCK/name"
   printf '%s\n' "$DOCK_OPACITY" > "$DOCK/opacity"
   printf 'All\n' > "$DOCK/output"
-  printf '%s\n' "$DOCK_PADDING" > "$DOCK/padding"
+  printf 'Some(%s)\n' "$DOCK_PADDING" > "$DOCK/padding_override"
   printf '0.5\n' > "$DOCK/padding_overlap"
   printf 'Some(500)\n' > "$DOCK/autohover_delay_ms"
   printf 'None\n' > "$DOCK/plugins_wings"
@@ -473,7 +474,7 @@ doctor() {
   say "CosmicTk: header=$(cat "$TK/header_size" 2>/dev/null) density=$(cat "$TK/interface_density" 2>/dev/null) icons=$(cat "$TK/icon_theme" 2>/dev/null) global=$(cat "$TK/apply_theme_global" 2>/dev/null)"
   say "gsettings: font=$(gsettings get org.gnome.desktop.interface font-name 2>/dev/null) mono=$(gsettings get org.gnome.desktop.interface monospace-font-name 2>/dev/null) icons=$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null) cursor=$(gsettings get org.gnome.desktop.interface cursor-theme 2>/dev/null) size=$(gsettings get org.gnome.desktop.interface cursor-size 2>/dev/null)"
   say "panel: size=$(cat "$PANEL/size") margin=$(cat "$PANEL/margin") expand=$(cat "$PANEL/expand_to_edges") opacity=$(cat "$PANEL/opacity") clock_right=$(grep -c CosmicAppletTime "$PANEL/plugins_wings" 2>/dev/null || true)"
-  say "dock: size=$(cat "$DOCK/size") radius=$(cat "$DOCK/border_radius") opacity=$(cat "$DOCK/opacity") spacing=$(cat "$DOCK/spacing") padding=$(cat "$DOCK/padding") autohide=$(cat "$DOCK/autohide") handle=$(grep -o 'handle_size: [0-9]*' "$DOCK/autohide_behavior" 2>/dev/null | cut -d' ' -f2)"
+  say "dock: size=$(cat "$DOCK/size") radius=$(cat "$DOCK/border_radius_override" 2>/dev/null) opacity=$(cat "$DOCK/opacity") spacing=$(cat "$DOCK/spacing") padding=$(cat "$DOCK/padding_override" 2>/dev/null) autohide=$(cat "$DOCK/autohide") handle=$(grep -o 'handle_size: [0-9]*' "$DOCK/autohide_behavior" 2>/dev/null | cut -d' ' -f2)"
   say "comp: $(grep -o 'clip_floating_windows: [a-z]*' "$COMP/appearance_settings" 2>/dev/null)"
   say "icons: WhiteSur=$(test -d "$HOME/.local/share/icons/WhiteSur-grey-dark" && echo yes || echo no) mapped=$(find "$HOME/.local/share/icons/DreamOS/scalable/apps" -type l 2>/dev/null | wc -l)"
   say "gtk-radius marker: $(grep -c 'dream-os-radius' "$HOME/.config/gtk-4.0/gtk.css" 2>/dev/null || true)"
