@@ -1,0 +1,48 @@
+diff --git a/src/shell/element/window.rs b/src/shell/element/window.rs
+index 15277a0..8b0f404 100644
+--- a/src/shell/element/window.rs
++++ b/src/shell/element/window.rs
+@@ -78,6 +78,8 @@ use super::CosmicSurface;
+ 
+ pub const SSD_HEIGHT: i32 = 36;
+ pub const RESIZE_BORDER: i32 = 10;
++/// Extra distance along an edge that classifies the pointer as a corner.
++pub const CORNER_GRAB: i32 = 28;
+ 
+ #[derive(Clone, PartialEq, Eq, Hash)]
+ pub struct CosmicWindow(pub(super) IcedElement<CosmicWindowInternal>);
+@@ -124,17 +126,27 @@ impl Focus {
+     ) -> Option<Focus> {
+         let geo = surface.geometry();
+         let loc = location.to_i32_floor::<i32>() - geo.loc;
+-        if loc.y < 0 && loc.x < 0 {
++        let bottom = header_height + geo.size.h;
++        // The four corner zones extend CORNER_GRAB pixels along each edge.
++        // The border itself stays RESIZE_BORDER pixels thick, so corners are
++        // much easier to catch without making every edge grab area larger.
++        if (loc.y < 0 && loc.x < CORNER_GRAB) || (loc.x < 0 && loc.y < CORNER_GRAB) {
+             Some(Focus::ResizeTopLeft)
+-        } else if loc.y < 0 && loc.x >= geo.size.w {
++        } else if (loc.y < 0 && loc.x >= geo.size.w - CORNER_GRAB)
++            || (loc.x >= geo.size.w && loc.y < CORNER_GRAB)
++        {
+             Some(Focus::ResizeTopRight)
+-        } else if loc.y < 0 {
+-            Some(Focus::ResizeTop)
+-        } else if loc.y >= header_height + geo.size.h && loc.x < 0 {
++        } else if (loc.y >= bottom && loc.x < CORNER_GRAB)
++            || (loc.x < 0 && loc.y >= bottom - CORNER_GRAB)
++        {
+             Some(Focus::ResizeBottomLeft)
+-        } else if loc.y >= header_height + geo.size.h && loc.x >= geo.size.w {
++        } else if (loc.y >= bottom && loc.x >= geo.size.w - CORNER_GRAB)
++            || (loc.x >= geo.size.w && loc.y >= bottom - CORNER_GRAB)
++        {
+             Some(Focus::ResizeBottomRight)
+-        } else if loc.y >= header_height + geo.size.h {
++        } else if loc.y < 0 {
++            Some(Focus::ResizeTop)
++        } else if loc.y >= bottom {
+             Some(Focus::ResizeBottom)
+         } else if loc.x < 0 {
+             Some(Focus::ResizeLeft)

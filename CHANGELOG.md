@@ -37,6 +37,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   auto-hide strip transparent. `just panel-handle` installs it and raises the
   hover target to 16px; `just panel-handle-off` restores the stock panel and the
   8px visible handle. The strip still blocks pointer input over its height.
+- **Wider corner resize (optional)**: `patches/cosmic-comp-corner-grab.patch`
+  and `scripts/compositor-corner-grab.sh` build a local cosmic-comp with 28px
+  corner zones while keeping the 10px edge band. `just compositor-corners`
+  installs it for the next login; `just compositor-corners-off` removes it.
 
 ### Changed
 - Frosted glass now covers floating and maximized COSMIC windows

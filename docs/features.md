@@ -142,6 +142,31 @@ COSMIC default. The patch is pinned to cosmic-panel `160a951`; rerun
 receives pointer input, so the bottom 16px of a window cannot be clicked
 through. The upstream reveal bug (`cosmic-panel#656`) is separate.
 
+## Wider corner resize (optional compositor patch)
+
+COSMIC 1.11 hardcodes a 10px resize border and has no setting for the corner
+grab size. `patches/cosmic-comp-corner-grab.patch` keeps the 10px edge band but
+extends each corner zone 28px along the edges, so the diagonal resize cursor
+appears earlier and corners are much easier to catch.
+
+```bash
+just compositor-corners
+```
+
+The patched compositor is installed to `~/.local/bin/cosmic-comp` and takes
+effect after logout. The current session keeps running the stock compositor
+until then. If the session fails to start, switch to a TTY (Ctrl+Alt+F3) and
+run:
+
+```bash
+rm -f ~/.local/bin/cosmic-comp
+```
+
+Then log back in or reboot. `just compositor-corners-off` removes the override.
+The patch is pinned to the cosmic-comp commit in COSMIC 1.11.0; rebase it after
+a compositor update. Build dependencies: `libseat-dev libdisplay-info-dev
+libegl-dev libgles-dev`.
+
 ## Hot corners (macOS-like)
 
 `install/06-hotcorners.sh` installs waycorner with top-left overview,

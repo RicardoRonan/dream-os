@@ -69,6 +69,14 @@ panel-handle:
 panel-handle-off:
     bash scripts/panel-handle.sh remove
 
+# Wider window corner grab zones (patched compositor; log out/in to apply)
+compositor-corners:
+    bash scripts/compositor-corner-grab.sh install
+
+# Remove the local cosmic-comp override
+compositor-corners-off:
+    bash scripts/compositor-corner-grab.sh remove
+
 # Keyboard shortcuts (Super+Space launcher, lock, window arrangement)
 shortcuts:
     bash install/07-shortcuts.sh
