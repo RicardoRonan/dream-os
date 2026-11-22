@@ -58,6 +58,7 @@ cat > "$DIR/custom" <<EOF
     (modifiers: [Super], key: "y"): ToggleTiling,
     (modifiers: [Super], key: "g"): ToggleWindowFloating,
     (modifiers: [Super], key: "x"): SwapWindow,
+    (modifiers: [Super, Shift], key: "p", description: Some("Sticky window (all workspaces)")): ToggleSticky,
     (modifiers: [Super], key: "m"): Maximize,
     (modifiers: [Super], key: "F11"): Fullscreen,
     (modifiers: [Super], key: "r"): Resizing(Outwards),

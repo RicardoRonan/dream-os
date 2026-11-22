@@ -43,6 +43,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   installs it for the next login; `just compositor-corners-off` removes it.
 
 ### Changed
+- Added `Super+Shift+P` for the sticky-window action (visible on all
+  workspaces). This is separate from always-on-top, which COSMIC 1.11 does not
+  expose.
 - Frosted glass now covers floating and maximized COSMIC windows
   (`frosted_windows` and `frosted_maximized_apps`), not just the dock. GTK and
   Electron apps may stay opaque because they draw their own window background.

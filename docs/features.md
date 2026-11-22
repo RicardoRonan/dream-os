@@ -142,6 +142,12 @@ COSMIC default. The patch is pinned to cosmic-panel `160a951`; rerun
 receives pointer input, so the bottom 16px of a window cannot be clicked
 through. The upstream reveal bug (`cosmic-panel#656`) is separate.
 
+## Sticky windows
+
+`Super+Shift+P` toggles the active window's sticky state, keeping it visible on
+all workspaces. This is not always-on-top; COSMIC 1.11 has no always-on-top
+action.
+
 ## Wider corner resize (optional compositor patch)
 
 COSMIC 1.11 hardcodes a 10px resize border and has no setting for the corner
