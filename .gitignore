@@ -8,3 +8,5 @@
 # editor / OS cruft
 .DS_Store
 *.swp
+__pycache__/
+*.pyc
