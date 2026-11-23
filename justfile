@@ -61,6 +61,24 @@ mouse:
 bt-xq:
     bash scripts/bt-sbc-xq.sh install
 
+# DualShock 4 battery tray ( tray icon, charging label, low-battery notify )
+ds4:
+    bash scripts/ds4-battery-tray.sh install
+ds4-off:
+    bash scripts/ds4-battery-tray.sh remove
+
+# Local cosmic-launcher with a subtle Alt+Tab fade/settle animation
+launcher-alt-tab:
+    bash scripts/launcher-alt-tab-animation.sh install
+launcher-alt-tab-off:
+    bash scripts/launcher-alt-tab-animation.sh remove
+
+# Disable USB autosuspend on the Intel AX201 Bluetooth adapter
+bt-autosuspend:
+    bash scripts/bt-no-autosuspend.sh install
+bt-autosuspend-off:
+    bash scripts/bt-no-autosuspend.sh remove
+
 # Build a local cosmic-panel that hides the auto-hide handle until hover
 panel-handle:
     bash scripts/panel-handle.sh install

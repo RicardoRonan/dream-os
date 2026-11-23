@@ -1,0 +1,162 @@
+diff --git a/src/app.rs b/src/app.rs
+index 0dcac0e..91ea9e6 100644
+--- a/src/app.rs
++++ b/src/app.rs
+@@ -50,7 +50,9 @@ use std::path::Path;
+ use std::rc::Rc;
+ use std::str::FromStr;
+ use std::sync::{Arc, LazyLock, OnceLock};
+-use std::time::Instant;
++use std::time::{Duration, Instant};
++
++const ALT_TAB_ANIMATION_DURATION: Duration = Duration::from_millis(140);
+ use tokio::sync::mpsc;
+ use tracing::{debug, error, info};
+ 
+@@ -159,6 +161,7 @@ pub struct CosmicLauncher {
+     last_hide: Instant,
+     alt_tab: bool,
+     alt_tab_released: bool,
++    anim_start: Option<Instant>,
+     window_id: window::Id,
+     queue: VecDeque<Message>,
+     result_ids: Vec<Id>,
+@@ -195,12 +198,21 @@ pub enum Message {
+     ),
+     AltTab,
+     ShiftAltTab,
++    Tick,
+     Opened(Size, window::Id),
+     AltRelease,
+     Overlap(OverlapNotifyEvent),
+ }
+ 
+ impl CosmicLauncher {
++    fn animation_progress(&self) -> f32 {
++        let Some(start) = self.anim_start else {
++            return 1.0;
++        };
++        let t = (start.elapsed().as_secs_f32() / ALT_TAB_ANIMATION_DURATION.as_secs_f32()).min(1.0);
++        1.0 - (1.0 - t).powi(3)
++    }
++
+     fn request(&self, r: launcher::Request) {
+         debug!("request: {:?}", r);
+         if let Some(tx) = &self.tx {
+@@ -409,6 +421,7 @@ impl cosmic::Application for CosmicLauncher {
+             last_hide: Instant::now(),
+             alt_tab: false,
+             alt_tab_released: false,
++            anim_start: None,
+             window_id: SurfaceId::unique(),
+             queue: VecDeque::new(),
+             result_ids: (0..10)
+@@ -437,6 +450,15 @@ impl cosmic::Application for CosmicLauncher {
+     #[allow(clippy::too_many_lines)]
+     fn update(&mut self, message: Message) -> Task<Self::Message> {
+         match message {
++            Message::Tick => {
++                if self
++                    .anim_start
++                    .is_some_and(|start| start.elapsed() >= ALT_TAB_ANIMATION_DURATION)
++                {
++                    self.anim_start = None;
++                }
++                return Task::none();
++            }
+             Message::InputChanged(value) => {
+                 self.input_value.clone_from(&value);
+                 self.focused = 0;
+@@ -885,6 +907,7 @@ impl cosmic::Application for CosmicLauncher {
+                             return self.update(Message::AltTab);
+                         }
+ 
++                        self.anim_start = Some(Instant::now());
+                         self.alt_tab = true;
+                         self.alt_tab_released = false;
+                         self.request(launcher::Request::Search(String::new()));
+@@ -901,6 +924,7 @@ impl cosmic::Application for CosmicLauncher {
+                             return self.update(Message::ShiftAltTab);
+                         }
+ 
++                        self.anim_start = Some(Instant::now());
+                         self.alt_tab = true;
+                         self.alt_tab_released = false;
+                         self.request(launcher::Request::Search(String::new()));
+@@ -929,6 +953,7 @@ impl cosmic::Application for CosmicLauncher {
+     #[allow(clippy::too_many_lines)]
+     fn view_window(&self, id: SurfaceId) -> Element<'_, Self::Message> {
+         if id == self.window_id {
++            let anim = self.animation_progress();
+             let launcher_entry = text_input::search_input(fl!("type-to-search"), &self.input_value)
+                 .on_input(Message::InputChanged)
+                 .on_paste(Message::InputChanged)
+@@ -1152,30 +1177,34 @@ impl cosmic::Application for CosmicLauncher {
+                 content = content.push(components::list::column(buttons));
+             }
+ 
++            let inset = ((1.0 - anim) * 8.0) as u16;
+             let window = Column::new().push(
+                 container(id_container(content, MAIN_ID.clone()))
+                     .width(Length::Shrink)
+                     .height(Length::Shrink)
+-                    .class(Container::Custom(Box::new(|theme| {
++                    .class(Container::Custom(Box::new(move |theme| {
+                         let t = theme.cosmic();
+                         let radii = t.radius_s().map(|x| if x < 4.0 { x } else { x + 4.0 });
+ 
++                        let mut bg = Color::from(t.background(theme.transparent).base);
++                        bg.a *= anim;
++                        let mut border_color = Color::from(t.bg_divider());
++                        border_color.a *= anim;
++
+                         container::Style {
+                             text_color: Some(t.on_bg_color().into()),
+                             icon_color: Some(t.on_bg_color().into()),
+-                            background: Some(
+-                                Color::from(t.background(theme.transparent).base).into(),
+-                            ),
++                            background: Some(bg.into()),
+                             border: Border {
+                                 radius: radii.into(),
+                                 width: 1.0,
+-                                color: t.bg_divider().into(),
++                                color: border_color,
+                             },
+                             shadow: Shadow::default(),
+                             snap: true,
+                         }
+                     })))
+-                    .padding([24, 32]),
++                    .padding([24u16 + inset, 32u16 + inset]),
+             );
+ 
+             let autosize = autosize::autosize(
+@@ -1237,7 +1266,7 @@ impl cosmic::Application for CosmicLauncher {
+     }
+ 
+     fn subscription(&self) -> Subscription<Self::Message> {
+-        Subscription::batch(vec![
++        let base = Subscription::batch(vec![
+             launcher::subscription(0).map(Message::LauncherEvent),
+             listen_raw(|e, status, id| match e {
+                 cosmic::iced::Event::PlatformSpecific(PlatformSpecific::Wayland(
+@@ -1305,6 +1334,17 @@ impl cosmic::Application for CosmicLauncher {
+                 }
+                 _ => None,
+             }),
+-        ])
++        ]);
++
++        let mut subscriptions = vec![base];
++        if self.alt_tab
++            && self
++                .anim_start
++                .is_some_and(|start| start.elapsed() < ALT_TAB_ANIMATION_DURATION)
++        {
++            subscriptions
++                .push(cosmic::iced::time::every(Duration::from_millis(16)).map(|_| Message::Tick));
++        }
++        Subscription::batch(subscriptions)
+     }
+ }
