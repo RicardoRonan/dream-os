@@ -88,11 +88,24 @@ just macos-revert   # restore the last live backup
 theme radii, CosmicTk, panel, dock, GTK 3/4, Flatpak and gsettings in one pass.
 The core Dream OS theme still works without it.
 
+## Migrating to the theme
+
+`just migrate` runs an interactive setup wizard that applies the Dream OS
+theme on top of a stock COSMIC desktop (theme seeds, identity, panel + dock,
+cross-app sync, WhiteSur icons + macOS structure, verify). Each step asks for
+confirmation; `--yes` runs everything and `migrate-step N` runs one step:
+
+```bash
+just migrate          # full migration with prompts
+just migrate-list     # list the steps
+just migrate-step 3   # run only step 3 (desktop / panel + dock)
+```
+
 ## Layout
 
 ```
 bootstrap.sh         entrypoint
-justfile             install / theme / macos / rice / uninstall / doctor / system
+justfile             install / theme / migrate / macos / rice / uninstall / doctor / system
 install/             phased installers + lib/
 configs/cosmic/      Dream OS .ron theme exports (source of truth)
 configs/icons/       COSMIC app ID -> WhiteSur icon map

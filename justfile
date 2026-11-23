@@ -187,6 +187,18 @@ doctor:
 system:
     sudo bash install/00-system-apt.sh
 
+# Setup wizard: migrate to the Dream OS theme (theme, identity, panel/dock, cross-app sync, macOS structure, verify)
+migrate:
+    bash scripts/theme-wizard.sh
+
+# Run a single migrate wizard step by number
+migrate-step N:
+    bash scripts/theme-wizard.sh --step N
+
+# List migrate wizard steps
+migrate-list:
+    bash scripts/theme-wizard.sh --list
+
 # Show available recipes
 default:
     @just --list
