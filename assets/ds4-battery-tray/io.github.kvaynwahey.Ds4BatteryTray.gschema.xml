@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="io.github.kvaynwahey.Ds4BatteryTray" path="/io/github/kvaynwahey/Ds4BatteryTray/">
+    <key name="interval" type="i">
+      <default>12</default>
+      <summary>Poll interval</summary>
+      <description>Seconds between controller battery polls</description>
+    </key>
+    <key name="autostart" type="b">
+      <default>false</default>
+      <summary>Autostart</summary>
+      <description>Start the tray app on login</description>
+    </key>
+  </schema>
+</schemalist>
