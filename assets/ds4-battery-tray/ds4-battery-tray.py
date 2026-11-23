@@ -32,7 +32,7 @@ except (ValueError, ImportError):
         sys.stderr.write("Neither AppIndicator3 nor AyatanaAppIndicator3 found.\n")
         sys.exit(1)
 
-from gi.repository import Gtk, GLib, Gio, GdkPixbuf
+from gi.repository import Gtk, GLib, Gio
 
 # ----------------------------------------------------------------------
 # Constants
@@ -494,16 +494,20 @@ class DS4BatteryTrayApp:
         configured pin diameter when the setting is below 10 of 10."""
         if self._read_diameter() >= 10:
             return icon_name
+        size = self.diameter_px()
         try:
-            pix = GdkPixbuf.Pixbuf.new_from_icon_name(icon_name, self.diameter_px())
-            if pix is not None:
+            pix = Gtk.IconTheme.get_default().load_icon(icon_name, size, 0)
+        except Exception:
+            pix = None
+        if pix is not None and pix.get_width() > 0:
+            try:
                 outdir = os.path.expanduser("~/.cache/dream-os/ds4-tray")
                 os.makedirs(outdir, exist_ok=True)
-                path = os.path.join(outdir, f"{icon_name.replace('/', '_')}-{self.diameter_px()}.png")
-                if pix.save(path, "png"):
+                path = os.path.join(outdir, f"{icon_name.replace('/', '_')}-{size}.png")
+                if pix.savev(path, "png", [], []):
                     return path
-        except Exception:
-            pass
+            except Exception:
+                pass
         return icon_name
 
     # ------------------------------------------------------------------

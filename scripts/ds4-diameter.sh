@@ -16,4 +16,4 @@ value="${1:-5}"
 gsettings --schemadir "$SCHEMA_DIR" set io.github.kvaynwahey.Ds4BatteryTray diameter "$value"
 glib-compile-schemas "$SCHEMA_DIR"
 systemctl --user restart ds4-battery-tray.service 2>/dev/null || true
-echo "DS4 tray pin diameter: $value of 10 (dock icons are 48px -> $(python3 -c "print(int(48 * $value / 10))")px)."
+echo "DS4 tray pin diameter: $value of 10 (dock icons are 48px -> $(python3 -c "print(int(round(48 * $value / 10)))")px)."
