@@ -11,5 +11,11 @@
       <summary>Autostart</summary>
       <description>Start the tray app on login</description>
     </key>
+    <key name="diameter" type="i">
+      <default>5</default>
+      <range min="1" max="10"/>
+      <summary>Tray pin icon diameter</summary>
+      <description>Pin icon diameter in tenths of the dock icon diameter. Dock icons are 48px, so 5 = 24px.</description>
+    </key>
   </schema>
 </schemalist>

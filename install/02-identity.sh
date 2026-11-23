@@ -11,10 +11,12 @@ mkdir -p "$TK"
 # ---- wallpaper -------------------------------------------------------------
 BG="$HOME/.local/share/backgrounds/dream-os"
 mkdir -p "$BG"
-cp "$REPO"/assets/wallpapers/*.svg "$BG/"
+for f in "$REPO"/assets/wallpapers/*.svg; do
+  [ -e "$BG/$(basename "$f")" ] || cp "$f" "$BG/"
+done
 CB="$CFG/cosmic/com.system76.CosmicBackground/v1"
 mkdir -p "$CB"
-cat > "$CB/all" <<EOF
+[ -f "$CB/all" ] || cat > "$CB/all" <<EOF
 (
     output: "all",
     source: Path("$BG/dream-os-dark.svg"),
@@ -82,7 +84,7 @@ if [ -d /usr/share/icons/Papirus ]; then
   gsettings set org.gnome.desktop.interface icon-theme 'DreamOS' 2>/dev/null || true
   # Install the override theme here so the setting never points at a missing
   # theme on a fresh install (09-power-icons re-copies it later).
-  if [ -d "$REPO/assets/icons/DreamOS" ]; then
+  if [ -d "$REPO/assets/icons/DreamOS" ] && [ ! -d "$HOME/.local/share/icons/DreamOS" ]; then
     mkdir -p "$HOME/.local/share/icons/DreamOS"
     cp -a "$REPO/assets/icons/DreamOS/." "$HOME/.local/share/icons/DreamOS/"
     if [ -d "$HOME/.local/share/icons/WhiteSur-grey-dark" ]; then
@@ -120,7 +122,7 @@ fi
 # Bundle Inter (SIL OFL) so UI text looks right where SF Pro Text is absent.
 if [ -d "$REPO/assets/fonts" ]; then
   mkdir -p "$HOME/.local/share/fonts"
-  cp -r "$REPO/assets/fonts/." "$HOME/.local/share/fonts/" 2>/dev/null || true
+  [ -d "$HOME/.local/share/fonts/Inter" ] || cp -r "$REPO/assets/fonts/." "$HOME/.local/share/fonts/" 2>/dev/null || true
   fc-cache -f >/dev/null 2>&1 || true
 fi
 

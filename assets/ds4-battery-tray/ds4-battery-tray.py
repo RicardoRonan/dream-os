@@ -32,7 +32,7 @@ except (ValueError, ImportError):
         sys.stderr.write("Neither AppIndicator3 nor AyatanaAppIndicator3 found.\n")
         sys.exit(1)
 
-from gi.repository import Gtk, GLib, Gio
+from gi.repository import Gtk, GLib, Gio, GdkPixbuf
 
 # ----------------------------------------------------------------------
 # Constants
@@ -42,6 +42,34 @@ DEFAULT_POLL_INTERVAL = 12
 POWER_SUPPLY_ROOT = "/sys/class/power_supply"
 LOW_BATTERY_THRESHOLD = 20  # percent
 CONTROLLER_MAC = "AC:FD:93:26:54:FC"  # paired Wireless Controller
+DOCK_ICON_PX = 48  # dream-os dock icons are 48px (see scripts/appearance.sh)
+DEFAULT_DIAMETER = 5  # pin icon diameter: 5 of 10 where the dock is 48px = 24px
+
+# The DS4 buttons, as bound by the xboxdrv map in scripts/ds4-xboxdrv.sh
+# (plus the controller-native buttons: touchpad, accelerometer).
+BOUND_BUTTONS = (
+    "Cross (a)",
+    "Circle (b)",
+    "Square (x)",
+    "Triangle (y)",
+    "L1 (lb)",
+    "R1 (rb)",
+    "L2 (lt)",
+    "R2 (rt)",
+    "Touchpad",
+    "Touchpad click",
+    "PS (guide)",
+    "Share (back)",
+    "Options (start)",
+    "D-Pad up",
+    "D-Pad down",
+    "D-Pad left",
+    "D-Pad right",
+    "Left Stick (L3)",
+    "Right Stick (R3)",
+    "Accelerometer (6-axis)",
+)
+assert len(BOUND_BUTTONS) == 20
 
 # Controller detection patterns
 CONTROLLER_NODE_PATTERNS = [
@@ -270,6 +298,13 @@ class BatteryWindow(Gtk.Window):
         self.state_label = Gtk.Label(label="State: unknown")
         vbox.pack_start(self.state_label, False, False, 0)
 
+        # Bound buttons (the 20 DS4 buttons, as bound by xboxdrv)
+        self.bound_label = Gtk.Label(
+            label=f"Bound buttons ({len(BOUND_BUTTONS)}): " + ", ".join(BOUND_BUTTONS)
+        )
+        self.bound_label.set_wrapped(True)
+        vbox.pack_start(self.bound_label, False, False, 0)
+
         # Close button
         close_btn = Gtk.Button(label="Close")
         close_btn.connect("clicked", self.on_close)
@@ -319,6 +354,15 @@ class SettingsDialog(Gtk.Dialog):
         self.autostart_check.set_active(settings.get_boolean("autostart", False))
         grid.attach(self.autostart_check, 0, 1, 2, 1)
 
+        # Pin icon diameter (1-10 of the dock icon)
+        lbl = Gtk.Label(label="Pin icon diameter (1-10):")
+        grid.attach(lbl, 0, 2, 1, 1)
+        self.diameter_spin = Gtk.SpinButton.new_with_range(1, 10, 1)
+        self.diameter_spin.set_value(
+            settings.get_int("diameter", DEFAULT_DIAMETER)
+        )
+        grid.attach(self.diameter_spin, 1, 2, 1, 1)
+
         # Buttons
         self.add_button("Cancel", Gtk.ResponseType.CANCEL)
         self.add_button("Save", Gtk.ResponseType.OK)
@@ -327,6 +371,7 @@ class SettingsDialog(Gtk.Dialog):
     def save(self):
         self.settings.set_int("interval", int(self.interval_spin.get_value()))
         self.settings.set_boolean("autostart", self.autostart_check.get_active())
+        self.settings.set_int("diameter", int(self.diameter_spin.get_value()))
         # If autostart changed, update the .desktop file in ~/.config/autostart
         if self.autostart_check.get_active():
             self._enable_autostart()
@@ -420,6 +465,9 @@ class DS4BatteryTrayApp:
         self._bt_busy = False
         self.mac = CONTROLLER_MAC
 
+        # Pin icon diameter (5 of 10 by default; dock icons are 48px)
+        self.diameter = self._read_diameter()
+
         # Start polling thread
         self._stop_event = threading.Event()
         self._poll_thread = threading.Thread(target=self._poll_loop, daemon=True)
@@ -430,6 +478,33 @@ class DS4BatteryTrayApp:
     def start(self):
         self._poll_thread.start()
         Gtk.main()
+
+    def _read_diameter(self):
+        try:
+            d = int(self.settings.get_int("diameter", DEFAULT_DIAMETER))
+        except (TypeError, ValueError):
+            d = DEFAULT_DIAMETER
+        return max(1, min(10, d))
+
+    def diameter_px(self):
+        return max(1, int(round(DOCK_ICON_PX * self._read_diameter() / 10)))
+
+    def _tray_icon(self, icon_name):
+        """Return the icon to use: the symbolic name, or a PNG rendered at the
+        configured pin diameter when the setting is below 10 of 10."""
+        if self._read_diameter() >= 10:
+            return icon_name
+        try:
+            pix = GdkPixbuf.Pixbuf.new_from_icon_name(icon_name, self.diameter_px())
+            if pix is not None:
+                outdir = os.path.expanduser("~/.cache/dream-os/ds4-tray")
+                os.makedirs(outdir, exist_ok=True)
+                path = os.path.join(outdir, f"{icon_name.replace('/', '_')}-{self.diameter_px()}.png")
+                if pix.save(path, "png"):
+                    return path
+        except Exception:
+            pass
+        return icon_name
 
     # ------------------------------------------------------------------
     # Polling loop
@@ -459,7 +534,7 @@ class DS4BatteryTrayApp:
         # Update tray icon and label
         if reading.present and reading.percentage is not None:
             pct = max(0, min(100, reading.percentage))
-            icon = self._icon_for(pct, reading.state)
+            icon = self._tray_icon(self._icon_for(pct, reading.state))
             power_txt = {
                 "charging": "Charging",
                 "full": "Fully charged",
@@ -489,7 +564,7 @@ class DS4BatteryTrayApp:
             else:
                 self._low_battery_notified = False
         else:
-            self.indicator.set_icon_full("input-gaming-symbolic", "No controller")
+            self.indicator.set_icon_full(self._tray_icon("input-gaming-symbolic"), "No controller")
             self.indicator.set_label("", " 100%")
             self.indicator.set_title("DualShock 4 Battery: searching")
             if bt_connected:

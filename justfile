@@ -67,6 +67,58 @@ ds4:
 ds4-off:
     bash scripts/ds4-battery-tray.sh remove
 
+# DS4 tray pin icon diameter (1-10 of the 48px dock icons; default 5 = 24px)
+ds4-diameter:
+    bash scripts/ds4-diameter.sh
+# DS4 -> virtual Xbox 360 pad bridge (needs xboxdrv: sudo apt install -y xboxdrv)
+ds4-xboxdrv:
+    bash scripts/ds4-xboxdrv.sh install
+
+# App auto-updater (timer + run)
+app-updates:
+    systemctl --user enable --now app-updates.timer
+    ~/.local/bin/app-updates || true
+
+# Vitals system monitor (vitals-daemon + vitals-cosmic)
+vitals:
+    pgrep -x vitals-daemon >/dev/null || setsid -f ~/.local/bin/vitals-daemon
+    pgrep -x vitals-cosmic >/dev/null || setsid -f ~/.local/bin/vitals-cosmic
+
+# Waybar status bar
+waybar:
+    systemctl --user enable --now waybar.service
+
+# Waycorner macOS-style hot corners
+waycorner:
+    pgrep -x waycorner >/dev/null || setsid -f ~/.local/bin/waycorner --config ~/.config/waycorner/config.toml
+
+# Spotify client
+spotify:
+    pgrep -x spotify >/dev/null || setsid -f ~/.local/bin/spotify
+
+# Subtitle manager (autofetch path + service)
+subs:
+    systemctl --user enable --now subs-autofetch.path
+    systemctl --user enable --now subs-autofetch.service
+    systemctl --user restart subs-autofetch.service 2>/dev/null || true
+
+# HDMI resume fix
+hdmi-resume:
+    systemctl --user enable --now hdmi-resume.service
+
+# Weylus: remote screen share (circles? local build)
+weylus:
+    systemctl --user enable --now weylus.service
+
+# Restore stock mako notifications (COSMIC owns the Notifications name)
+mako:
+    systemctl --user unmask --now mako.service
+
+# Clipboard manager history
+clip:
+    systemctl --user enable --now cliphist.service
+    pgrep -x clip-pick >/dev/null || true
+
 # Local cosmic-launcher with a subtle Alt+Tab fade/settle animation
 launcher-alt-tab:
     bash scripts/launcher-alt-tab-animation.sh install

@@ -5,6 +5,15 @@
 # left alone until the device reconnects.
 set -euo pipefail
 
+# Trail of BTXQ (BT audio/bluetooth profile) events: journal + ~/.local/share/dream-os/bt-xq-trail.log
+TRAIL="$HOME/.local/share/dream-os/bt-xq-trail.log"
+trail() {
+  local msg="$1"
+  mkdir -p "$(dirname "$TRAIL")" 2>/dev/null || true
+  logger -t dream-os-bt-xq "$msg" 2>/dev/null || true
+  printf '%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$msg" >> "$TRAIL" 2>/dev/null || true
+}
+
 apply_card() {
   local card="$1" info active
   info="$(pactl list cards 2>/dev/null | awk -v card="$card" '
@@ -15,12 +24,15 @@ apply_card() {
   printf '%s\n' "$info" | grep -q 'a2dp-sink-sbc_xq:' || return 0
   active="$(printf '%s\n' "$info" | sed -n 's/^[[:space:]]*Active Profile: //p' | head -1)"
   [ "$active" = "a2dp-sink-sbc_xq" ] && return 0
-  pactl set-card-profile "$card" a2dp-sink-sbc_xq 2>/dev/null \
-    && echo "bt-sbc-xq: $card -> a2dp-sink-sbc_xq"
+  if pactl set-card-profile "$card" a2dp-sink-sbc_xq 2>/dev/null; then
+    echo "bt-sbc-xq: $card -> a2dp-sink-sbc_xq"
+    trail "switched $card -> a2dp-sink-sbc_xq"
+  fi
 }
 
 apply_all() {
   local card
+  trail "apply_all"
   for card in $(pactl list short cards 2>/dev/null | awk '/bluez_card/ {print $2}'); do
     apply_card "$card"
   done
