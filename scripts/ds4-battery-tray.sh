@@ -13,8 +13,27 @@ SCHEMA_DIR="$HOME/.local/share/glib-2.0/schemas"
 SCHEMA="$SCHEMA_DIR/io.github.kvaynwahey.Ds4BatteryTray.gschema.xml"
 UNIT="$HOME/.config/systemd/user/ds4-battery-tray.service"
 AUTOSTART="$HOME/.config/autostart/ds4-battery-tray.desktop"
+ICON_CACHE="$HOME/.cache/dream-os/ds4-tray"
+STATUS_HUB="io.github.marcelogomes90.cosmic-ext-applet-status-hub"
 
 say() { printf '%s\n' "$*"; }
+
+# Status Hub is a Flatpak. Without this override it cannot read the tray icon
+# PNGs from the host cache and falls back to the generic application block.
+allow_status_hub_icons() {
+  command -v flatpak >/dev/null 2>&1 || return 0
+  flatpak info --user "$STATUS_HUB" >/dev/null 2>&1 || return 0
+  if ! flatpak override --user --show "$STATUS_HUB" 2>/dev/null | grep -Fq "$ICON_CACHE"; then
+    flatpak override --user --filesystem="$ICON_CACHE:ro" "$STATUS_HUB" >/dev/null 2>&1 || \
+      say "Could not grant Status Hub read access to $ICON_CACHE"
+  fi
+}
+
+revoke_status_hub_icons() {
+  command -v flatpak >/dev/null 2>&1 || return 0
+  flatpak info --user "$STATUS_HUB" >/dev/null 2>&1 || return 0
+  flatpak override --user --nofilesystem="$ICON_CACHE" "$STATUS_HUB" >/dev/null 2>&1 || true
+}
 
 check_gir() {
   if ! python3 -c 'import gi; gi.require_version("AyatanaAppIndicator3","0.1")' >/dev/null 2>&1; then
@@ -30,6 +49,7 @@ install_tray() {
   install -m755 "$ASSET/ds4-battery-tray.py" "$BIN"
   install -m644 "$ASSET/io.github.kvaynwahey.Ds4BatteryTray.gschema.xml" "$SCHEMA"
   glib-compile-schemas "$SCHEMA_DIR"
+  allow_status_hub_icons
 
   # The service is the single source of startup. Do not keep an XDG duplicate.
   rm -f "$AUTOSTART"
@@ -68,6 +88,7 @@ remove_tray() {
   fi
   rm -f "$UNIT" "$BIN" "$AUTOSTART"
   rm -f "$SCHEMA"
+  revoke_status_hub_icons
   [ -d "$SCHEMA_DIR" ] && glib-compile-schemas "$SCHEMA_DIR" 2>/dev/null || true
   say "DS4 tray removed."
 }
@@ -80,6 +101,13 @@ status_tray() {
     say "active:  $(systemctl --user is-active ds4-battery-tray.service 2>/dev/null || echo unknown)"
   fi
   say "autostart: $(gsettings --schemadir "$SCHEMA_DIR" get io.github.kvaynwahey.Ds4BatteryTray autostart 2>/dev/null || echo unknown)"
+  if command -v flatpak >/dev/null 2>&1; then
+    if flatpak override --user --show "$STATUS_HUB" 2>/dev/null | grep -Fq "$ICON_CACHE"; then
+      say "status hub icon access: granted"
+    else
+      say "status hub icon access: missing (rerun install)"
+    fi
+  fi
 }
 
 case "${1:-status}" in
