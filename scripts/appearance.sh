@@ -381,11 +381,13 @@ apply_cursor() {
 [Icon Theme]
 Inherits=$cursor
 EOF
+  # Avoid i915 CCS buffers that cosmic-comp cannot import.
   cat > "$HOME/.config/environment.d/dream-os.conf" <<EOF
 QT_QPA_PLATFORMTHEME=qt5ct
 XCURSOR_THEME=$cursor
 XCURSOR_SIZE=$CURSOR_SIZE
 XCURSOR_PATH=$HOME/.icons:$HOME/.local/share/icons:/usr/share/icons:/usr/share/pixmaps
+INTEL_DEBUG=noccs
 EOF
   gsettings set org.gnome.desktop.interface cursor-theme "$cursor" 2>/dev/null || true
   gsettings set org.gnome.desktop.interface cursor-size "$CURSOR_SIZE" 2>/dev/null || true
@@ -393,7 +395,8 @@ EOF
     flatpak override --user --filesystem="$HOME/.icons:ro" \
       --env=XCURSOR_THEME="$cursor" \
       --env=XCURSOR_SIZE="$CURSOR_SIZE" \
-      --env=XCURSOR_PATH="$HOME/.icons:$HOME/.local/share/icons:/usr/share/icons:/usr/share/pixmaps" >/dev/null 2>&1 || true
+      --env=XCURSOR_PATH="$HOME/.icons:$HOME/.local/share/icons:/usr/share/icons:/usr/share/pixmaps" \
+      --env=INTEL_DEBUG=noccs >/dev/null 2>&1 || true
   fi
 }
 

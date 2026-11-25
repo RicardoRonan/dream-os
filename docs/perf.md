@@ -8,11 +8,11 @@ recomputed per frame.
 
 | Setting | Value | Why |
 |---------|-------|-----|
-| `frosted` (strength) | **Low** | cheapest visible blur |
-| `frosted_panel` | on | the dock/panel glass (visible only when the dock shows) |
+| `frosted` (strength) | **ExtremelyLow** | cheapest visible blur |
+| `frosted_panel` | on | the dock glass (visible only when the dock shows) |
 | `frosted_system_interface` | **off** | the workspace overview / launcher blur the whole desktop each frame — the main lag source |
 | `frosted_applets` | **off** | popups don't need blur |
-| `frosted_windows` | on | floating COSMIC windows use the same glass |
+| `frosted_windows` | **off** | floating COSMIC windows stay opaque |
 | `frosted_maximized_apps` | on | maximized COSMIC windows stay translucent |
 | Panel opacity | 1.0 | top bar is opaque (no blur needed) |
 | Dock opacity | 0.5 | translucent; shows the wallpaper through it |
@@ -22,6 +22,28 @@ Blur therefore covers the dock, floating windows and maximized COSMIC windows.
 The top bar stays opaque and the workspace overview (Super+W) does not blur.
 GTK, Electron and XWayland apps decide their own window background, so many of
 them stay opaque even when the theme enables frosted windows.
+
+## Hybrid GPU buffer imports
+
+On ThinkPad P15, `cosmic-comp` renders on NVIDIA `renderD129` while some app
+buffers come from Intel `renderD128` with `I915_y_tiled_ccs`. COSMIC cannot import
+those buffers and logs `Failed to render texture ... import for wrong devices`.
+That drops frames independently of blur. Upstream reports:
+[cosmic-comp#2782](https://github.com/pop-os/cosmic-comp/issues/2782),
+[#2658](https://github.com/pop-os/cosmic-comp/issues/2658),
+[#2752](https://github.com/pop-os/cosmic-comp/issues/2752).
+
+`scripts/appearance.sh` sets `INTEL_DEBUG=noccs` in
+`~/.config/environment.d/dream-os.conf` and in the user Flatpak override. This
+stops Intel CCS buffers from being produced. It takes effect after logout/login.
+Check with:
+
+```bash
+journalctl --user -b -o cat -g 'Failed to render texture' | wc -l
+```
+
+Panel and dock layer settings are not the bottleneck. Do not change
+`exclusive_zone`, `anchor_gap`, `autohide`, fractional scaling or VRR to fix this.
 
 ## If it still stutters
 

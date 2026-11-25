@@ -47,6 +47,7 @@ check "dock padding 8px" "grep -Fqx 'Some(8)' '$CFG/com.system76.CosmicPanel.Doc
 check "dock always hides" "grep -qx Always '$CFG/com.system76.CosmicPanel.Dock/v1/autohide'"
 check "dock reveal handle" "if test -x $HOME/.local/bin/cosmic-panel; then grep -q 'handle_size: 16' '$CFG/com.system76.CosmicPanel.Dock/v1/autohide_behavior'; else grep -q 'handle_size: 8' '$CFG/com.system76.CosmicPanel.Dock/v1/autohide_behavior'; fi"
 check "dock overlays windows" "grep -qx false '$CFG/com.system76.CosmicPanel.Dock/v1/exclusive_zone'"
+check "i915 CCS import workaround" "grep -qx 'INTEL_DEBUG=noccs' '$HOME/.config/environment.d/dream-os.conf' && flatpak override --user --show 2>/dev/null | grep -qx 'INTEL_DEBUG=noccs' && systemctl --user show-environment 2>/dev/null | grep -qx 'INTEL_DEBUG=noccs'"
 check "floating windows clipped" "grep -q 'clip_floating_windows: true' '$CFG/com.system76.CosmicComp/v1/appearance_settings'"
 check "panel full width / flush" "grep -qx true '$CFG/com.system76.CosmicPanel.Panel/v1/expand_to_edges' && grep -qx 0 '$CFG/com.system76.CosmicPanel.Panel/v1/margin'"
 check "clock on the right" "grep -q CosmicAppletTime '$CFG/com.system76.CosmicPanel.Panel/v1/plugins_wings' && ! grep -q CosmicAppletTime '$CFG/com.system76.CosmicPanel.Panel/v1/plugins_center'"
