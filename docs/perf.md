@@ -90,9 +90,10 @@ file or the Builder config for that one.
 
 ## Animations
 
-COSMIC 1.10 exposes **no user-facing animation settings** — animations are the
-compositor's job and land in a later Epoch (2/3 upstream). The only tunable
-transition is the dock/panel hide-show animation:
+COSMIC 1.11 exposes **no user-facing animation settings** for the launcher or
+App Library. Dream OS adds their open motion with patched binaries; see
+`docs/animations.md`. The only tunable config transition is the dock/panel
+hide-show animation:
 
 `~/.config/cosmic/com.system76.CosmicPanel.Dock/v1/autohide_behavior`
 - `transition_time` (ms) — slide duration

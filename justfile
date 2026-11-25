@@ -119,11 +119,25 @@ clip:
     systemctl --user enable --now cliphist.service
     pgrep -x clip-pick >/dev/null || true
 
-# Local cosmic-launcher with a subtle Alt+Tab fade/settle animation
+# Local cosmic-launcher with subtle open and Alt+Tab animations
 launcher-alt-tab:
     bash scripts/launcher-alt-tab-animation.sh install
 launcher-alt-tab-off:
     bash scripts/launcher-alt-tab-animation.sh remove
+
+# Local cosmic-app-library with a subtle open animation
+app-library-open-animation:
+    bash scripts/app-library-open-animation.sh install
+app-library-open-animation-off:
+    bash scripts/app-library-open-animation.sh remove
+
+# Build and install both panel open animations
+panel-open-animation:
+    bash scripts/launcher-alt-tab-animation.sh install
+    bash scripts/app-library-open-animation.sh install
+panel-open-animation-off:
+    bash scripts/launcher-alt-tab-animation.sh remove
+    bash scripts/app-library-open-animation.sh remove
 
 # Disable USB autosuspend on the Intel AX201 Bluetooth adapter
 bt-autosuspend:

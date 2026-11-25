@@ -113,8 +113,8 @@ scripts/             appearance, icon map, gtk radius, doctor, greeter
 assets/              wallpapers, icons, bundled fonts (Inter)
 rice/                niri + DankMaterialShell flavour
 screenshots/         README gallery
-docs/                design, features, fonts, perf, greeter
-patches/             cosmic-greeter center patch (Pop)
+docs/                design, features, fonts, perf, greeter, animations
+patches/             cosmic-greeter, launcher, and App Library patches (Pop)
 CHANGELOG.md
 ```
 

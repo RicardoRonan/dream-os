@@ -41,6 +41,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and `scripts/compositor-corner-grab.sh` build a local cosmic-comp with 28px
   corner zones while keeping the 10px edge band. `just compositor-corners`
   installs it for the next login; `just compositor-corners-off` removes it.
+- **Subtle panel open animations**: patched launcher and App Library binaries add
+  a 200ms ease-out fade and upward slide. The launcher keeps its 140ms Alt+Tab
+  settle. Install both with `just panel-open-animation`; see
+  `docs/animations.md`.
 
 ### Changed
 - Added `Super+Shift+P` for the sticky-window action (visible on all
