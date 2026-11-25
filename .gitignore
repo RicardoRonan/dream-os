@@ -1,5 +1,6 @@
 # build state
 .build-ts
+.superpowers/
 
 # backups
 *.bak.*
